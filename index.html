@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0f1a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Ne'ala Hoops #14 — Train • Learn • Play</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏀</text></svg>">
+<style>
+:root{
+  --bg:#0b0f1a; --bg2:#121828; --card:#171f36; --card2:#1e2947;
+  --ink:#f4f7ff; --muted:#a8b3cf; --line:#2a3557;
+  --orange:#ff7a1a; --orange2:#ffa04d; --teal:#2dd4bf; --gold:#fbbf24; --pink:#f472b6; --green:#4ade80; --red:#f87171;
+  --radius:18px;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:92px}
+a{color:var(--teal)}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#121828,#1a1030);border-bottom:2px solid var(--orange);padding:12px 16px;display:flex;align-items:center;gap:12px}
+.jersey{flex:0 0 auto;width:52px;height:52px;border-radius:14px;background:var(--orange);color:#111;font-weight:900;font-size:26px;display:grid;place-items:center;border:3px solid var(--gold);box-shadow:0 0 0 2px #0006}
+header h1{font-size:20px;margin:0;line-height:1.1} header p{margin:2px 0 0;color:var(--muted);font-size:13px}
+main{max-width:760px;margin:0 auto;padding:16px}
+.view{display:none}.view.active{display:block;animation:fade .2s ease}@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
+h2{font-size:22px;margin:6px 0 10px} h3{font-size:17px;margin:0 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:0 0 14px}
+.card.hot{border-color:var(--orange);background:linear-gradient(160deg,var(--card2),#2a1a08)}
+.muted{color:var(--muted)} .small{font-size:13px} .big{font-size:28px;font-weight:900}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.stat{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font-size:24px}.stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.btn{display:inline-block;border:0;border-radius:999px;padding:13px 20px;font-size:16px;font-weight:800;cursor:pointer;background:var(--orange);color:#14100a;min-height:48px}
+.btn:active{transform:scale(.98)} .btn.teal{background:var(--teal)} .btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn.full{width:100%;text-align:center}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.chip{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;min-height:44px}
+.chip.on{background:var(--orange);color:#14100a;border-color:var(--orange)}
+.drill{border-left:5px solid var(--teal)} .drill.shooting{border-color:var(--orange)} .drill.footwork{border-color:var(--gold)} .drill.layups{border-color:var(--pink)} .drill.defense{border-color:var(--green)}
+.tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:#0007;color:var(--orange2);border:1px solid var(--line)}
+.cues{margin:8px 0 0;padding-left:20px}.cues li{margin:4px 0}
+label{display:block;font-weight:700;margin:12px 0 6px}
+input,select,textarea{width:100%;background:#0d1322;color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:12px;font-size:16px;min-height:48px}
+textarea{min-height:72px}
+.check{display:flex;gap:10px;align-items:center;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 8px;cursor:pointer}
+.check input{width:24px;height:24px;min-height:0;flex:0 0 auto}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#0d1322f2;border-top:2px solid var(--line);display:flex;backdrop-filter:blur(8px)}
+nav button{flex:1;background:none;border:0;color:var(--muted);padding:9px 2px 12px;font-size:12px;font-weight:800;cursor:pointer;min-height:64px}
+nav button span{display:block;font-size:22px}
+nav button.on{color:var(--orange2)}
+.bar-row{display:grid;grid-template-columns:86px 1fr 44px;gap:10px;align-items:center;margin:8px 0;font-size:13px}
+.bar{height:20px;background:#0d1322;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--orange),var(--gold));min-width:2px}
+.badge{display:flex;gap:12px;align-items:center}.badge .ic{font-size:30px}.badge.locked{opacity:.45}
+.lesson-body{white-space:pre-line;line-height:1.55}
+.quiz-q{margin:0 0 14px}.quiz-q button{display:block;width:100%;text-align:left;margin:6px 0;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card2);color:var(--ink);font-size:15px;cursor:pointer;min-height:48px}
+.quiz-q button.right{border-color:var(--green);background:#14532d}.quiz-q button.wrong{border-color:var(--red);background:#450a0a}
+.notice{border:2px dashed var(--gold);border-radius:14px;padding:12px;background:#2a2103;color:#fde68a}
+table.plan{width:100%;border-collapse:collapse;font-size:14px}table.plan td,table.plan th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font-size:12px}
+.timer-display{font-size:64px;font-weight:900;text-align:center;letter-spacing:.04em;background:#0d1322;border:2px solid var(--line);border-radius:16px;padding:14px 8px;margin:12px 0;line-height:1;font-variant-numeric:tabular-nums}
+.timer-display.done{border-color:var(--gold);color:var(--gold)}
+.timer-row{display:flex;gap:10px;margin-top:12px}.timer-row .btn{flex:1}
+.week-day{display:block;width:100%;text-align:left;background:var(--card2);border:2px solid var(--line);border-radius:14px;padding:12px;margin:0 0 8px;color:var(--ink);cursor:pointer;min-height:48px}
+.week-day:active{transform:scale(.99)} .week-day.today{border-color:var(--orange)}
+.week-day .day-name{font-weight:900;font-size:15px}
+.week-day .day-plan{display:block;color:var(--muted);font-size:14px;margin-top:3px;line-height:1.4}
+.week-editor{border:2px dashed var(--gold);border-radius:14px;padding:12px;background:#17130a;margin-top:12px}
+.flashcard{display:block;width:100%;text-align:center;background:var(--card2);border:3px solid var(--teal);border-radius:18px;padding:26px 16px;margin:12px 0;color:var(--ink);cursor:pointer;min-height:150px}
+.flashcard:active{transform:scale(.99)} .flashcard.flipped{border-color:var(--gold);background:#2a2103}
+.flashcard .fc-word{font-size:30px;font-weight:900;line-height:1.15}
+.flashcard .fc-def{font-size:19px;line-height:1.5}
+.flashcard .fc-hint{display:block;color:var(--muted);font-size:13px;margin-top:14px;font-weight:700}
+.fc-row{display:flex;gap:10px;margin-top:10px}.fc-row .btn{flex:1;padding-left:8px;padding-right:8px}
+.story-body{line-height:1.65;font-size:16px}.story-body p{margin:0 0 12px}
+.story-q{margin:0 0 14px}.story-q button{display:block;width:100%;text-align:left;margin:6px 0;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card2);color:var(--ink);font-size:15px;cursor:pointer;min-height:48px}
+.story-q button.right{border-color:var(--green);background:#14532d}.story-q button.wrong{border-color:var(--red);background:#450a0a}
+.cal-title{font-size:18px;font-weight:900;text-align:center;margin:4px 0 10px}
+.cal-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:0 0 6px}
+.cal-week span{text-align:center;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-blank{min-height:48px}
+.cal-day{position:relative;background:var(--card2);border:2px solid var(--line);border-radius:12px;color:var(--ink);font-size:15px;font-weight:800;min-height:48px;padding:6px 2px 12px;cursor:pointer;width:100%}
+.cal-day:active{transform:scale(.97)} .cal-day.today{border-color:var(--orange)}
+.cal-day.selected{border-color:var(--teal);background:#123a36}
+.cal-day .cal-dot{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px #0006}
+.cal-detail{border:2px dashed var(--gold);border-radius:14px;padding:12px;background:#17130a;margin-top:12px;line-height:1.5}
+.celebration{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.celebration .burst-card{position:absolute;left:50%;top:22%;transform:translateX(-50%);background:#2a2103;border:3px solid var(--gold);color:#fde68a;border-radius:18px;padding:16px 20px;text-align:center;font-weight:900;font-size:19px;line-height:1.35;box-shadow:0 12px 40px #000a;max-width:86vw;animation:burst-pop .45s ease}
+.celebration .burst-card span{display:block;font-size:15px;color:var(--ink);margin-top:6px}
+.celebration .piece{position:absolute;top:-8%;font-size:22px;animation:burst-fall 2.6s ease-in forwards}
+.celebration .piece.square{width:12px;height:12px;border-radius:3px;font-size:0}
+@keyframes burst-pop{from{opacity:0;transform:translateX(-50%) scale(.7)}to{opacity:1;transform:translateX(-50%) scale(1)}}
+@keyframes burst-fall{to{transform:translateY(115vh) rotate(560deg);opacity:.15}}
+@media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="jersey" aria-label="Jersey number 14">14</div>
+  <div>
+    <h1>Ne'ala Hoops 🏀</h1>
+    <p>Train • Learn • Play — #14, let's get better today</p>
+  </div>
+</header>
+
+<main>
+<!-- ============ HOME ============ -->
+<section class="view active" id="view-home">
+  <div class="card hot">
+    <h2 id="greeting">Hey Ne'ala! 👋</h2>
+    <p id="todayLine" class="muted">Loading today's plan…</p>
+    <div id="todayPlan"></div>
+    <button class="btn full" data-goto="train">Start Training →</button>
+  </div>
+  <div class="card" id="weeklyPlanCard">
+    <h3>📅 Your Week — Tap a Day to Change It</h3>
+    <p class="muted small">Dad and Ne'ala: tap any day to pick a focus from the plan list, or write your own. Your picks are saved on this device. Days you don't change keep the regular plan.</p>
+    <div id="weeklyPlanList"></div>
+    <div id="weeklyPlanEditor" class="week-editor" hidden>
+      <h3 id="weeklyPlanEditorTitle" style="margin-top:0">✏️ Change This Day</h3>
+      <label for="weeklyPlanSelect">Choose from the plan list</label>
+      <select id="weeklyPlanSelect"></select>
+      <label for="weeklyPlanCustom">Or write your own focus</label>
+      <input type="text" id="weeklyPlanCustom" maxlength="120" placeholder="Example: Shooting games with Dad 🎯">
+      <p class="small muted">If you write your own, that words wins. Leave it blank to use the list pick.</p>
+      <div class="timer-row">
+        <button type="button" class="btn" id="weeklyPlanSave">Save This Day ✅</button>
+        <button type="button" class="btn ghost" id="weeklyPlanCancel">Cancel</button>
+      </div>
+      <button type="button" class="btn ghost full" id="weeklyPlanReset" style="margin-top:10px">↺ Reset This Day to the Regular Plan</button>
+      <p id="weeklyPlanMsg" class="small" role="status" style="margin:10px 0 0"></p>
+    </div>
+  </div>
+  <div class="grid" id="quickStats" aria-label="Quick stats"></div>
+  <div class="card" id="drillOfDayCard">
+    <h3>🌟 Drill of the Day</h3>
+    <div id="drillOfDay"><p class="muted">Loading today's drill…</p></div>
+    <button class="btn full" data-goto="train">Try It in Training →</button>
+  </div>
+  <div class="card">
+    <h3>🔥 Your Streak</h3>
+    <p><span class="big" id="streakNum">0</span> <span class="muted">day streak — practice on back-to-back days to grow it. Miss a day? No stress. Start a new one today.</span></p>
+  </div>
+  <div class="card">
+    <h3>⭐ Featured: 14 for 14</h3>
+    <p class="muted">Your number, your session. 14 minutes, finish with 14 makes. End on a make — always.</p>
+    <button class="btn teal full" data-goto="train">See the 14 for 14 Session</button>
+  </div>
+  <div class="card" id="recentCard">
+    <h3>📓 Most Recent Practice</h3>
+    <div id="recentSession"><p class="muted">No practices logged yet. Your first one is the hardest — and the most important. Log it after you play!</p></div>
+  </div>
+</section>
+
+<!-- ============ TRAIN ============ -->
+<section class="view" id="view-train">
+  <h2>🏋️ Training</h2>
+  <div class="card hot" id="fourteen">
+    <h3>⭐ 14 for 14 — Driveway Session (14 minutes)</h3>
+    <table class="plan">
+      <tr><th>Block</th><th>Time</th><th>What to do</th></tr>
+      <tr><td><b>Warm-up</b></td><td>2 min</td><td>Jog the driveway, arm circles, 20 easy dribbles each hand.</td></tr>
+      <tr><td><b>Handles</b></td><td>3 min</td><td>Pound dribbles + crossovers, 30 seconds each. Eyes up!</td></tr>
+      <tr><td><b>14 Makes</b></td><td>6 min</td><td>Form shots close to the hoop. Count ONLY makes. Get to 14, then take one step back if it feels easy.</td></tr>
+      <tr><td><b>Layups</b></td><td>3 min</td><td>Right side, then left side. Finish on a make — always.</td></tr>
+    </table>
+    <p class="small muted">Hoop tip from Dad: while form is growing, 8.5–9 ft is perfect. Ball: size 6 (28.5").</p>
+    <button class="btn full" data-goto="log">I Did It — Log This Session</button>
+  </div>
+  <div class="card" id="practiceTimer">
+    <h3>⏱️ Practice Timer</h3>
+    <p class="muted small">Pick a block from 14 for 14 — or set your own time. The timer beeps gently when time is up. You’ve got this, #14!</p>
+    <div class="timer-display" id="timerDisplay" role="timer" aria-live="polite" aria-label="Practice timer">14:00</div>
+    <div class="chips" id="timerPresets" role="group" aria-label="Timer presets">
+      <button type="button" class="chip" data-timer-preset="2">2 min • Warm-up</button>
+      <button type="button" class="chip" data-timer-preset="3">3 min • Handles / Layups</button>
+      <button type="button" class="chip" data-timer-preset="6">6 min • 14 Makes</button>
+      <button type="button" class="chip on" data-timer-preset="14">14 min • Full Session</button>
+    </div>
+    <label for="timerCustom">Custom minutes (1–120)</label>
+    <div class="timer-row" style="margin-top:0;align-items:stretch">
+      <input type="number" id="timerCustom" min="1" max="120" inputmode="numeric" placeholder="Example: 5" style="flex:1">
+      <button type="button" class="btn ghost" id="timerSetCustom">Set Time</button>
+    </div>
+    <div class="timer-row">
+      <button type="button" class="btn" id="timerStartPause">▶️ Start Timer</button>
+      <button type="button" class="btn ghost" id="timerReset">↺ Reset</button>
+    </div>
+    <p id="timerMsg" class="small muted" role="status" style="margin:10px 0 0">Ready when you are — pick a time, then tap Start.</p>
+  </div>
+  <p class="muted">Pick a skill. Start with Level 1 drills — they build everything else.</p>
+  <div class="chips" id="skillChips" role="group" aria-label="Filter drills by skill"></div>
+  <div id="drillList"></div>
+</section>
+
+<!-- ============ LOG ============ -->
+<section class="view" id="view-log">
+  <h2>📓 Practice Log</h2>
+  <form class="card" id="logForm">
+    <label for="fDate">Date</label>
+    <input type="date" id="fDate" required>
+    <label for="fMinutes">Minutes practiced</label>
+    <input type="number" id="fMinutes" min="1" max="300" inputmode="numeric" placeholder="Example: 14" required>
+    <label>Drills I did (tap all that apply)</label>
+    <div id="fDrills"></div>
+    <div class="grid">
+      <div><label for="fMakes">Shots made</label><input type="number" id="fMakes" min="0" max="999" inputmode="numeric" placeholder="14"></div>
+      <div><label for="fAttempts">Shots tried</label><input type="number" id="fAttempts" min="0" max="999" inputmode="numeric" placeholder="20"></div>
+    </div>
+    <div class="grid">
+      <div><label for="fRebounds">Rebounds <span class="muted small">(optional)</span></label><input type="number" id="fRebounds" min="0" max="999" inputmode="numeric" placeholder="3"></div>
+      <div><label for="fAssists">Assists <span class="muted small">(optional)</span></label><input type="number" id="fAssists" min="0" max="999" inputmode="numeric" placeholder="2"></div>
+    </div>
+    <p class="small muted" style="margin:8px 0 0">🧲 A <b>rebound</b> is grabbing the ball after a missed shot. 🤝 An <b>assist</b> is a pass that leads straight to a basket. Not sure you had any? Just leave these blank — zero is okay, and you can learn both words in Learn &gt; Words of the Game! 📖</p>
+    <label for="fNotes">Notes — what felt good? What was hard?</label>
+    <textarea id="fNotes" placeholder="Example: My left hand dribble is getting better!"></textarea>
+    <p id="logMsg" class="small" role="status"></p>
+    <button class="btn full" type="submit">Save Practice ✅</button>
+  </form>
+  <h3>Your practices</h3>
+  <div id="historyList"></div>
+</section>
+
+<!-- ============ LEARN ============ -->
+<section class="view" id="view-learn">
+  <h2>🧠 Learn</h2>
+  <p class="muted">Basketball IQ + school skills, taught through the game you love. Finish lessons and quizzes to earn Scholar badges.</p>
+  <div class="chips" id="learnChips">
+    <button class="chip on" data-learn="all">All</button>
+    <button class="chip" data-learn="iq">🏀 Basketball IQ</button>
+    <button class="chip" data-learn="school">📚 School Skills</button>
+    <button class="chip" data-learn="legends">👑 Legends</button>
+    <button class="chip" data-learn="quiz">❓ Quizzes</button>
+  </div>
+  <div id="flashcardArea"></div>
+  <div id="storyArea"></div>
+  <div id="lessonList"></div>
+  <div id="quizArea"></div>
+</section>
+
+<!-- ============ PROGRESS ============ -->
+<section class="view" id="view-progress">
+  <h2>📈 Progress</h2>
+  <div class="grid" id="progressStats"></div>
+  <div class="card" id="sessionAveragesCard">
+    <h3>📊 Your Averages — Per Practice</h3>
+    <p class="muted small" style="margin:4px 0 10px">An average tells what a normal practice looks like for you: add everything up, then divide by how many practices you logged. Your Progress page does that math with YOUR real numbers!</p>
+    <div id="sessionAverages"><p class="muted">Log a practice and your averages appear here.</p></div>
+    <p class="small muted">Want to see how the math works? Makes per minute = total makes ÷ total minutes. Averages per practice = total ÷ number of practices.</p>
+    <button type="button" class="btn ghost full" data-goto="learn">📚 Learn the Math: Shooting % and Averages →</button>
+  </div>
+  <div class="card" id="practiceCalendarCard">
+    <h3>🗓️ Practice Calendar</h3>
+    <p class="muted small" style="margin:4px 0 10px">Every gold dot is a day you practiced this month — great work adds up! Tap any day to see how much you practiced and how many shots you made.</p>
+    <div id="practiceCalendar"></div>
+    <div id="calendarDayDetail" class="cal-detail" role="status"><p class="muted" style="margin:0">Tap a day on the calendar to see your practice for that day. 👆</p></div>
+  </div>
+  <div class="card">
+    <h3>Shots made — your last practices</h3>
+    <div id="chart"><p class="muted">Log a practice and your chart appears here.</p></div>
+  </div>
+  <div class="card">
+    <h3>🏅 Badges</h3>
+    <div id="badgeList"></div>
+  </div>
+  <div class="card">
+    <h3>🎯 Dad's Corner</h3>
+    <p class="muted small">For Coach Nathan: totals above come straight from Ne'ala's log on this device (localStorage, nothing leaves the phone). Badges are computed from real logged data. Coming in later phases: weekly plan editor, game log for league play, JSON backup export.</p>
+    <button class="btn ghost full" id="resetBtn">Reset All Data on This Device</button>
+  </div>
+</section>
+</main>
+
+<footer>Ne'ala Hoops #14 • Made with Dad • Everything is saved only on this device — no accounts, no posting, just practice. 💛</footer>
+
+<nav aria-label="Main">
+  <button data-goto="home" class="on"><span>🏠</span>Home</button>
+  <button data-goto="train"><span>🏋️</span>Train</button>
+  <button data-goto="log"><span>📓</span>Log</button>
+  <button data-goto="learn"><span>🧠</span>Learn</button>
+  <button data-goto="progress"><span>📈</span>Progress</button>
+</nav>
+
+<script>
+"use strict";
+/* ================= DATA ================= */
+const DRILLS=[
+ {id:"pound",skill:"handling",level:1,name:"Pound Dribbles",builds:"Control and confidence with both hands",reps:"3 rounds × 30 seconds each hand",mins:3,cues:["Dribble hard — pound it into the ground, waist high or lower","Eyes UP, not on the ball","Fingertips, not your palm"]},
+ {id:"cross",skill:"handling",level:1,name:"Crossovers",builds:"Changing direction and protecting the ball",reps:"3 rounds × 30 seconds",mins:3,cues:["Push the ball low and wide, below your knees","Stay low in an athletic stance","Start slow — speed comes after control"]},
+ {id:"weakhand",skill:"handling",level:2,name:"Weak-Hand Only",builds:"Your other hand — the one that separates players",reps:"Driveway down-and-back × 4, weak hand only",mins:4,cues:["It's supposed to feel awkward — that's the point","Small dribbles, close to your body","Mistakes are fine. Chase the ball and go again"]},
+ {id:"beef",skill:"shooting",level:1,name:"B.E.E.F. Form Shots",builds:"Perfect shooting form, close to the hoop",reps:"Shoot from 3–5 feet until 10 makes",mins:5,cues:["B = Balance: feet shoulder-width, knees bent","E = Eyes on the rim, E = Elbow under the ball","F = Follow through: wave goodbye, hand in the cookie jar"]},
+ {id:"14for14",skill:"shooting",level:1,name:"14 for 14 ⭐",builds:"Focus, counting, and finishing — your signature drill",reps:"Keep shooting close-in until you make 14",mins:6,cues:["Only makes count — misses don't reset you","Same form every shot, even when you're tired","Take one step back only AFTER 14 makes"]},
+ {id:"freethrow",skill:"shooting",level:2,name:"Free-Throw Routine",builds:"A repeatable routine you can trust in games",reps:"10 free throws — build your routine first",mins:5,cues:["Same routine every time: dribble, breathe, shoot","Toes on the line, knees soft","Follow through and hold it until the ball lands"]},
+ {id:"pivot",skill:"footwork",level:1,name:"Triple-Threat Pivots",builds:"Balance and keeping your pivot foot legal",reps:"10 front pivots + 10 reverse pivots, each foot",mins:4,cues:["Catch, then get low: ball protected, knees bent","One foot stays planted — that's your pivot foot","Look around before you move: pass, shoot, or drive"]},
+ {id:"mikan-steps",skill:"footwork",level:1,name:"Layup Steps (No Ball)",builds:"The right-left-JUMP pattern until it's automatic",reps:"10× right side, 10× left side, no ball",mins:4,cues:["Right side: step RIGHT, step LEFT, jump UP","Say it out loud: 'outside, inside, up!'","Arms reach up like you're finishing at the rim"]},
+ {id:"layups",skill:"layups",level:1,name:"Layups Both Sides",builds:"Finishing at the rim with either hand",reps:"5 makes right side + 5 makes left side",mins:6,cues:["Use the backboard square — aim for the corner","Outside hand shoots: right side = right hand","Jump off the inside foot, knee drives up"]},
+ {id:"mikan",skill:"layups",level:2,name:"Mikan Drill",builds:"Soft touch around the rim, both hands",reps:"1 minute — count your makes",mins:3,cues:["Stand under the hoop, alternate right and left layups","Catch your own shot in the air if you can","Quick feet, soft hands"]},
+ {id:"slide",skill:"defense",level:1,name:"Defensive Slides",builds:"Staying in front of your player",reps:"Driveway width × 6, low the whole way",mins:4,cues:["Stay LOW — butt down, chest up, on your toes","Slide your feet, never cross them","Hands wide and active"]},
+ {id:"closeout",skill:"defense",level:2,name:"Closeouts",builds:"Running at a shooter without fouling or flying by",reps:"8 closeouts to a cone or chair",mins:4,cues:["Sprint most of the way, then short choppy steps","One hand up — 'hand high!'","Stop balanced, ready to slide either way"]},
+ {id:"wallpass",skill:"handling",level:1,name:"Wall Passing",builds:"Sharp, accurate passes with both hands",reps:"3 rounds × 20 passes (chest + bounce)",mins:4,cues:["Pick a spot on the wall — hit that same spot every time","Step into your pass, thumbs down, fingers out","Catch ready: hands up, show a target"]},
+ {id:"jabgo",skill:"footwork",level:2,name:"Jab Step & Go",builds:"Faking one way and driving the other",reps:"10 jabs right + 10 jabs left, then drive",mins:4,cues:["Start in triple threat — low and ready","Jab hard with your front foot, ball stays protected","If the fake works, push off and go fast the other way"]},
+ {id:"bankshot",skill:"shooting",level:2,name:"Bank-Shot Spots",builds:"Using the backboard from different angles",reps:"Shoot from 5 spots — first to 3 makes at each spot",mins:5,cues:["Aim for the top corner of the square on the backboard","Same B.E.E.F. form at every spot","Soft touch — let the board do the work"]},
+ {id:"weaklayup",skill:"layups",level:2,name:"Weak-Hand Layup Progression",builds:"Finishing layups with your weak hand, step by step",reps:"5 standing finishes, 5 one-step, 5 full layups — weak hand",mins:5,cues:["Start close and still — just learn the soft touch first","Weak hand shoots, outside knee drives up","Awkward is normal — every rep makes it stronger"]},
+ {id:"mirrordef",skill:"defense",level:1,name:"Mirror Defense Stance",builds:"Staying low and moving with your player",reps:"4 rounds × 30 seconds mirroring a partner or shadow",mins:4,cues:["Stay in your stance: butt down, chest up, hands wide","Mirror the movement — slide when they slide","Short quick steps, never cross your feet"]},
+ {id:"btwlegs",skill:"handling",level:2,name:"Between-the-Legs (Stationary)",builds:"Low control and confidence between the legs",reps:"3 rounds × 20 seconds, standing still",mins:3,cues:["Stay low, knees bent, ball stays low too","Push the ball through, catch it with the other hand","Look up when you can — misses are part of learning"]}
+];
+const SKILLS={handling:"🤲 Ball Handling",shooting:"🎯 Shooting Form",footwork:"👟 Footwork",layups:"🪜 Layups",defense:"🛡️ Defense"};
+const LESSONS=[
+ {id:"court",strand:"iq",icon:"🗺️",title:"The Court Map",body:"A basketball court has two hoops and a center line.\n\n• The KEY (painted box near each hoop): where big plays happen. On offense you can only stay in the key 3 seconds at a time.\n• The FREE-THROW LINE: top of the key, 15 feet from the hoop.\n• The 3-POINT LINE: the big arc. Shots from behind it count 3 instead of 2.\n• CENTER CIRCLE: where the jump ball starts the game.\n\nNext driveway session: walk an imaginary court and name each spot out loud."},
+ {id:"positions",strand:"iq",icon:"🔢",title:"The 5 Positions",body:"Every team has 5 players on the court:\n\n1️⃣ Point Guard — brings the ball up, starts the plays, like a quarterback.\n2️⃣ Shooting Guard — scores from outside.\n3️⃣ Small Forward — does a bit of everything.\n4️⃣ Power Forward — strong near the hoop.\n5️⃣ Center — usually tallest, protects the rim.\n\nBeginners should try EVERY position. You find your favorite by playing, not by guessing."},
+ {id:"rules",strand:"iq",icon:"📏",title:"Rules That Matter First",body:"Four rules explain most of what you'll see:\n\n• TRAVELING: moving with the ball without dribbling. Your pivot foot is your anchor.\n• DOUBLE DRIBBLE: dribbling, stopping, then dribbling again. Not allowed!\n• FOUL: hitting another player's body. Free throws are the reward.\n• OUT OF BOUNDS: ball or player touches the line — other team's ball.\n\nKnowing the rules means you play free instead of scared of the whistle."},
+ {id:"pickroll",strand:"iq",icon:"👀",title:"Reading a Pick-and-Roll",body:"The most famous play in basketball is only 2 players:\n\n1. A teammate stands still like a wall (the SCREEN / pick) next to your defender.\n2. You dribble close past that wall so your defender gets stuck.\n3. Your teammate then ROLLS toward the hoop, wide open.\n\nYour job as the dribbler: read the defense. If they follow you, pass to the roller. If they follow the roller, you shoot. Two choices — that's the whole play!"},
+ {id:"goodshots",strand:"iq",icon:"🎯",title:"Good Shots vs Bad Shots",body:"A good shot is not just a shot that goes IN. It is a smart shot — one you picked well. You can make a bad shot by luck, and you can miss a good shot and still have made the right choice!\n\n✅ GOOD SHOTS — say YES to these:\n• You are OPEN — no defender is right in your face.\n• You are BALANCED, with your B.E.E.F. form ready.\n• You are CLOSE ENOUGH — inside the range you practice from.\n• Your team is ready — a teammate could grab a rebound if you miss.\n\n🚫 BAD SHOTS — pass these up:\n• A defender's hand is right in your face and a teammate is wide open.\n• You are falling, off-balance, or shooting while running sideways.\n• You are WAY too far from the hoop — farther than you ever practice.\n• You shoot the very first second, before anyone else even touches the ball.\n\nThe secret pros know: if it is not a good shot for YOU, it might be an even better shot for a TEAMMATE. Passing up a bad shot to create a good shot is a superstar play — and it feels great. Next game, before you shoot, ask quietly: 'Open? Balanced? Close enough?' Three yeses? Let it fly, #14!"},
+ {id:"helpdefense",strand:"iq",icon:"🛡️",title:"Help Defense Basics",body:"Defense is a team job. Your job is not just to guard YOUR player — it is to guard your player AND keep an eye on the ball at the same time.\n\n👀 SEE BOTH\nStand where you can see your player and the ball without turning your head all the way. Point one hand toward your player and one toward the ball — coaches call this being 'in help position.' If you only watch the ball, your player can sneak away. If you only watch your player, you will never see what is coming.\n\n🤝 HELP YOUR TEAM\n• If a teammate gets beaten and their player drives toward the hoop, STEP IN and stop the ball — that is HELPING.\n• Call it out! Yell 'Help!' or 'Ball!' so your teammates know what you see. Talking on defense is a superpower.\n• As soon as the danger passes, HURRY BACK to your own player. Help, then recover — help, then recover.\n\n🛡️ REMEMBER\n• Stay low in your Mirror Defense Stance: butt down, chest up, hands wide.\n• Never leave your feet for a fake — stay down, slide, and use your hands to bother the shot, not to foul.\n\nLesson for #14: great defenders help each other. The best play on defense is often the one where you saved a teammate — even if nobody claps for it, your coach and your team KNOW."},
+ {id:"mathfg",strand:"school",icon:"➗",title:"Math: Shooting % and Averages",body:"Basketball stats are just fractions wearing a jersey.\n\nFIELD GOAL % (FG%) = makes ÷ tries × 100\n• You make 7 of 14 shots → 7 ÷ 14 = 0.5 → 50%. (There's your #14 again!)\n\nAVERAGE = total ÷ number of games\n• You score 6, 10, and 8 points in 3 games → 24 ÷ 3 = 8 points per game.\n• The same trick works for everything in your log: average rebounds = total rebounds ÷ practices, and average assists = total assists ÷ practices.\n\nMAKES PER MINUTE = total makes ÷ total minutes\n• You make 14 shots in 14 minutes → 14 ÷ 14 = 1 make per minute. Fast work, #14!\n\nYour Practice Log and your Progress page do ALL of this math with YOUR real numbers — rebounds and assists too. Log a practice, then tap Progress > Your Averages to see your own makes per minute and your per-practice averages. Then come back here and check: can you do the division yourself before you look?"},
+ {id:"vocab",strand:"school",icon:"📖",title:"Words of the Game",body:"Learn these 6 words and you can talk basketball anywhere:\n\n• ASSIST — a pass that leads straight to a basket\n• REBOUND — grabbing the ball after a missed shot\n• PIVOT — turning on one planted foot\n• LAYUP — a close shot off one foot, often off the backboard\n• FAST BREAK — racing downcourt before the defense is ready\n• TRIPLE THREAT — the ready position where you can pass, shoot, or dribble\n\nChallenge: use one word correctly while watching a game with Dad."},
+ {id:"millers",strand:"legends",icon:"👨‍👧",title:"The Miller Story: A Big Sister & Her Little Brother",body:"Before the NBA, before the Olympics, there was a backyard in Riverside, California — and a big sister who blocked EVERY shot.\n\nCheryl Miller (born 1964) was Reggie Miller's older sister, and she was the star first. In their driveway games she swatted Reggie's layups away again and again. So Reggie made a plan: he practiced 500–700 shots a day, backing up step by step, learning to shoot the ball HIGH over her hand. That high, looping shot became his famous NBA jump shot.\n\nReggie had to fight to even play: he was born with hip problems, doctors said he might never walk properly, and he wore leg braces until he was 4. His mom, a nurse, kept encouraging him. He walked, he ran, he practiced — and he never stopped.\n\n🏆 THE DINNER-TABLE STORY (Jan 26, 1982)\nReggie came home proud after scoring 39 points in his high school game. At dinner, Cheryl and their dad were smiling. Cheryl had scored... 105 points in HER game that same day — still one of the most amazing games ever played.\n\nLesson for #14: somebody better than you is not a wall. They are a ladder. Practice is how you climb."},
+ {id:"cheryl",strand:"legends",icon:"👑",title:"Cheryl Miller — The Original Superstar",body:"Many people call Cheryl Miller one of the greatest basketball players of ALL time — not just in the women's game.\n\n⭐ HER STORY\n• Riverside Poly High School: her teams went 132–4. She was the FIRST player, boy or girl, named a Parade All-American 4 times.\n• USC (college): led the Trojans to NCAA championships in 1983 AND 1984, and was named the tournament's Most Outstanding Player both times. She won the Naismith Player of the Year award 3 times, finished with 3,018 points and 1,534 rebounds, and USC retired her #31 jersey.\n• Team USA: led the United States to Olympic GOLD at the 1984 Los Angeles Games, plus gold at the 1983 Pan Am Games and the 1986 World Championship.\n• Hall of Fame: inducted in 1995. The WNBA did not start until after knee injuries ended her playing years, so she became the FIRST head coach of the Phoenix Mercury instead — a pioneer twice.\n\n🏀 HER BEST GAMES\n• Jan 26, 1982 — 105 POINTS in one high school game vs. Norte Vista (her team won 179–15). She later joked: 'I didn't play the last two minutes, though.'\n• 1984 Olympic Gold Medal Game — 16 points + 11 rebounds vs. South Korea, USA won 85–55; she led the whole team in scoring for the tournament.\n• Feb 28, 1985 — 45 points vs. Arizona, a USC record-breaking night (after 40 vs. Cal State Fullerton and 43 vs. Louisiana Tech that same season).\n• 1986 World Championship Final — 24 points + 15 rebounds to beat the Soviet Union and win gold.\n\nLesson for #14: Cheryl didn't wait for permission or for a league to exist. She set the standard everybody else had to chase."},
+ {id:"reggie",strand:"legends",icon:"🎯",title:"Reggie Miller — Miller Time",body:"Reggie Miller spent his whole 18-year NBA career with ONE team, the Indiana Pacers, wore #31 — the same number as his big sister Cheryl — and became the most feared last-minute shooter of his era. When a game was on the line, fans called it MILLER TIME.\n\n⭐ HIS STORY\n• Born with hip problems and leg braces until age 4 (see the Miller Story lesson) — doctors doubted he would walk properly.\n• UCLA college star, drafted 11th by Indiana in 1987. Fans actually BOOED the pick at first. He spent 18 years proving them wrong.\n• He retired holding the NBA record for 3-pointers made (2,560), won Olympic gold in 1996, and entered the Hall of Fame in 2012 — just like Cheryl. Two siblings, two Hall of Famers.\n\n🏀 HIS BEST GAMES\n• Nov 28, 1992 — CAREER-HIGH 57 POINTS vs. the Charlotte Hornets (Pacers won 134–122). Still the Pacers' NBA team record; he also had 8 assists that night.\n• Jun 1, 1994 — 39 points vs. the New York Knicks in the playoffs, including 25 POINTS IN THE 4TH QUARTER alone. Pacers won 93–86 at Madison Square Garden.\n• May 7, 1995 — 8 POINTS IN 9 SECONDS. Down 6 with under 19 seconds left vs. the Knicks: 3-pointer, steal, another 3-pointer, then 2 free throws. Pacers won a game everybody thought was over.\n• May 1998 — a game-winning 3-pointer over Michael Jordan and the Chicago Bulls in the Eastern Conference Finals.\n• 2002 Playoffs — a 40-foot 3-pointer at the buzzer vs. the Nets to force overtime.\n\nLesson for #14: Reggie was not the strongest or the fastest. He won with the thing YOU control: thousands of practice shots, the same form, every single day."}
+];
+const FLASHCARDS=[
+ {id:"assist",word:"ASSIST",def:"A pass that leads straight to a basket"},
+ {id:"rebound",word:"REBOUND",def:"Grabbing the ball after a missed shot"},
+ {id:"pivot",word:"PIVOT",def:"Turning on one planted foot"},
+ {id:"layup",word:"LAYUP",def:"A close shot off one foot, often off the backboard"},
+ {id:"fastbreak",word:"FAST BREAK",def:"Racing downcourt before the defense is ready"},
+ {id:"triplethreat",word:"TRIPLE THREAT",def:"The ready position where you can pass, shoot, or dribble"}
+];
+const STORY={id:"firstgameday",title:"Ne'ala's First Game Day",paras:[
+ "Ne'ala woke up early on game day. Her jersey with number 14 was clean and ready. Her stomach felt full of butterflies. \"What if I miss every shot?\" she asked.",
+ "Dad smiled as he tied his shoes. \"Missing is part of basketball,\" he said. \"Every player misses. What matters is that you keep trying, help your team, and have fun.\"",
+ "At the gym, the floor was shiny and the ball sounded loud — bounce, bounce, bounce. Ne'ala's hands shook a little during warm-ups. Then she did her B.E.E.F. form shots close to the hoop, just like in the driveway. One went in. Swish! She took a deep breath and smiled.",
+ "In the game, Ne'ala missed her first two shots. She wanted to stop shooting, but she remembered Dad's words. She kept playing hard. She grabbed a rebound after a missed shot, and she played tough defense, sliding her feet and keeping her hands wide.",
+ "In the last minute, Ne'ala's teammate Maya was wide open under the hoop. Ne'ala passed her the ball — an assist! Maya scored, and the whole team cheered. Ne'ala had not scored a basket, but she had helped her team in lots of ways.",
+ "After the game, Dad gave her a big hug. \"I am so proud of you,\" he said. \"You were nervous, you missed, and you never gave up. That is what a real player does.\" Ne'ala grinned. She could not wait for the next game — and for more practice in the driveway."
+],qs:[
+  {q:"How did Ne'ala feel before the game?",a:["Angry at her team","Nervous, with butterflies in her stomach","Sleepy and bored"],c:1,why:"She woke up with butterflies and asked, 'What if I miss every shot?'"},
+  {q:"What did Ne'ala do after she missed her first two shots?",a:["She stopped playing","She sat down and quit","She kept playing hard — she got a rebound and played tough defense"],c:2,why:"She remembered Dad's words and kept helping her team."},
+  {q:"Why was Dad proud of Ne'ala after the game?",a:["Because she scored the most points","Because she was nervous and missed, but never gave up","Because she never missed a shot"],c:1,why:"Dad was proud that she kept trying and helped her team — an assist, a rebound, and hard defense."}
+]};
+const QUIZZES=[
+ {id:"iq",icon:"🏀",title:"Basketball IQ Quiz",qs:[
+   {q:"You dribble, stop and hold the ball, then dribble again. What is that called?",a:["A crossover","Double dribble","A fast break"],c:1,why:"Stopping ends your dribble. Starting again is a double dribble."},
+   {q:"How many points is a shot from behind the big arc?",a:["2 points","1 point","3 points"],c:2,why:"Behind the 3-point line = 3 points."},
+   {q:"In a pick-and-roll, what does the screener do after setting the screen?",a:["Rolls toward the hoop","Stands still","Runs to the bench"],c:0,why:"Screen, then roll to the hoop — that's the play's name!"},
+   {q:"Which foot can you turn on without traveling?",a:["Either foot, anytime","Your pivot foot","Neither foot"],c:1,why:"Your planted pivot foot is your anchor."},
+   {q:"What is a rebound?",a:["A pass to a teammate","Grabbing the ball after a missed shot","A type of foul"],c:1,why:"Miss, grab, go — that's a rebound."}
+ ]},
+ {id:"miller",icon:"👑",title:"Miller Legends Quiz",qs:[
+   {q:"How many points did Cheryl Miller score in her famous 1982 high school game?",a:["57 points","85 points","105 points"],c:2,why:"105 points vs. Norte Vista — and she sat out the last two minutes!"},
+   {q:"Why did Reggie Miller learn to shoot the ball so high?",a:["His big sister Cheryl kept blocking his shots","His coach told him to","It looked cool"],c:0,why:"Cheryl blocked him in the driveway, so he practiced 500–700 shots a day to shoot over her."},
+   {q:"What is 'Miller Time' famous for — 8 points in how many seconds?",a:["9 seconds","60 seconds","9 minutes"],c:0,why:"8 points in 9 seconds vs. the Knicks on May 7, 1995. Never give up on a game!"},
+   {q:"Cheryl and Reggie are special because both of them…",a:["Played for the same NBA team","Are in the Basketball Hall of Fame and wore #31","Won a dunk contest"],c:1,why:"Two siblings, both Hall of Famers, both #31 — Cheryl at USC, Reggie with the Pacers."},
+   {q:"Reggie wore leg braces until he was 4 because…",a:["He broke both legs playing","Doctors said he might never walk properly — but he kept going","He wanted to look like a robot"],c:1,why:"Born with hip problems, he wore braces, then walked, ran, and became an NBA legend."}
+ ]},
+ {id:"math",icon:"🔢",title:"Basketball Math Quiz",qs:[
+   {q:"You made 7 shots out of 14 tries. What is your shooting %?",a:["25%","50%","70%"],c:1,why:"7 ÷ 14 = 0.5 = 50%."},
+   {q:"You scored 6, 10, and 8 points in 3 games. Your average?",a:["8 points","7 points","24 points"],c:0,why:"(6+10+8) ÷ 3 = 24 ÷ 3 = 8."},
+   {q:"A session is 14 minutes. You practice 4 days this week. Total minutes?",a:["42 minutes","56 minutes","18 minutes"],c:1,why:"14 × 4 = 56 minutes."},
+   {q:"You need 14 makes. You've made 9. How many more?",a:["4","6","5"],c:2,why:"14 − 9 = 5 more makes."}
+ ]}
+];
+const WEEK_PLAN=["Rest day — stretch, watch a game, or do the Words of the Game lesson 🧠","14 for 14 driveway session ⭐","Handles day: Pound Dribbles + Crossovers, then log it 🤲","14 for 14 + Layups Both Sides 🪜","Learn day: one Basketball IQ lesson + a quiz 📚","Driveway games day: drills, then 1v1 or a free-throw contest with Dad 🏀","Choice day: repeat your favorite drill — or earn a badge you're close to 🏅"];
+const BADGES=[
+ {id:"first",icon:"🌟",name:"First Practice",desc:"Log your very first session",test:s=>s.sessions.length>=1},
+ {id:"five",icon:"🔥",name:"High Five",desc:"Log 5 total sessions",test:s=>s.sessions.length>=5},
+ {id:"streak3",icon:"📅",name:"3-Day Streak",desc:"Practice 3 days in a row",test:s=>streakOf(s.sessions)>=3},
+ {id:"makes100",icon:"💯",name:"100 Makes Club",desc:"100 total shots made",test:s=>totals(s).makes>=100},
+ {id:"sharp",icon:"🎯",name:"Sharpshooter",desc:"Shoot 50%+ in a session (10+ tries)",test:s=>s.sessions.some(x=>x.attempts>=10&&x.makes/x.attempts>=0.5)},
+ {id:"scholar",icon:"🎓",name:"Hoops Scholar",desc:"Finish 3 lessons",test:s=>s.lessonsDone.length>=3},
+ {id:"quizace",icon:"🧠",name:"Quiz Ace",desc:"Get a perfect score on any quiz",test:s=>(s.quizBest.iq>=5)||(s.quizBest.math>=4)||(s.quizBest.miller>=5)},
+ {id:"fourteen",icon:"1️⃣4️⃣",name:"Perfect 14",desc:"Make exactly 14+ shots in one session",test:s=>s.sessions.some(x=>x.makes>=14)},
+ {id:"bookworm",icon:"📚",name:"Bookworm",desc:"Finish 6 lessons",test:s=>s.lessonsDone.length>=6},
+ {id:"legendscholar",icon:"👑",name:"Legend Scholar",desc:"Finish all 3 Miller lessons",test:s=>["millers","cheryl","reggie"].every(id=>s.lessonsDone.includes(id))},
+ {id:"lefthand",icon:"🤚",name:"Left-Hand Hero",desc:"Log a weak-hand drill 3 times",test:s=>s.sessions.filter(x=>Array.isArray(x.drills)&&(x.drills.includes("weakhand")||x.drills.includes("weaklayup"))).length>=3},
+ {id:"makes250",icon:"🏆",name:"250 Makes Club",desc:"250 total shots made",test:s=>totals(s).makes>=250}
+];
+/* ================= STATE ================= */
+const KEY="nealaHoops_v1";
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.sessions)){d.lessonsDone=Array.isArray(d.lessonsDone)?d.lessonsDone:[];d.quizBest=d.quizBest||{iq:0,math:0,miller:0};d.weeklyPlanOverrides=(d.weeklyPlanOverrides&&typeof d.weeklyPlanOverrides==="object"&&!Array.isArray(d.weeklyPlanOverrides))?d.weeklyPlanOverrides:{};d.flashcardsKnown=Array.isArray(d.flashcardsKnown)?d.flashcardsKnown.filter(id=>FLASHCARDS.some(c=>c.id===id)):[];d.storyBest=(typeof d.storyBest==="number"&&d.storyBest>=0&&d.storyBest<=STORY.qs.length)?Math.floor(d.storyBest):0;return d;}}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,createdAt:new Date().toISOString()};}
+let state=load();
+const DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+let editingDow=null;
+function planForDay(dow){const o=state.weeklyPlanOverrides&&state.weeklyPlanOverrides[String(dow)];return(typeof o==="string"&&o.trim())?o:WEEK_PLAN[dow];}
+function hasPlanOverride(dow){const o=state.weeklyPlanOverrides&&state.weeklyPlanOverrides[String(dow)];return typeof o==="string"&&!!o.trim();}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function totals(s){return s.sessions.reduce((t,x)=>({sessions:s.sessions.length,makes:t.makes+(+x.makes||0),attempts:t.attempts+(+x.attempts||0),minutes:t.minutes+(+x.minutes||0),rebounds:t.rebounds+(+x.rebounds||0),assists:t.assists+(+x.assists||0)}),{sessions:0,makes:0,attempts:0,minutes:0,rebounds:0,assists:0});}
+function sessionAverages(s){const t=totals(s);const n=t.sessions;const avg=v=>n?v/n:0;return{sessions:n,makes:t.makes,attempts:t.attempts,minutes:t.minutes,rebounds:t.rebounds,assists:t.assists,avgMakes:avg(t.makes),avgAttempts:avg(t.attempts),avgMinutes:avg(t.minutes),avgRebounds:avg(t.rebounds),avgAssists:avg(t.assists),makesPerMin:t.minutes?t.makes/t.minutes:0};}
+function fmtAvg(v){return (Math.round(v*10)/10).toFixed(1);}
+function fmtPerMin(v){return (Math.round(v*100)/100).toFixed(2);}
+function fgPct(t){return t.attempts?Math.round(t.makes/t.attempts*100):0;}
+function dayStr(d){return d.toISOString().slice(0,10);}
+function streakOf(sessions){
+  const days=new Set(sessions.map(x=>x.date));let streak=0;const d=new Date();
+  if(!days.has(dayStr(d)))d.setDate(d.getDate()-1);
+  while(days.has(dayStr(d))){streak++;d.setDate(d.getDate()-1);}
+  return streak;
+}
+/* ================= NAV ================= */
+function goto(v){
+  document.querySelectorAll(".view").forEach(el=>el.classList.toggle("active",el.id==="view-"+v));
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.goto===v));
+  window.scrollTo({top:0});render();
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-goto]");if(b)goto(b.dataset.goto);});
+/* ================= RENDER ================= */
+const $=id=>document.getElementById(id);
+function statsHTML(t,streak){
+  return `<div class="stat"><b>${t.sessions}</b><span>Sessions</span></div>
+  <div class="stat"><b>${t.makes}</b><span>Shots Made</span></div>
+  <div class="stat"><b>${t.minutes}</b><span>Minutes</span></div>
+  <div class="stat"><b>${t.attempts?fgPct(t)+"%":"—"}</b><span>Shooting %</span></div>`;
+}
+function renderHome(){
+  const t=totals(state),streak=streakOf(state.sessions);
+  const dow=new Date().getDay();
+  $("greeting").textContent="Hey Ne'ala! 👋 #14";
+  $("todayLine").textContent="Today is "+new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"})+". Here's your plan:";
+  $("todayPlan").innerHTML=`<p class="big" style="font-size:20px">${escapeHtml(planForDay(dow))}</p>`;
+  $("quickStats").innerHTML=statsHTML(t,streak);
+  const dotdIdx=Math.floor(new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()).getTime()/86400000)%DRILLS.length;
+  const dotd=DRILLS[((dotdIdx%DRILLS.length)+DRILLS.length)%DRILLS.length];
+  const dotdEl=$("drillOfDay");
+  if(dotdEl&&dotd)dotdEl.innerHTML=`<p style="margin:4px 0"><span class="tag">${SKILLS[dotd.skill]} • Level ${dotd.level} • ~${dotd.mins} min</span></p><p class="big" style="font-size:20px;margin:6px 0">${escapeHtml(dotd.name)}</p><p class="muted" style="margin:4px 0"><b style="color:var(--ink)">Builds:</b> ${escapeHtml(dotd.builds)}</p><p style="margin:4px 0"><b>Reps:</b> ${escapeHtml(dotd.reps)}</p><p class="small muted">A new drill every day — try today's, then log it! You can do this, #14! 💪</p>`;
+  $("streakNum").textContent=streak;
+  const last=[...state.sessions].sort((a,b)=>b.date.localeCompare(a.date))[0];
+  if(last)$("recentSession").innerHTML=`<p><b>${last.date}</b> — ${last.minutes} min • ${last.makes}/${last.attempts} shots${(last.rebounds!==undefined||last.assists!==undefined)?` • 🧲 ${+last.rebounds||0} rebounds • 🤝 ${+last.assists||0} assists`:""}</p><p class="muted">${last.notes?escapeHtml(last.notes):"No notes — great work showing up!"}</p>`;
+}
+function renderWeeklyPlan(){
+  const list=$("weeklyPlanList");if(!list)return;
+  const todayDow=new Date().getDay();
+  list.innerHTML=DAY_NAMES.map((name,dow)=>`<button type="button" class="week-day ${dow===todayDow?"today":""}" data-weekday="${dow}" aria-label="Change plan for ${name}">
+    <span class="day-name">${name}${dow===todayDow?" • Today ⭐":""}${hasPlanOverride(dow)?" • ✏️ Your pick":""}</span>
+    <span class="day-plan">${escapeHtml(planForDay(dow))}</span>
+  </button>`).join("");
+  const editor=$("weeklyPlanEditor");if(!editor)return;
+  if(editingDow===null){editor.hidden=true;return;}
+  editor.hidden=false;
+  $("weeklyPlanEditorTitle").textContent="✏️ Change "+DAY_NAMES[editingDow];
+  const sel=$("weeklyPlanSelect");
+  sel.innerHTML=WEEK_PLAN.map((p,i)=>`<option value="${escapeHtml(p)}">${escapeHtml(DAY_NAMES[i]+" — "+p)}</option>`).join("");
+  const effective=planForDay(editingDow);
+  if(WEEK_PLAN.includes(effective))sel.value=effective;
+  $("weeklyPlanCustom").value=hasPlanOverride(editingDow)&&!WEEK_PLAN.includes(effective)?effective:"";
+}
+function renderDrills(filter){
+  const list=DRILLS.filter(d=>!filter||filter==="all"||d.skill===filter);
+  $("drillList").innerHTML=list.map(d=>`<article class="card drill ${d.skill}">
+    <span class="tag">${SKILLS[d.skill]} • Level ${d.level} • ~${d.mins} min</span>
+    <h3 style="margin-top:8px">${escapeHtml(d.name)}</h3>
+    <p class="muted" style="margin:4px 0"><b style="color:var(--ink)">Builds:</b> ${escapeHtml(d.builds)}</p>
+    <p style="margin:4px 0"><b>Reps:</b> ${escapeHtml(d.reps)}</p>
+    <p style="margin:8px 0 0"><b>Form cues:</b></p>
+    <ul class="cues">${d.cues.map(c=>`<li>${escapeHtml(c)}</li>`).join("")}</ul>
+  </article>`).join("")||`<p class="muted">No drills here yet.</p>`;
+}
+function renderLogForm(){
+  $("fDrills").innerHTML=DRILLS.map(d=>`<label class="check"><input type="checkbox" name="drill" value="${d.id}"><span>${escapeHtml(d.name)} <span class="muted small">(${SKILLS[d.skill]})</span></span></label>`).join("");
+  const sorted=[...state.sessions].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+  $("historyList").innerHTML=sorted.length?sorted.map(x=>`<div class="card"><b>${x.date}</b> • ${x.minutes} min • 🏀 ${x.makes}/${x.attempts} (${x.attempts?Math.round(x.makes/x.attempts*100):0}%)
+    ${(x.rebounds!==undefined||x.assists!==undefined)?`<br><span class="small">🧲 ${+x.rebounds||0} rebounds • 🤝 ${+x.assists||0} assists</span>`:""}
+    <br><span class="muted small">${x.drills.length?x.drills.map(id=>{const d=DRILLS.find(dr=>dr.id===id);return d?escapeHtml(d.name):id;}).join(", "):"Free play"}</span>
+    ${x.notes?`<br><span class="small">${escapeHtml(x.notes)}</span>`:""}
+    <br><button class="btn ghost" style="min-height:40px;padding:6px 14px;margin-top:8px" data-del="${x.id}">Delete</button></div>`).join("")
+    :`<p class="muted">Nothing logged yet — your first practice goes here.</p>`;
+}
+let fcOrder=FLASHCARDS.map((_,i)=>i),fcPos=0,fcFlipped=false;
+function currentFlashcard(){return FLASHCARDS[fcOrder[((fcPos%fcOrder.length)+fcOrder.length)%fcOrder.length]];}
+function renderFlashcards(filter){
+  const area=$("flashcardArea");if(!area)return;
+  const show=filter==="all"||filter==="school";
+  if(!show){area.innerHTML="";return;}
+  const card=currentFlashcard();if(!card){area.innerHTML="";return;}
+  const known=state.flashcardsKnown.includes(card.id);
+  const knownCount=state.flashcardsKnown.length;
+  area.innerHTML=`<article class="card">
+    <span class="tag">🃏 Flashcards • Words of the Game • Card ${fcPos+1} of ${FLASHCARDS.length} • ⭐ ${knownCount}/${FLASHCARDS.length} known</span>
+    <h3 style="margin-top:8px">🃏 Words of the Game — Flashcards</h3>
+    <p class="muted small" style="margin:4px 0 0">Tap the card to flip it and see what the word means. No test pressure — just play and learn!</p>
+    <button type="button" class="flashcard ${fcFlipped?"flipped":""}" data-fc-action="flip" aria-label="${fcFlipped?"Definition of "+escapeHtml(card.word):"Flashcard: "+escapeHtml(card.word)+". Tap to flip."}">
+      ${fcFlipped?`<span class="fc-def">${escapeHtml(card.def)}</span><span class="fc-hint">Tap to flip back 👆</span>`:`<span class="fc-word">${escapeHtml(card.word)}</span><span class="fc-hint">Tap to flip and see the meaning 👆</span>`}
+    </button>
+    <p class="small" role="status" style="margin:6px 0 0">${known?"⭐ You marked this one: I know this one! Great job!":knownCount===FLASHCARDS.length?"🏆 You know ALL the words — superstar!":"Flip the card, say the meaning out loud, then check yourself!"}</p>
+    <div class="fc-row">
+      <button type="button" class="btn ghost" data-fc-action="prev">⬅️ Back</button>
+      <button type="button" class="btn ghost" data-fc-action="next">Next ➡️</button>
+    </div>
+    <div class="fc-row">
+      <button type="button" class="btn ghost" data-fc-action="shuffle">🔀 Shuffle</button>
+      <button type="button" class="btn ${known?"ghost":"teal"}" data-fc-action="know">${known?"↺ Not Yet — Keep Practicing":"✅ I Know This One"}</button>
+    </div>
+  </article>`;
+}
+let storyState={answered:{},score:0};
+function renderStory(filter){
+  const area=$("storyArea");if(!area)return;
+  const show=filter==="all"||filter==="school";
+  if(!show){area.innerHTML="";return;}
+  const done=Object.keys(storyState.answered).length===STORY.qs.length;
+  area.innerHTML=`<article class="card">
+    <span class="tag">📚 Story Time • School Skills • Best score: ${state.storyBest||0}/${STORY.qs.length}</span>
+    <h3 style="margin-top:8px">📖 ${escapeHtml(STORY.title)}</h3>
+    <p class="muted small" style="margin:4px 0 12px">Read the story out loud or in your head, #14. Take your time — then answer the 3 questions at the end. There are no bad tries here!</p>
+    <div class="story-body">${STORY.paras.map(p=>`<p>${escapeHtml(p)}</p>`).join("")}</div>
+    <h3 style="margin:16px 0 8px">💬 Think About the Story</h3>
+    <div>${STORY.qs.map((q,qi)=>`<div class="story-q"><p><b>Q${qi+1}.</b> ${escapeHtml(q.q)}</p>
+      ${q.a.map((a,ai)=>`<button type="button" data-story-q="${qi}" data-story-a="${ai}">${escapeHtml(a)}</button>`).join("")}
+      <p class="small muted" id="story-why-${qi}"></p></div>`).join("")}</div>
+    <p class="big" style="font-size:18px" id="storyScore">${done?`You scored ${storyState.score}/${STORY.qs.length}! ${storyState.score===STORY.qs.length?"PERFECT reading, superstar! 🏆":"Great reading — read it again anytime."}`:""}</p>
+    <button type="button" class="btn ghost full" data-story-retake="1">↺ Read &amp; Answer Again</button>
+  </article>`;
+  // Re-apply answered state after re-render (render() rebuilds this area)
+  STORY.qs.forEach((q,qi)=>{
+    if(storyState.answered[qi]===undefined)return;
+    document.querySelectorAll(`[data-story-q="${qi}"]`).forEach(b=>{if(+b.dataset.storyA===q.c)b.classList.add("right");else if(storyState.answered[qi]===+b.dataset.storyA)b.classList.add("wrong");});
+    const why=$("story-why-"+qi);if(why)why.textContent=(storyState.answered[qi]===q.c?"✅ Yes! ":"Not quite — ")+q.why;
+  });
+}
+function renderLearn(filter){
+  filter=filter||"all";
+  renderFlashcards(filter);
+  renderStory(filter);
+  const showLessons=filter==="all"||filter==="iq"||filter==="school"||filter==="legends";
+  const showQuiz=filter==="all"||filter==="quiz";
+  $("lessonList").innerHTML=showLessons?LESSONS.filter(l=>filter==="all"||l.strand===filter).map(l=>{
+    const done=state.lessonsDone.includes(l.id);
+    return `<article class="card"><span class="tag">${l.strand==="iq"?"🏀 Basketball IQ":l.strand==="legends"?"👑 Legends":"📚 School Skills"}</span>
+    <h3 style="margin-top:8px">${l.icon} ${escapeHtml(l.title)} ${done?"✅":""}</h3>
+    <div class="lesson-body">${escapeHtml(l.body)}</div>
+    <button class="btn ${done?"ghost":"teal"} full" style="margin-top:12px" data-lesson="${l.id}">${done?"Finished — tap to undo":"I Finished This Lesson ✅"}</button></article>`;
+  }).join(""):"";
+  $("quizArea").innerHTML=showQuiz?QUIZZES.map(qz=>`<article class="card">
+    <span class="tag">❓ Quiz • Best score: ${state.quizBest[qz.id]||0}/${qz.qs.length}</span>
+    <h3 style="margin-top:8px">${qz.icon} ${escapeHtml(qz.title)}</h3>
+    <div id="quiz-${qz.id}">${qz.qs.map((q,qi)=>`<div class="quiz-q"><p><b>Q${qi+1}.</b> ${escapeHtml(q.q)}</p>
+      ${q.a.map((a,ai)=>`<button type="button" data-quiz="${qz.id}" data-q="${qi}" data-a="${ai}">${escapeHtml(a)}</button>`).join("")}
+      <p class="small muted" id="why-${qz.id}-${qi}"></p></div>`).join("")}</div>
+    <p class="big" style="font-size:18px" id="score-${qz.id}"></p>
+    <button class="btn ghost full" data-retake="${qz.id}">Start / Retake Quiz</button></article>`).join(""):"";
+}
+let calSelectedDate=null;
+function localDayKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function renderPracticeCalendar(){
+  const el=$("practiceCalendar");if(!el)return;
+  const now=new Date(),year=now.getFullYear(),month=now.getMonth();
+  const monthLabel=now.toLocaleDateString(undefined,{month:"long",year:"numeric"});
+  const firstDow=new Date(year,month,1).getDay();
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const todayKey=localDayKey(now);
+  const byDate={};
+  state.sessions.forEach(x=>{
+    if(!x||!x.date)return;
+    const k=String(x.date);
+    if(!byDate[k])byDate[k]={count:0,minutes:0,makes:0,attempts:0};
+    byDate[k].count++;byDate[k].minutes+=+x.minutes||0;byDate[k].makes+=+x.makes||0;byDate[k].attempts+=+x.attempts||0;
+  });
+  let cells="";
+  for(let i=0;i<firstDow;i++)cells+=`<span class="cal-blank" aria-hidden="true"></span>`;
+  for(let day=1;day<=daysInMonth;day++){
+    const key=year+"-"+String(month+1).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+    const info=byDate[key];
+    const cls=["cal-day",key===todayKey?"today":"",key===calSelectedDate?"selected":""].filter(Boolean).join(" ");
+    cells+=`<button type="button" class="${cls}" data-cal-date="${key}" aria-label="${escapeHtml(now.toLocaleDateString(undefined,{month:"long"}))} ${day}${info?`, practiced: ${info.minutes} minutes, ${info.makes} shots made`:", no practice logged"}">${day}${info?`<span class="cal-dot" aria-hidden="true"></span>`:""}</button>`;
+  }
+  el.innerHTML=`<p class="cal-title">📅 ${escapeHtml(monthLabel)}</p><div class="cal-week" aria-hidden="true">${["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<span>${d}</span>`).join("")}</div><div class="cal-grid" role="group" aria-label="Practice calendar for ${escapeHtml(monthLabel)}">${cells}</div>`;
+  const detail=$("calendarDayDetail");if(!detail)return;
+  if(!calSelectedDate){detail.innerHTML=`<p class="muted" style="margin:0">Tap a day on the calendar to see your practice for that day. 👆</p>`;return;}
+  const sel=new Date(calSelectedDate+"T12:00:00");
+  const label=isNaN(sel.getTime())?calSelectedDate:sel.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});
+  const info=byDate[calSelectedDate];
+  if(info){
+    detail.innerHTML=`<p style="margin:0"><b>${escapeHtml(label)}</b> ⭐</p><p style="margin:6px 0 0">🏀 You practiced <b>${info.minutes} minute${info.minutes===1?"":"s"}</b> and made <b>${info.makes} shot${info.makes===1?"":"s"}</b>${info.attempts?` out of ${info.attempts} tries`:""}${info.count>1?` — across ${info.count} practices that day`:""}. Way to show up, #14! 💪</p>`;
+  }else{
+    detail.innerHTML=`<p style="margin:0"><b>${escapeHtml(label)}</b></p><p class="muted" style="margin:6px 0 0">No practice logged this day yet. Rest days count too — and any day can become a practice day. You've got this!</p>`;
+  }
+}
+function renderProgress(){
+  const t=totals(state);
+  $("progressStats").innerHTML=statsHTML(t,streakOf(state.sessions));
+  renderPracticeCalendar();
+  const a=sessionAverages(state);
+  const avgEl=$("sessionAverages");
+  if(avgEl)avgEl.innerHTML=a.sessions?`<div class="grid">
+    <div class="stat"><b>${fmtAvg(a.avgMakes)}</b><span>Makes / Practice</span></div>
+    <div class="stat"><b>${fmtAvg(a.avgMinutes)}</b><span>Minutes / Practice</span></div>
+    <div class="stat"><b>${fmtPerMin(a.makesPerMin)}</b><span>Makes / Minute</span></div>
+    <div class="stat"><b>${fmtAvg(a.avgAttempts)}</b><span>Tries / Practice</span></div>
+    <div class="stat"><b>${fmtAvg(a.avgRebounds)}</b><span>Rebounds / Practice</span></div>
+    <div class="stat"><b>${fmtAvg(a.avgAssists)}</b><span>Assists / Practice</span></div>
+  </div>
+  <p class="small muted" style="margin:10px 0 0">From your ${a.sessions} logged practice${a.sessions===1?"":"s"}: ${a.makes} makes ÷ ${a.minutes} minutes = ${fmtPerMin(a.makesPerMin)} makes per minute. Totals so far: 🧲 ${a.rebounds} rebounds • 🤝 ${a.assists} assists. Every practice you log makes these numbers more truly YOU!</p>`
+  :`<p class="muted">Log a practice and your averages appear here — makes per practice, minutes per practice, makes per minute, rebounds, and assists, all from your real log.</p>`;
+  const last=[...state.sessions].sort((a,b)=>a.date.localeCompare(b.date)).slice(-7);
+  $("chart").innerHTML=last.length?last.map(x=>`<div class="bar-row"><span>${x.date.slice(5)}</span><div class="bar"><i style="width:${Math.min(100,(x.makes/Math.max(1,...last.map(y=>y.makes)))*100)}%"></i></div><b>${x.makes} 🏀</b></div>`).join("")+`<p class="small muted">Bar = shots made that day. Longer bar = more makes. Watch them grow!</p>`:`<p class="muted">Log a practice and your chart appears here.</p>`;
+  $("badgeList").innerHTML=BADGES.map(b=>{const got=b.test(state);return `<div class="badge ${got?"":"locked"}" style="padding:8px 0;border-bottom:1px solid var(--line)"><div class="ic">${b.icon}</div><div><b>${escapeHtml(b.name)}</b> ${got?"✅":"🔒"}<br><span class="muted small">${escapeHtml(b.desc)}</span></div></div>`;}).join("");
+}
+function render(){renderHome();renderWeeklyPlan();renderDrills(currentSkill);renderLogForm();renderLearn(currentLearn);renderProgress();}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+/* ================= INTERACTIONS ================= */
+let currentSkill="all",currentLearn="all";
+$("skillChips").innerHTML=[["all","⭐ All Skills"],...Object.entries(SKILLS)].map(([k,v])=>`<button class="chip ${k==="all"?"on":""}" data-skill="${k}">${v}</button>`).join("");
+$("skillChips").addEventListener("click",e=>{const b=e.target.closest("[data-skill]");if(!b)return;currentSkill=b.dataset.skill;document.querySelectorAll("#skillChips .chip").forEach(c=>c.classList.toggle("on",c===b));renderDrills(currentSkill);});
+$("learnChips").addEventListener("click",e=>{const b=e.target.closest("[data-learn]");if(!b)return;currentLearn=b.dataset.learn;document.querySelectorAll("#learnChips .chip").forEach(c=>c.classList.toggle("on",c===b));renderLearn(currentLearn);});
+$("flashcardArea").addEventListener("click",e=>{
+  const b=e.target.closest("[data-fc-action]");if(!b)return;
+  const action=b.dataset.fcAction;
+  if(action==="flip"){fcFlipped=!fcFlipped;}
+  else if(action==="next"){fcPos=(fcPos+1)%fcOrder.length;fcFlipped=false;}
+  else if(action==="prev"){fcPos=(fcPos-1+fcOrder.length)%fcOrder.length;fcFlipped=false;}
+  else if(action==="shuffle"){for(let i=fcOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcOrder[i],fcOrder[j]]=[fcOrder[j],fcOrder[i]];}fcPos=0;fcFlipped=false;}
+  else if(action==="know"){const id=currentFlashcard().id;state.flashcardsKnown=state.flashcardsKnown.includes(id)?state.flashcardsKnown.filter(x=>x!==id):[...state.flashcardsKnown,id];save();}
+  renderFlashcards(currentLearn);
+});
+$("storyArea").addEventListener("click",e=>{
+  const retake=e.target.closest("[data-story-retake]");
+  if(retake){storyState={answered:{},score:0};renderStory(currentLearn);return;}
+  const qb=e.target.closest("[data-story-q]");if(!qb)return;
+  const qi=+qb.dataset.storyQ,q=STORY.qs[qi];if(!q)return;
+  if(storyState.answered[qi]!==undefined)return;
+  const chosen=+qb.dataset.storyA,correct=chosen===q.c;
+  storyState.answered[qi]=chosen;if(correct)storyState.score++;
+  qb.classList.add(correct?"right":"wrong");
+  document.querySelectorAll(`[data-story-q="${qi}"]`).forEach(b=>{if(+b.dataset.storyA===q.c)b.classList.add("right");});
+  const why=$("story-why-"+qi);if(why)why.textContent=(correct?"✅ Yes! ":"Not quite — ")+q.why;
+  if(Object.keys(storyState.answered).length===STORY.qs.length){
+    const sc=$("storyScore");if(sc)sc.textContent=`You scored ${storyState.score}/${STORY.qs.length}! ${storyState.score===STORY.qs.length?"PERFECT reading, superstar! 🏆":"Great reading — read it again anytime."}`;
+    if(storyState.score>(state.storyBest||0)){state.storyBest=storyState.score;save();}
+  }
+});
+/* ================= WEEKLY PLAN EDITOR ================= */
+$("weeklyPlanList").addEventListener("click",e=>{
+  const b=e.target.closest("[data-weekday]");if(!b)return;
+  editingDow=+b.dataset.weekday;
+  renderWeeklyPlan();
+  $("weeklyPlanMsg").textContent="Pick a plan or write your own for "+DAY_NAMES[editingDow]+", then tap Save. You can change it anytime!";
+  const ed=$("weeklyPlanEditor");if(ed)ed.scrollIntoView({block:"nearest",behavior:"smooth"});
+});
+$("weeklyPlanSave").addEventListener("click",()=>{
+  if(editingDow===null)return;
+  const custom=$("weeklyPlanCustom").value.trim();
+  const chosen=custom||$("weeklyPlanSelect").value;
+  if(!chosen)return;
+  state.weeklyPlanOverrides=state.weeklyPlanOverrides||{};
+  if(chosen===WEEK_PLAN[editingDow])delete state.weeklyPlanOverrides[String(editingDow)];
+  else state.weeklyPlanOverrides[String(editingDow)]=chosen;
+  save();editingDow=null;render();
+});
+$("weeklyPlanReset").addEventListener("click",()=>{
+  if(editingDow===null)return;
+  state.weeklyPlanOverrides=state.weeklyPlanOverrides||{};
+  delete state.weeklyPlanOverrides[String(editingDow)];
+  save();editingDow=null;render();
+});
+$("weeklyPlanCancel").addEventListener("click",()=>{editingDow=null;renderWeeklyPlan();});
+document.addEventListener("click",e=>{
+  const del=e.target.closest("[data-del]");if(del){state.sessions=state.sessions.filter(x=>x.id!==+del.dataset.del);save();render();return;}
+  const les=e.target.closest("[data-lesson]");if(les){const id=les.dataset.lesson;state.lessonsDone=state.lessonsDone.includes(id)?state.lessonsDone.filter(x=>x!==id):[...state.lessonsDone,id];save();render();return;}
+  const rt=e.target.closest("[data-retake]");if(rt){quizState[rt.dataset.retake]={answered:{},score:0};render();return;}
+  const qb=e.target.closest("[data-quiz]");if(qb){
+    const qz=QUIZZES.find(q=>q.id===qb.dataset.quiz),qi=+qb.dataset.q,q=QUIZZES.find(q=>q.id===qb.dataset.quiz).qs[qi];
+    const st=quizState[qz.id]||(quizState[qz.id]={answered:{},score:0});
+    if(st.answered[qi]!==undefined)return;
+    const correct=+qb.dataset.a===q.c;st.answered[qi]=correct;if(correct)st.score++;
+    qb.classList.add(correct?"right":"wrong");
+    document.querySelectorAll(`[data-quiz="${qz.id}"][data-q="${qi}"]`).forEach(b=>{if(+b.dataset.a===q.c)b.classList.add("right");});
+    $("why-"+qz.id+"-"+qi).textContent=(correct?"✅ Yes! ":"Not quite — ")+q.why;
+    if(Object.keys(st.answered).length===qz.qs.length){
+      $("score-"+qz.id).textContent=`You scored ${st.score}/${qz.qs.length}! ${st.score===qz.qs.length?"PERFECT! 🏆":"Great try — retake it anytime."}`;
+      if(st.score>(state.quizBest[qz.id]||0)){state.quizBest[qz.id]=st.score;save();}
+      setTimeout(renderProgress,300);
+    }
+    return;
+  }
+});
+const quizState={};
+$("practiceCalendar").addEventListener("click",e=>{
+  const b=e.target.closest("[data-cal-date]");if(!b)return;
+  calSelectedDate=b.dataset.calDate;
+  renderPracticeCalendar();
+});
+function unlockedBadgeIds(){return new Set(BADGES.filter(b=>{try{return b.test(state);}catch(e){return false;}}).map(b=>b.id));}
+function showBadgeCelebration(newBadges){
+  if(!newBadges||!newBadges.length)return;
+  document.querySelectorAll(".celebration").forEach(el=>el.remove());
+  const wrap=document.createElement("div");
+  wrap.className="celebration";wrap.setAttribute("role","status");wrap.setAttribute("aria-live","polite");
+  const emojis=["⭐","🎉","🏀","✨","🌟"];
+  const colors=["#fbbf24","#ff7a1a","#2dd4bf","#f472b6","#4ade80"];
+  let pieces="";
+  for(let i=0;i<28;i++){
+    const left=(i*37)%100,delay=((i*13)%10)/10,dur=(2.1+((i*7)%6)/10).toFixed(1);
+    if(i%3===0)pieces+=`<span class="piece square" style="left:${left}%;background:${colors[i%colors.length]};animation-delay:${delay}s;animation-duration:${dur}s"></span>`;
+    else pieces+=`<span class="piece" style="left:${left}%;animation-delay:${delay}s;animation-duration:${dur}s">${emojis[i%emojis.length]}</span>`;
+  }
+  wrap.innerHTML=pieces+`<div class="burst-card">🏅 New Badge${newBadges.length>1?"s":""} Unlocked!${newBadges.map(b=>`<span>${b.icon} ${escapeHtml(b.name)} — ${escapeHtml(b.desc)}</span>`).join("")}<span style="color:var(--muted);font-size:13px">Amazing work, #14! Check all your badges on Progress 📈</span></div>`;
+  document.body.appendChild(wrap);
+  setTimeout(()=>{if(wrap.parentNode)wrap.remove();},3400);
+}
+$("logForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const makes=+($("fMakes").value||0),attempts=+($("fAttempts").value||0);
+  if(attempts&&makes>attempts){$("logMsg").textContent="⚠️ Makes can't be more than tries — check those numbers.";return;}
+  const beforeBadges=unlockedBadgeIds();
+  const rebounds=Math.max(0,+($("fRebounds").value||0)),assists=Math.max(0,+($("fAssists").value||0));
+  state.sessions.push({id:Date.now(),date:$("fDate").value,minutes:+$("fMinutes").value,drills:[...document.querySelectorAll('input[name="drill"]:checked')].map(x=>x.value),makes,attempts,rebounds,assists,notes:$("fNotes").value.trim()});
+  save();
+  const newBadges=BADGES.filter(b=>!beforeBadges.has(b.id)&&unlockedBadgeIds().has(b.id));
+  e.target.reset();$("fDate").value=dayStr(new Date());
+  $("logMsg").textContent=newBadges.length?`🏅 Saved — and you unlocked ${newBadges.length} new badge${newBadges.length>1?"s":""}! Great work, #14!`:"✅ Saved! Check your Dashboard and Progress — great work, #14!";
+  render();goto("home");
+  showBadgeCelebration(newBadges);
+});
+$("resetBtn").addEventListener("click",()=>{if(confirm("Reset ALL Ne'ala Hoops data on this device? This cannot be undone.")){localStorage.removeItem(KEY);state=load();render();alert("Data reset. Fresh start, #14!");}});
+/* ================= PRACTICE TIMER ================= */
+let timerTotalSec=14*60,timerRemainingSec=timerTotalSec,timerRunning=false,timerEndAt=0,timerInterval=null,timerAudioCtx=null;
+function timerFormat(sec){sec=Math.max(0,Math.ceil(sec));return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");}
+function renderTimer(){
+  const disp=$("timerDisplay");if(!disp)return;
+  disp.textContent=timerFormat(timerRemainingSec);
+  disp.classList.toggle("done",timerRemainingSec<=0&&timerTotalSec>0);
+  $("timerStartPause").textContent=timerRunning?"⏸️ Pause Timer":"▶️ Start Timer";
+}
+function timerStopInterval(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+function timerBeep(){
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+    timerAudioCtx=timerAudioCtx||new AC();
+    if(timerAudioCtx.state==="suspended")timerAudioCtx.resume();
+    [0,0.35,0.7].forEach(offset=>{
+      const osc=timerAudioCtx.createOscillator(),gain=timerAudioCtx.createGain(),t=timerAudioCtx.currentTime+offset;
+      osc.type="sine";osc.frequency.setValueAtTime(880,t);
+      gain.gain.setValueAtTime(0.0001,t);gain.gain.exponentialRampToValueAtTime(0.12,t+0.03);gain.gain.exponentialRampToValueAtTime(0.0001,t+0.28);
+      osc.connect(gain);gain.connect(timerAudioCtx.destination);osc.start(t);osc.stop(t+0.3);
+    });
+  }catch(e){/* Beep is a nice-to-have — timer still finishes silently. */}
+}
+function timerFinish(){
+  timerRunning=false;timerRemainingSec=0;timerStopInterval();renderTimer();
+  $("timerMsg").textContent="⏰ Time’s up — great work, #14! Take a breath, get some water, and log your practice when you’re ready. 💪";
+  timerBeep();
+}
+function timerTick(){
+  timerRemainingSec=Math.max(0,(timerEndAt-Date.now())/1000);
+  if(timerRemainingSec<=0){timerFinish();return;}
+  renderTimer();
+}
+function setTimerMinutes(min,quiet){
+  min=Math.floor(+min);
+  if(!min||min<1||min>120){$("timerMsg").textContent="⚠️ Pick a time between 1 and 120 minutes.";return false;}
+  timerStopInterval();timerRunning=false;timerTotalSec=min*60;timerRemainingSec=timerTotalSec;renderTimer();
+  if(!quiet)$("timerMsg").textContent=`Timer set for ${min} minute${min===1?"":"s"}. Tap Start when you’re ready!`;
+  return true;
+}
+$("timerPresets").addEventListener("click",e=>{
+  const b=e.target.closest("[data-timer-preset]");if(!b)return;
+  document.querySelectorAll("#timerPresets .chip").forEach(c=>c.classList.toggle("on",c===b));
+  setTimerMinutes(+b.dataset.timerPreset);
+});
+$("timerSetCustom").addEventListener("click",()=>{
+  if(setTimerMinutes($("timerCustom").value)){
+    document.querySelectorAll("#timerPresets .chip").forEach(c=>c.classList.remove("on"));
+  }
+});
+$("timerStartPause").addEventListener("click",()=>{
+  if(timerRunning){
+    timerRemainingSec=Math.max(0,(timerEndAt-Date.now())/1000);timerRunning=false;timerStopInterval();renderTimer();
+    $("timerMsg").textContent="Paused. Tap Start to keep going — you’ve got this!";
+    return;
+  }
+  if(timerRemainingSec<=0)timerRemainingSec=timerTotalSec;
+  try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){timerAudioCtx=timerAudioCtx||new AC();if(timerAudioCtx.state==="suspended")timerAudioCtx.resume();}}catch(e){}
+  timerEndAt=Date.now()+timerRemainingSec*1000;timerRunning=true;timerStopInterval();timerInterval=setInterval(timerTick,200);renderTimer();
+  $("timerMsg").textContent="Timer running… focus, have fun, and finish on a make! 🏀";
+});
+$("timerReset").addEventListener("click",()=>{
+  timerStopInterval();timerRunning=false;timerRemainingSec=timerTotalSec;renderTimer();
+  $("timerMsg").textContent="Timer reset. Ready when you are!";
+});
+renderTimer();
+/* ================= INIT ================= */
+$("fDate").value=dayStr(new Date());
+render();
+</script>
+</body>
+</html>
