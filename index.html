@@ -16,7 +16,7 @@
   --orange:#ff7a1a; --orange2:#ffa04d; --teal:#2dd4bf; --gold:#fbbf24; --pink:#f472b6; --green:#4ade80; --red:#f87171;
   --radius:18px;
 }
-*{box-sizing:border-box} html{scroll-behavior:smooth}
+*{box-sizing:border-box} [hidden]{display:none!important} html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:92px}
 a{color:var(--teal)}
 header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#121828,#1a1030);border-bottom:2px solid var(--orange);padding:12px 16px;display:flex;align-items:center;gap:12px}
@@ -33,18 +33,27 @@ h2{font-size:22px;margin:6px 0 10px} h3{font-size:17px;margin:0 0 6px}
 .stat b{display:block;font-size:24px}.stat span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .btn{display:inline-block;border:0;border-radius:999px;padding:13px 20px;font-size:16px;font-weight:800;cursor:pointer;background:var(--orange);color:#14100a;min-height:48px}
 .btn:active{transform:scale(.98)} .btn.teal{background:var(--teal)} .btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+button{min-height:44px;min-width:44px}
+:focus{outline:none}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.check:focus-within,.challenge-spot:focus-within{outline:3px solid var(--gold);outline-offset:2px}
+nav button:focus-visible{outline-offset:-3px}
 .btn.full{width:100%;text-align:center}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
 .chip{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;min-height:44px}
 .chip.on{background:var(--orange);color:#14100a;border-color:var(--orange)}
+.favbtn{float:right;border:2px solid var(--line);background:var(--card2);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:800;cursor:pointer;min-height:44px}
+.favbtn.on{border-color:var(--gold);background:#2a2103;color:var(--gold)}
 .drill{border-left:5px solid var(--teal)} .drill.shooting{border-color:var(--orange)} .drill.footwork{border-color:var(--gold)} .drill.layups{border-color:var(--pink)} .drill.defense{border-color:var(--green)}
 .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:#0007;color:var(--orange2);border:1px solid var(--line)}
 .cues{margin:8px 0 0;padding-left:20px}.cues li{margin:4px 0}
 label{display:block;font-weight:700;margin:12px 0 6px}
 input,select,textarea{width:100%;background:#0d1322;color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:12px;font-size:16px;min-height:48px}
 textarea{min-height:72px}
-.check{display:flex;gap:10px;align-items:center;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 8px;cursor:pointer}
+.check{display:flex;gap:10px;align-items:center;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 8px;cursor:pointer;min-height:48px}
 .check input{width:24px;height:24px;min-height:0;flex:0 0 auto}
+.check.done{border-color:var(--gold);background:#2a2103}
 nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#0d1322f2;border-top:2px solid var(--line);display:flex;backdrop-filter:blur(8px)}
 nav button{flex:1;background:none;border:0;color:var(--muted);padding:9px 2px 12px;font-size:12px;font-weight:800;cursor:pointer;min-height:64px}
 nav button span{display:block;font-size:22px}
@@ -56,12 +65,23 @@ nav button.on{color:var(--orange2)}
 .lesson-body{white-space:pre-line;line-height:1.55}
 .quiz-q{margin:0 0 14px}.quiz-q button{display:block;width:100%;text-align:left;margin:6px 0;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card2);color:var(--ink);font-size:15px;cursor:pointer;min-height:48px}
 .quiz-q button.right{border-color:var(--green);background:#14532d}.quiz-q button.wrong{border-color:var(--red);background:#450a0a}
+.champ-card{border-color:var(--gold);background:linear-gradient(160deg,var(--card2),#2a2103)}
+.champ-cert{border:3px double var(--gold);background:#17130a;border-radius:16px;padding:18px 14px;text-align:center;margin-top:14px}
+.champ-cert .cert-big{font-size:30px;font-weight:900;line-height:1.2;margin:6px 0}
+.champ-cert .cert-name{font-size:26px;font-weight:900;color:var(--gold)}
+.champ-cert .cert-num{display:inline-grid;place-items:center;width:74px;height:74px;border-radius:50%;background:var(--orange);color:#111;font-weight:900;font-size:30px;border:3px solid var(--gold);margin:8px 0}
 .notice{border:2px dashed var(--gold);border-radius:14px;padding:12px;background:#2a2103;color:#fde68a}
 table.plan{width:100%;border-collapse:collapse;font-size:14px}table.plan td,table.plan th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
 footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font-size:12px}
 .timer-display{font-size:64px;font-weight:900;text-align:center;letter-spacing:.04em;background:#0d1322;border:2px solid var(--line);border-radius:16px;padding:14px 8px;margin:12px 0;line-height:1;font-variant-numeric:tabular-nums}
 .timer-display.done{border-color:var(--gold);color:var(--gold)}
 .timer-row{display:flex;gap:10px;margin-top:12px}.timer-row .btn{flex:1}
+.beat-display{display:flex;align-items:center;gap:16px;background:#0d1322;border:2px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+.beat-dot{flex:0 0 auto;width:64px;height:64px;border-radius:50%;background:var(--card2);border:3px solid var(--line);display:grid;place-items:center;font-size:30px;transition:transform .08s ease,background .08s ease}
+.beat-dot.on{background:var(--gold);border-color:var(--gold);transform:scale(1.14)}
+.beat-dot.accent.on{background:var(--orange);border-color:var(--orange)}
+.beat-bpm{font-size:40px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.sound-toggle[aria-pressed="false"]{background:transparent;color:var(--ink);border-color:var(--line)}
 .week-day{display:block;width:100%;text-align:left;background:var(--card2);border:2px solid var(--line);border-radius:14px;padding:12px;margin:0 0 8px;color:var(--ink);cursor:pointer;min-height:48px}
 .week-day:active{transform:scale(.99)} .week-day.today{border-color:var(--orange)}
 .week-day .day-name{font-weight:900;font-size:15px}
@@ -86,6 +106,10 @@ footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font
 .cal-day.selected{border-color:var(--teal);background:#123a36}
 .cal-day .cal-dot{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px #0006}
 .cal-detail{border:2px dashed var(--gold);border-radius:14px;padding:12px;background:#17130a;margin-top:12px;line-height:1.5}
+.challenge-spot{display:flex;gap:10px;align-items:center;background:var(--card2);border:2px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 8px;cursor:pointer;min-height:48px}
+.challenge-spot input{width:24px;height:24px;min-height:0;flex:0 0 auto}
+.challenge-spot.done{border-color:var(--gold);background:#2a2103}
+.challenge-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .celebration{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
 .celebration .burst-card{position:absolute;left:50%;top:22%;transform:translateX(-50%);background:#2a2103;border:3px solid var(--gold);color:#fde68a;border-radius:18px;padding:16px 20px;text-align:center;font-weight:900;font-size:19px;line-height:1.35;box-shadow:0 12px 40px #000a;max-width:86vw;animation:burst-pop .45s ease}
 .celebration .burst-card span{display:block;font-size:15px;color:var(--ink);margin-top:6px}
@@ -93,16 +117,71 @@ footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font
 .celebration .piece.square{width:12px;height:12px;border-radius:3px;font-size:0}
 @keyframes burst-pop{from{opacity:0;transform:translateX(-50%) scale(.7)}to{opacity:1;transform:translateX(-50%) scale(1)}}
 @keyframes burst-fall{to{transform:translateY(115vh) rotate(560deg);opacity:.15}}
+.text-size-btn{margin-left:auto;flex:0 0 auto;background:var(--card2);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:10px 12px;font-size:14px;font-weight:800;cursor:pointer;min-height:48px;white-space:nowrap}
+.text-size-btn[aria-pressed="true"]{background:var(--orange);color:#14100a;border-color:var(--orange)}
+header>div:nth-child(2){flex:1;min-width:0}
+body.text-big{font-size:18px;line-height:1.6}
+body.text-big header h1{font-size:23px} body.text-big header p{font-size:15px}
+body.text-big h2{font-size:26px} body.text-big h3{font-size:20px}
+body.text-big .small{font-size:15px} body.text-big .lesson-body,body.text-big .story-body{font-size:19px;line-height:1.75}
+body.text-big .btn{font-size:18px} body.text-big .chip{font-size:16px}
+body.text-big input,body.text-big select,body.text-big textarea{font-size:18px}
+body.text-big .quiz-q button,body.text-big .story-q button{font-size:17px;line-height:1.5}
+body.text-big nav button{font-size:14px} body.text-big .flashcard .fc-def{font-size:22px}
+body.text-big table.plan{font-size:16px} body.text-big .week-day .day-plan{font-size:16px}
+.coach-note{border:1px solid var(--line);background:var(--card2);border-radius:12px;padding:12px;margin:0 0 10px}
+.coach-note .note-actions{display:flex;gap:8px;margin-top:10px}
+.coach-note .note-actions .btn{flex:1;min-height:48px;padding:8px 12px}
+.print-summary{display:none}
+@media print{
+  body{background:#fff!important;color:#000!important;padding:0!important}
+  header,nav,footer,main{display:none!important}
+  .print-summary{display:none!important;padding:24px;font-family:Georgia,"Times New Roman",serif;color:#000}
+  #printSummary{display:block!important}
+  body.printing-cert #printSummary{display:none!important}
+  body.printing-cert #printCertificate{display:block!important}
+  .print-summary .cert-box{border:5px double #b45309;padding:40px 28px;text-align:center;margin-top:24px}
+  .print-summary .cert-kicker{font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#444}
+  .print-summary .cert-title{font-size:32px;margin:10px 0 4px}
+  .print-summary .cert-name{font-size:44px;font-weight:900;margin:14px 0 2px}
+  .print-summary .cert-num{font-size:72px;font-weight:900;line-height:1.1;margin:10px 0}
+  .print-summary .cert-line{font-size:17px;line-height:1.55;max-width:560px;margin:10px auto}
+  .print-summary h1{font-size:26px;margin:0 0 4px}
+  .print-summary h2{font-size:18px;margin:20px 0 8px;color:#000}
+  .print-summary table{width:100%;border-collapse:collapse;font-size:14px}
+  .print-summary th,.print-summary td{border:1px solid #999;padding:6px 8px;text-align:left;vertical-align:top}
+  .print-summary .muted{color:#444}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .view.active{animation:none}
+  .celebration .piece{display:none}
+  .celebration .burst-card{animation:none}
+}
+body.calm{scroll-behavior:auto}
+body.calm *,body.calm *::before,body.calm *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+body.calm .view.active{animation:none}
+body.calm .celebration .piece{display:none}
+body.calm .celebration .burst-card{animation:none}
+body.calm .beat-dot{transition:none}
+body.calm .btn:active,body.calm .week-day:active,body.calm .flashcard:active,body.calm .cal-day:active{transform:none}
+body[data-accent="teal"]{--orange:#2dd4bf;--orange2:#5eead4}
+body[data-accent="pink"]{--orange:#f472b6;--orange2:#f9a8d4}
+body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
+.accent-dot{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid #0006;vertical-align:-3px;margin-right:7px}
+.mascot-emoji{font-size:22px;vertical-align:-3px;margin-right:6px}
 @media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
 <header>
-  <div class="jersey" aria-label="Jersey number 14">14</div>
+  <div class="jersey" role="img" aria-label="Jersey number 14">14</div>
   <div>
-    <h1>Ne'ala Hoops 🏀</h1>
+    <h1>Ne'ala Hoops <span id="headerMascot" aria-hidden="true">🏀</span></h1>
     <p>Train • Learn • Play — #14, let's get better today</p>
   </div>
+  <button type="button" id="textSizeToggle" class="text-size-btn" aria-pressed="false" aria-label="Toggle big text for comfy reading">Text: Normal</button>
 </header>
 
 <main>
@@ -133,6 +212,46 @@ footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font
       <p id="weeklyPlanMsg" class="small" role="status" style="margin:10px 0 0"></p>
     </div>
   </div>
+  <div class="card" id="weeklyGoalsCard">
+    <h3>🎯 This Week's Goals</h3>
+    <p class="muted small">Set a goal for this week, then watch your bars fill up as you log practices! Every Monday your progress starts fresh — your goals stay until you change them.</p>
+    <div id="weeklyGoalsView"><p class="muted">Loading your goals…</p></div>
+    <div id="weeklyGoalsEditor" class="week-editor" hidden>
+      <h3 style="margin-top:0">✏️ Change This Week's Goals</h3>
+      <label for="weeklyGoalSessions">Practices this week (1–14)</label>
+      <input type="number" id="weeklyGoalSessions" min="1" max="14" step="1" inputmode="numeric" placeholder="Example: 3">
+      <label for="weeklyGoalMinutes">Minutes this week (5–300)</label>
+      <input type="number" id="weeklyGoalMinutes" min="5" max="300" step="5" inputmode="numeric" placeholder="Example: 30">
+      <p class="small muted">Pick goals that feel fun and doable — you can always raise them next week, superstar!</p>
+      <div class="timer-row">
+        <button type="button" class="btn" id="weeklyGoalsSave">Save My Goals ✅</button>
+        <button type="button" class="btn ghost" id="weeklyGoalsCancel">Cancel</button>
+      </div>
+      <button type="button" class="btn ghost full" id="weeklyGoalsReset" style="margin-top:10px">↺ Reset to Starter Goals (3 practices • 30 minutes)</button>
+      <p id="weeklyGoalsMsg" class="small" role="status" style="margin:10px 0 0"></p>
+    </div>
+  </div>
+  <div class="card" id="makeItHersCard">
+    <h3>🎨 Make It Hers</h3>
+    <p class="muted small">This app is YOURS, Ne'ala! Pick the color that feels most like you, and pick a mascot friend for the top of the page. Your picks are saved on this device — change them any time. Your jersey stays #14, always.</p>
+    <p style="margin:10px 0 6px"><b>Pick your color</b></p>
+    <div class="chips" id="accentChips" role="group" aria-label="Choose accent color" style="margin-bottom:6px">
+      <button type="button" class="chip on" data-accent-choice="orange" aria-pressed="true"><span class="accent-dot" style="background:#ff7a1a"></span>Orange</button>
+      <button type="button" class="chip" data-accent-choice="teal" aria-pressed="false"><span class="accent-dot" style="background:#2dd4bf"></span>Teal</button>
+      <button type="button" class="chip" data-accent-choice="pink" aria-pressed="false"><span class="accent-dot" style="background:#f472b6"></span>Pink</button>
+      <button type="button" class="chip" data-accent-choice="gold" aria-pressed="false"><span class="accent-dot" style="background:#fbbf24"></span>Gold</button>
+    </div>
+    <p style="margin:12px 0 6px"><b>Pick your mascot</b></p>
+    <div class="chips" id="mascotChips" role="group" aria-label="Choose mascot" style="margin-bottom:6px">
+      <button type="button" class="chip on" data-mascot-choice="🏀" aria-pressed="true"><span class="mascot-emoji">🏀</span>Basketball</button>
+      <button type="button" class="chip" data-mascot-choice="⭐" aria-pressed="false"><span class="mascot-emoji">⭐</span>Star</button>
+      <button type="button" class="chip" data-mascot-choice="🐢" aria-pressed="false"><span class="mascot-emoji">🐢</span>Turtle</button>
+      <button type="button" class="chip" data-mascot-choice="🦄" aria-pressed="false"><span class="mascot-emoji">🦄</span>Unicorn</button>
+      <button type="button" class="chip" data-mascot-choice="🐯" aria-pressed="false"><span class="mascot-emoji">🐯</span>Tiger</button>
+      <button type="button" class="chip" data-mascot-choice="🌈" aria-pressed="false"><span class="mascot-emoji">🌈</span>Rainbow</button>
+    </div>
+    <p id="personalizeMsg" class="small" role="status" style="margin:4px 0 0">Orange + 🏀 Basketball is your look right now — the classic #14 style!</p>
+  </div>
   <div class="grid" id="quickStats" aria-label="Quick stats"></div>
   <div class="card" id="drillOfDayCard">
     <h3>🌟 Drill of the Day</h3>
@@ -147,6 +266,24 @@ footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font
     <h3>⭐ Featured: 14 for 14</h3>
     <p class="muted">Your number, your session. 14 minutes, finish with 14 makes. End on a make — always.</p>
     <button class="btn teal full" data-goto="train">See the 14 for 14 Session</button>
+  </div>
+  <div class="card" id="tipoffCard">
+    <h3>🦃 Turkey Tip-Off Countdown</h3>
+    <div id="tipoffCountdown"><p class="muted">Counting the days…</p></div>
+    <p class="muted small" style="margin:6px 0 0">The Turkey Tip-Off is coming up on <b style="color:var(--ink)">Saturday, November 21, 2026</b>. A little practice each week and you'll be ready, #14! 🏀</p>
+    <h3 style="margin-top:16px">🎒 First Game Ready — Packing Checklist</h3>
+    <p class="muted small" style="margin:4px 0 10px">Pack your bag the night before, one thing at a time. Check things off as they go in — your checks are saved on this device, so you can start tonight and finish in the morning.</p>
+    <div id="packingList">
+      <label class="check"><input type="checkbox" data-pack="jersey"><span>👕 Jersey #14 — clean and ready to wear</span></label>
+      <label class="check"><input type="checkbox" data-pack="shorts"><span>🩳 Shorts and socks — comfy for running</span></label>
+      <label class="check"><input type="checkbox" data-pack="shoes"><span>👟 Basketball shoes — laces tied snug</span></label>
+      <label class="check"><input type="checkbox" data-pack="water"><span>💧 Water bottle — full and in the bag</span></label>
+      <label class="check"><input type="checkbox" data-pack="snack"><span>🍌 A snack for after the game</span></label>
+      <label class="check"><input type="checkbox" data-pack="ball"><span>🏀 Your size 6 ball — for warm-ups</span></label>
+      <label class="check"><input type="checkbox" data-pack="hair"><span>🎀 Hair tie or headband — hair out of your eyes</span></label>
+    </div>
+    <p id="packingMsg" class="small" role="status" style="margin:8px 0 0"></p>
+    <p class="small muted" style="margin:8px 0 0">New to game day? Read <b style="color:var(--ink)">What Your First Game Feels Like</b> in Learn &gt; Basketball IQ — nerves, refs, and bench manners, all explained. 💛</p>
   </div>
   <div class="card" id="recentCard">
     <h3>📓 Most Recent Practice</h3>
@@ -174,10 +311,10 @@ footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font
     <p class="muted small">Pick a block from 14 for 14 — or set your own time. The timer beeps gently when time is up. You’ve got this, #14!</p>
     <div class="timer-display" id="timerDisplay" role="timer" aria-live="polite" aria-label="Practice timer">14:00</div>
     <div class="chips" id="timerPresets" role="group" aria-label="Timer presets">
-      <button type="button" class="chip" data-timer-preset="2">2 min • Warm-up</button>
-      <button type="button" class="chip" data-timer-preset="3">3 min • Handles / Layups</button>
-      <button type="button" class="chip" data-timer-preset="6">6 min • 14 Makes</button>
-      <button type="button" class="chip on" data-timer-preset="14">14 min • Full Session</button>
+      <button type="button" class="chip" data-timer-preset="2" aria-pressed="false" aria-label="Set timer to 2 minutes, warm-up">2 min • Warm-up</button>
+      <button type="button" class="chip" data-timer-preset="3" aria-pressed="false" aria-label="Set timer to 3 minutes, handles or layups">3 min • Handles / Layups</button>
+      <button type="button" class="chip" data-timer-preset="6" aria-pressed="false" aria-label="Set timer to 6 minutes, 14 makes">6 min • 14 Makes</button>
+      <button type="button" class="chip on" data-timer-preset="14" aria-pressed="true" aria-label="Set timer to 14 minutes, full session">14 min • Full Session</button>
     </div>
     <label for="timerCustom">Custom minutes (1–120)</label>
     <div class="timer-row" style="margin-top:0;align-items:stretch">
@@ -189,8 +326,81 @@ footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font
       <button type="button" class="btn ghost" id="timerReset">↺ Reset</button>
     </div>
     <p id="timerMsg" class="small muted" role="status" style="margin:10px 0 0">Ready when you are — pick a time, then tap Start.</p>
+    <div class="timer-row">
+      <button type="button" class="btn ghost sound-toggle" data-sound-toggle aria-pressed="true">🔊 Sound: On</button>
+    </div>
+    <p class="small muted" style="margin:8px 0 0">Sound off turns off the timer beep AND the Dribble Beat clicks — everywhere in the app.</p>
   </div>
-  <p class="muted">Pick a skill. Start with Level 1 drills — they build everything else.</p>
+  <div class="card" id="dribbleBeat">
+    <h3>🥁 Dribble Beat — Metronome</h3>
+    <p class="muted small">Dribble on the beat! Pick a speed, tap Start, and bounce the ball every time the light flashes and the click sounds. Start slow — steady beats beat fast beats. You’ve got this, #14!</p>
+    <div class="beat-display">
+      <div class="beat-dot" id="metroDot" aria-hidden="true">🏀</div>
+      <div>
+        <div class="beat-bpm"><span id="metroBpmDisplay">80</span> <span style="font-size:18px">BPM</span></div>
+        <p class="small muted" style="margin:4px 0 0">BPM = beats per minute • Beat <b id="metroBeatCount" style="color:var(--ink)">0</b></p>
+      </div>
+    </div>
+    <label for="metroBpm">Beat speed (40–180 BPM)</label>
+    <input type="range" id="metroBpm" min="40" max="180" step="1" value="80" aria-label="Metronome speed in beats per minute">
+    <div class="chips" id="metroPresets" role="group" aria-label="Metronome speed presets" style="margin-top:10px">
+      <button type="button" class="chip" data-metro-preset="60" aria-pressed="false" aria-label="Set dribble beat to 60 beats per minute, slow and steady">🐢 60 • Slow &amp; Steady</button>
+      <button type="button" class="chip on" data-metro-preset="80" aria-pressed="true" aria-label="Set dribble beat to 80 beats per minute, walking pace">🚶 80 • Walking Pace</button>
+      <button type="button" class="chip" data-metro-preset="100" aria-pressed="false" aria-label="Set dribble beat to 100 beats per minute, game speed">🏃 100 • Game Speed</button>
+      <button type="button" class="chip" data-metro-preset="120" aria-pressed="false" aria-label="Set dribble beat to 120 beats per minute, super fast">⚡ 120 • Super Fast</button>
+    </div>
+    <div class="timer-row">
+      <button type="button" class="btn" id="metroStartStop">▶️ Start the Beat</button>
+      <button type="button" class="btn ghost sound-toggle" data-sound-toggle aria-pressed="true">🔊 Sound: On</button>
+    </div>
+    <p id="metroMsg" class="small muted" role="status" style="margin:10px 0 0">Ready when you are — 80 BPM is a great place to start. Try Pound Dribbles or Crossovers on the beat!</p>
+  </div>
+  <div class="card hot" id="challengeModes">
+    <h3>🎮 Challenge Modes</h3>
+    <p class="muted small">Two driveway games! Play one, then tap its log button — it fills in your Practice Log for you. Check the numbers, add any notes, and tap Save Practice. You’ve got this, #14!</p>
+    <div style="border-top:1px solid var(--line);margin-top:12px;padding-top:12px">
+      <h3>🗺️ Around the Driveway</h3>
+      <p class="muted small">Shoot from 5 spots around the hoop. Aim for <b style="color:var(--ink)">3 makes at each spot</b> — that’s 15 makes in all! Check off each spot when you finish it. No rush: good form first.</p>
+      <div id="aroundSpots">
+        <label class="challenge-spot"><input type="checkbox" data-around-spot="0"><span><b>Spot 1 — Right Corner</b> <span class="muted small">close to the hoop, right side</span></span></label>
+        <label class="challenge-spot"><input type="checkbox" data-around-spot="1"><span><b>Spot 2 — Right Wing</b> <span class="muted small">angle shot — try the backboard!</span></span></label>
+        <label class="challenge-spot"><input type="checkbox" data-around-spot="2"><span><b>Spot 3 — Top / Free-Throw Line</b> <span class="muted small">straight in front</span></span></label>
+        <label class="challenge-spot"><input type="checkbox" data-around-spot="3"><span><b>Spot 4 — Left Wing</b> <span class="muted small">angle shot — try the backboard!</span></span></label>
+        <label class="challenge-spot"><input type="checkbox" data-around-spot="4"><span><b>Spot 5 — Left Corner</b> <span class="muted small">close to the hoop, left side</span></span></label>
+      </div>
+      <p id="aroundProgress" class="small" role="status" style="margin:8px 0">0 of 5 spots done — pick your first spot and start shooting! 🎯</p>
+      <div class="challenge-grid">
+        <div><label for="aroundMinutes">Minutes played</label><input type="number" id="aroundMinutes" min="1" max="300" inputmode="numeric" value="10"></div>
+        <div><label for="aroundAttempts">Shots tried <span class="muted small">(if you counted)</span></label><input type="number" id="aroundAttempts" min="0" max="999" inputmode="numeric" placeholder="Example: 25"></div>
+      </div>
+      <p class="small muted">Makes fill in as 3 for each finished spot (15 if you finish all 5). Played more or fewer? You can change the makes right in the Log after it fills in.</p>
+      <div class="timer-row">
+        <button type="button" class="btn full" id="aroundLogBtn">📓 Log Around the Driveway →</button>
+        <button type="button" class="btn ghost" id="aroundResetBtn">↺ Reset Spots</button>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--line);margin-top:16px;padding-top:12px">
+      <h3>⏱️ Beat the Clock</h3>
+      <p class="muted small">How many close-in shots can you <b style="color:var(--ink)">make in 2 minutes</b>? Stay close, use your B.E.E.F. form, and count ONLY makes. Misses don’t stop you — grab the ball and go again!</p>
+      <div class="timer-row" style="margin-top:0">
+        <button type="button" class="btn teal full" id="beatSetTimerBtn">⏱️ Set Practice Timer to 2 Minutes</button>
+      </div>
+      <div class="challenge-grid">
+        <div><label for="beatMakes">Shots made in 2 minutes</label><input type="number" id="beatMakes" min="0" max="999" inputmode="numeric" placeholder="Example: 8"></div>
+        <div><label for="beatAttempts">Shots tried <span class="muted small">(if you counted)</span></label><input type="number" id="beatAttempts" min="0" max="999" inputmode="numeric" placeholder="Example: 14"></div>
+      </div>
+      <p id="beatMsg" class="small" role="status" style="margin:8px 0 0">Tip: have Dad or a helper count your makes out loud so you can just play!</p>
+      <button type="button" class="btn full" id="beatLogBtn" style="margin-top:10px">📓 Log Beat the Clock →</button>
+    </div>
+  </div>
+  <p class="muted">Pick a skill. Start with Level 1 drills — they build everything else. Level 3 drills are stretch challenges: try them when Level 1–2 drills start to feel easy!</p>
+  <div class="card" id="drillSearchCard">
+    <h3>🔍 Search Drills</h3>
+    <label for="drillSearch">Search by drill name or keyword</label>
+    <input type="search" id="drillSearch" placeholder="Search drills — try layup, defense, left hand…" autocomplete="off">
+    <p id="drillSearchMsg" class="small muted" role="status" style="margin:8px 0 0">Type to find a drill fast — search works together with the skill buttons below!</p>
+    <button type="button" class="btn ghost" id="drillSearchClear" style="margin-top:10px;min-height:48px" aria-label="Clear drill search" hidden>✖ Clear Search</button>
+  </div>
   <div class="chips" id="skillChips" role="group" aria-label="Filter drills by skill"></div>
   <div id="drillList"></div>
 </section>
@@ -221,23 +431,73 @@ footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font
   </form>
   <h3>Your practices</h3>
   <div id="historyList"></div>
+  <div class="card" id="gameLogCard" style="margin-top:18px">
+    <h3>🏀 Game Log — Real Games</h3>
+    <p class="muted small" style="margin:4px 0 10px">Played a real game, #14? Log it here! Write who you played, how long you played, and your points, rebounds, and assists. Your season totals add themselves up below — every game counts, big or small. 🌟</p>
+    <form id="gameForm">
+      <label for="gDate">Game date</label>
+      <input type="date" id="gDate" required>
+      <label for="gOpponent">Opponent — who did you play?</label>
+      <input type="text" id="gOpponent" maxlength="60" placeholder="Example: Lady Lions" required>
+      <div class="grid">
+        <div><label for="gMinutes">Minutes played</label><input type="number" id="gMinutes" min="1" max="120" inputmode="numeric" placeholder="Example: 12" required></div>
+        <div><label for="gPoints">Points scored</label><input type="number" id="gPoints" min="0" max="200" inputmode="numeric" placeholder="Example: 6"></div>
+      </div>
+      <div class="grid">
+        <div><label for="gRebounds">Rebounds</label><input type="number" id="gRebounds" min="0" max="100" inputmode="numeric" placeholder="Example: 3"></div>
+        <div><label for="gAssists">Assists</label><input type="number" id="gAssists" min="0" max="100" inputmode="numeric" placeholder="Example: 2"></div>
+      </div>
+      <p class="small muted" style="margin:8px 0 0">Not sure about a number? Zero is okay — showing up and playing is the win. You can learn these words in Learn &gt; Words of the Game! 📖</p>
+      <p id="gameMsg" class="small" role="status"></p>
+      <button class="btn full" type="submit">Save Game ✅</button>
+    </form>
+    <h3 style="margin-top:16px">🏆 Season Totals</h3>
+    <div id="gameTotals"><p class="muted">No games logged yet — your season totals will appear here after your first game.</p></div>
+    <h3 style="margin-top:16px">Your games</h3>
+    <div id="gameList"><p class="muted small">No games yet. Your first real game goes here — you can do this, #14!</p></div>
+  </div>
 </section>
 
 <!-- ============ LEARN ============ -->
 <section class="view" id="view-learn">
   <h2>🧠 Learn</h2>
   <p class="muted">Basketball IQ + school skills, taught through the game you love. Finish lessons and quizzes to earn Scholar badges.</p>
-  <div class="chips" id="learnChips">
-    <button class="chip on" data-learn="all">All</button>
-    <button class="chip" data-learn="iq">🏀 Basketball IQ</button>
-    <button class="chip" data-learn="school">📚 School Skills</button>
-    <button class="chip" data-learn="legends">👑 Legends</button>
-    <button class="chip" data-learn="quiz">❓ Quizzes</button>
+  <div class="card" id="comfyReadingCard">
+    <h3>🔤 Comfy Reading &amp; Calm</h3>
+    <p class="muted small" style="margin:4px 0 10px">Make the words bigger whenever reading feels easier that way — the bright colors and strong contrast stay exactly the same. Your picks are saved on this device. Every button in this app is big enough for easy tapping (at least 44 pixels tall), and a bright gold ring shows you which button or box is picked when you move with a keyboard or switch. And if your device asks for less motion, this app calms its animations down too. 💛</p>
+    <p style="margin:10px 0 6px"><b>Text size</b></p>
+    <div class="chips" id="textSizeChips" role="group" aria-label="Choose text size" style="margin-bottom:6px">
+      <button type="button" class="chip on" data-textsize="normal" aria-pressed="true">Aa Normal Text</button>
+      <button type="button" class="chip" data-textsize="big" aria-pressed="false">AA Big Text</button>
+    </div>
+    <p id="textSizeMsg" class="small" role="status" style="margin:4px 0 0">Normal text is ON — tap Big Text any time for bigger, comfier words.</p>
+    <p style="margin:14px 0 6px"><b>Calmer motion</b></p>
+    <p class="muted small" style="margin:4px 0 10px">Moving pictures and bouncing stars are fun — but sometimes calm feels better. Turn on Calm Mode to quiet the animations: pages stop sliding, the badge stars stop falling, and the Dribble Beat light stops jumping. Nothing else changes, and you can turn it off any time.</p>
+    <div class="chips" id="calmChips" role="group" aria-label="Choose calm motion setting" style="margin-bottom:6px">
+      <button type="button" class="chip on" data-calm="off" aria-pressed="true" aria-label="Turn calm mode off — normal motion">✨ Motion: Normal</button>
+      <button type="button" class="chip" data-calm="on" aria-pressed="false" aria-label="Turn calm mode on — less motion">🌙 Calm: Less Motion</button>
+    </div>
+    <p id="calmMsg" class="small" role="status" style="margin:4px 0 0">Calm Mode is OFF — animations play like normal. Tap Calm any time for a quieter app.</p>
+  </div>
+  <div class="card" id="learnSearchCard">
+    <h3>🔍 Search Lessons &amp; Quizzes</h3>
+    <label for="learnSearch">Search by title or keyword</label>
+    <input type="search" id="learnSearch" placeholder="Search lessons and quizzes — try Miller, rebound, math…" autocomplete="off">
+    <p id="learnSearchMsg" class="small muted" role="status" style="margin:8px 0 0">Type to find a lesson or quiz fast — search works together with the buttons below!</p>
+    <button type="button" class="btn ghost" id="learnSearchClear" style="margin-top:10px;min-height:48px" aria-label="Clear lesson and quiz search" hidden>✖ Clear Search</button>
+  </div>
+  <div class="chips" id="learnChips" role="group" aria-label="Filter lessons and quizzes">
+    <button type="button" class="chip on" data-learn="all" aria-pressed="true">All</button>
+    <button type="button" class="chip" data-learn="iq" aria-pressed="false">🏀 Basketball IQ</button>
+    <button type="button" class="chip" data-learn="school" aria-pressed="false">📚 School Skills</button>
+    <button type="button" class="chip" data-learn="legends" aria-pressed="false">👑 Legends</button>
+    <button type="button" class="chip" data-learn="quiz" aria-pressed="false">❓ Quizzes</button>
   </div>
   <div id="flashcardArea"></div>
   <div id="storyArea"></div>
   <div id="lessonList"></div>
   <div id="quizArea"></div>
+  <div id="champArea"></div>
 </section>
 
 <!-- ============ PROGRESS ============ -->
@@ -265,22 +525,83 @@ footer{max-width:760px;margin:0 auto;padding:0 16px 10px;color:var(--muted);font
     <h3>🏅 Badges</h3>
     <div id="badgeList"></div>
   </div>
-  <div class="card">
+  <div class="card" id="dadsCorner">
     <h3>🎯 Dad's Corner</h3>
-    <p class="muted small">For Coach Nathan: totals above come straight from Ne'ala's log on this device (localStorage, nothing leaves the phone). Badges are computed from real logged data. Coming in later phases: weekly plan editor, game log for league play, JSON backup export.</p>
-    <button class="btn ghost full" id="resetBtn">Reset All Data on This Device</button>
+    <p class="muted small">For Coach Nathan: totals above come straight from Ne'ala's log on this device (localStorage, nothing leaves the phone). Badges are computed from real logged data.</p>
+    <p id="tipoffDad" class="small" role="status" style="margin:8px 0 0"></p>
+    <h3 style="margin-top:16px">💾 Backup — Save Her Progress</h3>
+    <p class="muted small" style="margin:4px 0 10px">Export downloads one backup file with everything in it. Import always shows you what's inside the backup <b style="color:var(--ink)">before</b> anything changes — nothing is replaced until you say so.</p>
+    <div class="timer-row">
+      <button type="button" class="btn teal" id="exportBtn">⬇️ Export Backup</button>
+      <button type="button" class="btn ghost" id="importBtn">⬆️ Import Backup…</button>
+    </div>
+    <input type="file" id="importFile" accept=".json,application/json" hidden>
+    <p id="backupMsg" class="small" role="status" style="margin:10px 0 0"></p>
+    <div id="importPreview" class="week-editor" hidden>
+      <h3 style="margin-top:0">👀 Preview This Backup First</h3>
+      <p class="small muted" style="margin:4px 0 10px">Here's what's inside the file, next to what's on this device right now. Importing <b style="color:var(--ink)">replaces</b> everything on this device with the backup.</p>
+      <div id="importPreviewBody"></div>
+      <div class="timer-row">
+        <button type="button" class="btn" id="importConfirmBtn">✅ Yes, Use This Backup</button>
+        <button type="button" class="btn ghost" id="importCancelBtn">Cancel — Keep Mine</button>
+      </div>
+      <p id="importMsg" class="small" role="status" style="margin:10px 0 0"></p>
+    </div>
+    <h3 style="margin-top:16px">🛡️ Data Safety</h3>
+    <p class="muted small" style="margin:4px 0 10px">A quick check-up for the progress saved on this device — how much space it uses, and whether a fresh backup is due. Backups are the safety net if this phone is lost or the browser clears its data.</p>
+    <div id="dataSafety" role="status"></div>
+    <h3 style="margin-top:16px">📋 Practice History — Spreadsheet (CSV)</h3>
+    <p class="muted small" style="margin:4px 0 10px">Download every practice she has logged as a CSV file you can open in Sheets, Excel, or any spreadsheet app. One row per practice — date, minutes, shots, rebounds, assists, drills, and notes — oldest first. Made right on this device: no network, nothing is sent anywhere.</p>
+    <button type="button" class="btn teal full" id="csvExportBtn">⬇️ Download Practice History (CSV)</button>
+    <p id="csvExportMsg" class="small" role="status" style="margin:8px 0 0"></p>
+    <h3 style="margin-top:16px">🧰 Gear Checklist</h3>
+    <p class="muted small" style="margin:4px 0 10px">Check things off as you get them ready — your checks are saved on this device.</p>
+    <div id="gearList">
+      <label class="check"><input type="checkbox" data-gear="ball"><span>🏀 Size 6 basketball (28.5″) — the right size for her hands</span></label>
+      <label class="check"><input type="checkbox" data-gear="hoop"><span>🎯 Hoop set to 8.5–9 ft — perfect while her form is growing</span></label>
+      <label class="check"><input type="checkbox" data-gear="shoes"><span>👟 Basketball shoes that fit well and tie snug</span></label>
+    </div>
+    <p id="gearMsg" class="small" role="status" style="margin:8px 0 0"></p>
+    <h3 style="margin-top:16px">📝 Coach's Notebook</h3>
+    <p class="muted small" style="margin:4px 0 10px">Private notes for Coach Nathan — what you notice about Ne'ala's progress, what to work on next, and proud moments to remember. Saved only on this device, never shared. You can edit or delete any note anytime.</p>
+    <label for="coachNoteDate">Note date</label>
+    <input type="date" id="coachNoteDate">
+    <label for="coachNoteText">Coach's note</label>
+    <textarea id="coachNoteText" placeholder="Example: Left-hand dribble looked stronger today. Next: weak-hand layups — keep it fun."></textarea>
+    <p id="coachNoteMsg" class="small" role="status" style="margin:8px 0"></p>
+    <div class="timer-row">
+      <button type="button" class="btn teal" id="coachNoteSaveBtn">📝 Save Note</button>
+      <button type="button" class="btn ghost" id="coachNoteCancelBtn" hidden>Cancel Edit</button>
+    </div>
+    <div id="coachNotesList" style="margin-top:12px"></div>
+    <h3 style="margin-top:16px">🖨️ Printable Weekly Summary</h3>
+    <p class="muted small" style="margin:4px 0 10px">Print a clean one-page summary for this week (Monday–Sunday): her stats and every practice session this week. Tap print, then pick your printer or “Save as PDF.”</p>
+    <button type="button" class="btn ghost full" id="printSummaryBtn">🖨️ Print This Week's Summary</button>
+    <h3 style="margin-top:16px">📤 Share the Week</h3>
+    <p class="muted small" style="margin:4px 0 10px">Build a short text summary of this week (Monday–Sunday) and copy it to share with family — sessions, minutes, shots made, shooting %, and badges earned. Nothing is sent anywhere: the text is copied on this device, and you choose where to paste it.</p>
+    <button type="button" class="btn teal full" id="shareWeekBtn">📤 Copy This Week's Summary</button>
+    <p id="shareWeekMsg" class="small" role="status" style="margin:8px 0 0"></p>
+    <div id="shareWeekFallback" hidden>
+      <label for="shareWeekText">Your weekly summary — tap inside, select all, and copy</label>
+      <textarea id="shareWeekText" readonly rows="10" style="min-height:180px"></textarea>
+      <p class="small muted" style="margin:8px 0 0">Copy didn't go through automatically on this browser — no problem! Long-press (or select all) in the box above and copy it yourself, then paste it wherever you like. 💛</p>
+    </div>
+    <button class="btn ghost full" id="resetBtn" style="margin-top:14px">Reset All Data on This Device</button>
   </div>
 </section>
 </main>
 
+<section id="printSummary" class="print-summary" aria-label="Printable weekly summary"></section>
+<section id="printCertificate" class="print-summary" aria-label="Printable Quiz Championship certificate"></section>
+
 <footer>Ne'ala Hoops #14 • Made with Dad • Everything is saved only on this device — no accounts, no posting, just practice. 💛</footer>
 
 <nav aria-label="Main">
-  <button data-goto="home" class="on"><span>🏠</span>Home</button>
-  <button data-goto="train"><span>🏋️</span>Train</button>
-  <button data-goto="log"><span>📓</span>Log</button>
-  <button data-goto="learn"><span>🧠</span>Learn</button>
-  <button data-goto="progress"><span>📈</span>Progress</button>
+  <button type="button" data-goto="home" class="on" aria-label="Go to Home" aria-current="page"><span aria-hidden="true">🏠</span>Home</button>
+  <button type="button" data-goto="train" aria-label="Go to Train"><span aria-hidden="true">🏋️</span>Train</button>
+  <button type="button" data-goto="log" aria-label="Go to Log"><span aria-hidden="true">📓</span>Log</button>
+  <button type="button" data-goto="learn" aria-label="Go to Learn"><span aria-hidden="true">🧠</span>Learn</button>
+  <button type="button" data-goto="progress" aria-label="Go to Progress"><span aria-hidden="true">📈</span>Progress</button>
 </nav>
 
 <script>
@@ -304,7 +625,13 @@ const DRILLS=[
  {id:"bankshot",skill:"shooting",level:2,name:"Bank-Shot Spots",builds:"Using the backboard from different angles",reps:"Shoot from 5 spots — first to 3 makes at each spot",mins:5,cues:["Aim for the top corner of the square on the backboard","Same B.E.E.F. form at every spot","Soft touch — let the board do the work"]},
  {id:"weaklayup",skill:"layups",level:2,name:"Weak-Hand Layup Progression",builds:"Finishing layups with your weak hand, step by step",reps:"5 standing finishes, 5 one-step, 5 full layups — weak hand",mins:5,cues:["Start close and still — just learn the soft touch first","Weak hand shoots, outside knee drives up","Awkward is normal — every rep makes it stronger"]},
  {id:"mirrordef",skill:"defense",level:1,name:"Mirror Defense Stance",builds:"Staying low and moving with your player",reps:"4 rounds × 30 seconds mirroring a partner or shadow",mins:4,cues:["Stay in your stance: butt down, chest up, hands wide","Mirror the movement — slide when they slide","Short quick steps, never cross your feet"]},
- {id:"btwlegs",skill:"handling",level:2,name:"Between-the-Legs (Stationary)",builds:"Low control and confidence between the legs",reps:"3 rounds × 20 seconds, standing still",mins:3,cues:["Stay low, knees bent, ball stays low too","Push the ball through, catch it with the other hand","Look up when you can — misses are part of learning"]}
+ {id:"btwlegs",skill:"handling",level:2,name:"Between-the-Legs (Stationary)",builds:"Low control and confidence between the legs",reps:"3 rounds × 20 seconds, standing still",mins:3,cues:["Stay low, knees bent, ball stays low too","Push the ball through, catch it with the other hand","Look up when you can — misses are part of learning"]},
+ {id:"behindback",skill:"handling",level:3,name:"Behind-the-Back (Stationary)",builds:"Quick hands and control around your back",reps:"3 rounds × 20 seconds, standing still",mins:3,cues:["Stay low and still — let your hands do the traveling","Push the ball around your back and catch it with the other hand","Look up when you can — dropped balls just mean you're learning"]},
+ {id:"crossbtwcombo",skill:"handling",level:3,name:"Crossover + Between-the-Legs Combo",builds:"Putting two moves together, one smooth combo",reps:"3 rounds × 30 seconds — crossover, then between-the-legs",mins:4,cues:["Start SLOW: crossover first, reset, then between-the-legs","Stay low the whole time and keep the ball low too","Smooth first, speedy later — string the moves together when they feel easy"]},
+ {id:"stepback",skill:"shooting",level:3,name:"Step-Back Form Shots",builds:"Making a little space, then shooting in balance",reps:"10 step-backs on each side, staying close to the hoop",mins:5,cues:["Dribble forward, plant your feet, then step back to make space","Land balanced with your B.E.E.F. form ready — no falling sideways","Stay close until your form looks the same on every shot"]},
+ {id:"floaterlite",skill:"shooting",level:3,name:"Floater-Lite Soft Touch",builds:"A soft, high shot that floats over taller players",reps:"10 gentle floaters from close in on each side",mins:4,cues:["Shoot a soft rainbow — high and gentle, like the ball is landing on a pillow","Use your fingertips and let your hand wave goodbye in the air","Start very close — soft touch matters way more than power"]},
+ {id:"chasedowncloseout",skill:"defense",level:3,name:"Chase-Down Closeout + Slide Combo",builds:"Racing out to a shooter, then sliding under control",reps:"8 combos: run out, close out, then 3 slides each way",mins:4,cues:["Sprint most of the way, then finish with short, choppy steps","Hand high and stop BALANCED — don't fly past your player","Drop low and slide both ways, feet never crossing"]},
+ {id:"weakmikan",skill:"layups",level:3,name:"Weak-Hand Mikan",builds:"Soft weak-hand finishes all around the rim",reps:"1 minute — weak hand only, count your makes",mins:3,cues:["Stand under the hoop and finish with your weak hand from both sides","Soft off the backboard — let the ball kiss the glass and drop in","Quick feet, gentle hands — awkward is normal and means it's working"]}
 ];
 const SKILLS={handling:"🤲 Ball Handling",shooting:"🎯 Shooting Form",footwork:"👟 Footwork",layups:"🪜 Layups",defense:"🛡️ Defense"};
 const LESSONS=[
@@ -314,11 +641,14 @@ const LESSONS=[
  {id:"pickroll",strand:"iq",icon:"👀",title:"Reading a Pick-and-Roll",body:"The most famous play in basketball is only 2 players:\n\n1. A teammate stands still like a wall (the SCREEN / pick) next to your defender.\n2. You dribble close past that wall so your defender gets stuck.\n3. Your teammate then ROLLS toward the hoop, wide open.\n\nYour job as the dribbler: read the defense. If they follow you, pass to the roller. If they follow the roller, you shoot. Two choices — that's the whole play!"},
  {id:"goodshots",strand:"iq",icon:"🎯",title:"Good Shots vs Bad Shots",body:"A good shot is not just a shot that goes IN. It is a smart shot — one you picked well. You can make a bad shot by luck, and you can miss a good shot and still have made the right choice!\n\n✅ GOOD SHOTS — say YES to these:\n• You are OPEN — no defender is right in your face.\n• You are BALANCED, with your B.E.E.F. form ready.\n• You are CLOSE ENOUGH — inside the range you practice from.\n• Your team is ready — a teammate could grab a rebound if you miss.\n\n🚫 BAD SHOTS — pass these up:\n• A defender's hand is right in your face and a teammate is wide open.\n• You are falling, off-balance, or shooting while running sideways.\n• You are WAY too far from the hoop — farther than you ever practice.\n• You shoot the very first second, before anyone else even touches the ball.\n\nThe secret pros know: if it is not a good shot for YOU, it might be an even better shot for a TEAMMATE. Passing up a bad shot to create a good shot is a superstar play — and it feels great. Next game, before you shoot, ask quietly: 'Open? Balanced? Close enough?' Three yeses? Let it fly, #14!"},
  {id:"helpdefense",strand:"iq",icon:"🛡️",title:"Help Defense Basics",body:"Defense is a team job. Your job is not just to guard YOUR player — it is to guard your player AND keep an eye on the ball at the same time.\n\n👀 SEE BOTH\nStand where you can see your player and the ball without turning your head all the way. Point one hand toward your player and one toward the ball — coaches call this being 'in help position.' If you only watch the ball, your player can sneak away. If you only watch your player, you will never see what is coming.\n\n🤝 HELP YOUR TEAM\n• If a teammate gets beaten and their player drives toward the hoop, STEP IN and stop the ball — that is HELPING.\n• Call it out! Yell 'Help!' or 'Ball!' so your teammates know what you see. Talking on defense is a superpower.\n• As soon as the danger passes, HURRY BACK to your own player. Help, then recover — help, then recover.\n\n🛡️ REMEMBER\n• Stay low in your Mirror Defense Stance: butt down, chest up, hands wide.\n• Never leave your feet for a fake — stay down, slide, and use your hands to bother the shot, not to foul.\n\nLesson for #14: great defenders help each other. The best play on defense is often the one where you saved a teammate — even if nobody claps for it, your coach and your team KNOW."},
+ {id:"firstgamefeel",strand:"iq",icon:"🦃",title:"What Your First Game Feels Like",body:"Your first real game is a BIG day — and almost every player remembers theirs forever. Here is what it really feels like, so there are no surprises, #14.\n\n🦋 NERVES ARE NORMAL\nButterflies in your stomach? Hands a little shaky? That happens to beginners AND to pros before big games. Nerves just mean you care. Breathe slow, do your B.E.E.F. form shots in warm-ups, and remember: nobody expects a perfect game — they just want to see you try hard and have fun.\n\n🏀 THE GAME FEELS FAST — AT FIRST\nReal games move quicker than practice. Players run, the ball zips around, and the gym is LOUD. That is okay! After a few minutes your brain catches up, spots open up, and it starts to feel like basketball again. If you get lost, find your player on defense and get back on offense — simple jobs first.\n\n👨‍⚖️ WHAT THE REFS DO\nRefs (referees) are the helpers in the striped shirts. They blow the whistle when a rule is broken — traveling, double dribble, fouls, out of bounds — and they keep the game fair and safe. A whistle is NOT trouble and it is NOT you being bad. It is just information: 'try it this way next time.' Never argue with a ref. Smile, listen, and play on.\n\n🪑 BENCH MANNERS (WHEN YOU ARE NOT IN THE GAME)\n• Sit with your team, watch the game, and learn — you can see plays from the bench that you miss on the court.\n• CHEER for your teammates, loud and kind. A great bench makes the whole team braver.\n• Be READY: when your coach calls your name, hop up, check in at the scorer's table if your league asks you to, and jog in with energy.\n• When you come out, sit down, catch your breath, and keep cheering. Everybody rotates — resting is part of the game.\n\n💛 THE PART THAT MATTERS MOST\nYou will probably miss some shots. You might even miss ALL your shots — and you can still have a great first game with rebounds, assists, tough defense, and good passes. After the game, line up, shake hands, and say 'good game' — win or lose. Then tell Dad your favorite moment. Showing up, being brave, and finishing the game makes you a real player, #14. The Turkey Tip-Off is YOUR turn — enjoy every minute of it!"},
  {id:"mathfg",strand:"school",icon:"➗",title:"Math: Shooting % and Averages",body:"Basketball stats are just fractions wearing a jersey.\n\nFIELD GOAL % (FG%) = makes ÷ tries × 100\n• You make 7 of 14 shots → 7 ÷ 14 = 0.5 → 50%. (There's your #14 again!)\n\nAVERAGE = total ÷ number of games\n• You score 6, 10, and 8 points in 3 games → 24 ÷ 3 = 8 points per game.\n• The same trick works for everything in your log: average rebounds = total rebounds ÷ practices, and average assists = total assists ÷ practices.\n\nMAKES PER MINUTE = total makes ÷ total minutes\n• You make 14 shots in 14 minutes → 14 ÷ 14 = 1 make per minute. Fast work, #14!\n\nYour Practice Log and your Progress page do ALL of this math with YOUR real numbers — rebounds and assists too. Log a practice, then tap Progress > Your Averages to see your own makes per minute and your per-practice averages. Then come back here and check: can you do the division yourself before you look?"},
+ {id:"boxscore",strand:"school",icon:"📊",title:"Box Score Math — Reading a Game Like a Pro",body:"After every real game, grown-up scorekeepers make a BOX SCORE — a little table that tells the story of the game in numbers. Once you can read one, you can understand any game, even one you did not watch!\n\n🔑 THE THREE BIG LETTERS\n• PTS — POINTS: how many points a player scored.\n• REB — REBOUNDS: how many missed shots a player grabbed.\n• AST — ASSISTS: how many passes led straight to a basket.\nRead a row SIDEWAYS to see one player's whole game. Read a column DOWN to add up a team total.\n\n📊 A MADE-UP BOX SCORE (pretend players, real math!)\nPLAYER — PTS — REB — AST\nMaya — 10 — 4 — 3\nJada — 6 — 7 — 2\nTess — 8 — 5 — 4\nTEAM TOTAL — 24 — 16 — 9\n\nSee how the totals work? Points: 10 + 6 + 8 = 24. Rebounds: 4 + 7 + 5 = 16. Assists: 3 + 2 + 4 = 9. A box score is just careful adding, column by column!\n\n➗ TOTALS BECOME AVERAGES\nSay Maya played 3 games and scored 10, 6, and 8 points. Her total is 10 + 6 + 8 = 24 points. Her AVERAGE is total ÷ games: 24 ÷ 3 = 8 points per game. Same trick for rebounds and assists — add them up over your games, then divide by how many games.\n\n🏀 TRY IT YOURSELF (answers are at the very bottom — no peeking!)\n1. In the box score above, who grabbed the MOST rebounds?\n2. What was the team's total points? Try the adding before you check the total row.\n3. Tess had 4 assists in this game and 2 assists in her next game. What is her assist total for 2 games, and her average per game?\n4. A player scores 4, 8, and 6 points in 3 games. What is her scoring average?\n\n📓 YOUR LOG IS YOUR BOX SCORE\nYour Practice Log already works like a box score for YOU: when you log a practice, you can add your rebounds and assists right next to your shots made — that is your Fuller Stat Log from the Log page! Then tap Progress to see your per-practice averages: your makes, rebounds, and assists per practice, all added up and divided for you. Try doing the math yourself first, then let Progress check your work — that is exactly how stat pros learn.\n\n✅ ANSWERS: 1) Jada, with 7 rebounds. 2) 24 points (10 + 6 + 8). 3) Total 6 assists (4 + 2), average 3 per game (6 ÷ 2). 4) 6 points per game ((4 + 8 + 6) ÷ 3 = 18 ÷ 3). Great reading, #14 — you just read a real box score!"},
  {id:"vocab",strand:"school",icon:"📖",title:"Words of the Game",body:"Learn these 6 words and you can talk basketball anywhere:\n\n• ASSIST — a pass that leads straight to a basket\n• REBOUND — grabbing the ball after a missed shot\n• PIVOT — turning on one planted foot\n• LAYUP — a close shot off one foot, often off the backboard\n• FAST BREAK — racing downcourt before the defense is ready\n• TRIPLE THREAT — the ready position where you can pass, shoot, or dribble\n\nChallenge: use one word correctly while watching a game with Dad."},
  {id:"millers",strand:"legends",icon:"👨‍👧",title:"The Miller Story: A Big Sister & Her Little Brother",body:"Before the NBA, before the Olympics, there was a backyard in Riverside, California — and a big sister who blocked EVERY shot.\n\nCheryl Miller (born 1964) was Reggie Miller's older sister, and she was the star first. In their driveway games she swatted Reggie's layups away again and again. So Reggie made a plan: he practiced 500–700 shots a day, backing up step by step, learning to shoot the ball HIGH over her hand. That high, looping shot became his famous NBA jump shot.\n\nReggie had to fight to even play: he was born with hip problems, doctors said he might never walk properly, and he wore leg braces until he was 4. His mom, a nurse, kept encouraging him. He walked, he ran, he practiced — and he never stopped.\n\n🏆 THE DINNER-TABLE STORY (Jan 26, 1982)\nReggie came home proud after scoring 39 points in his high school game. At dinner, Cheryl and their dad were smiling. Cheryl had scored... 105 points in HER game that same day — still one of the most amazing games ever played.\n\nLesson for #14: somebody better than you is not a wall. They are a ladder. Practice is how you climb."},
  {id:"cheryl",strand:"legends",icon:"👑",title:"Cheryl Miller — The Original Superstar",body:"Many people call Cheryl Miller one of the greatest basketball players of ALL time — not just in the women's game.\n\n⭐ HER STORY\n• Riverside Poly High School: her teams went 132–4. She was the FIRST player, boy or girl, named a Parade All-American 4 times.\n• USC (college): led the Trojans to NCAA championships in 1983 AND 1984, and was named the tournament's Most Outstanding Player both times. She won the Naismith Player of the Year award 3 times, finished with 3,018 points and 1,534 rebounds, and USC retired her #31 jersey.\n• Team USA: led the United States to Olympic GOLD at the 1984 Los Angeles Games, plus gold at the 1983 Pan Am Games and the 1986 World Championship.\n• Hall of Fame: inducted in 1995. The WNBA did not start until after knee injuries ended her playing years, so she became the FIRST head coach of the Phoenix Mercury instead — a pioneer twice.\n\n🏀 HER BEST GAMES\n• Jan 26, 1982 — 105 POINTS in one high school game vs. Norte Vista (her team won 179–15). She later joked: 'I didn't play the last two minutes, though.'\n• 1984 Olympic Gold Medal Game — 16 points + 11 rebounds vs. South Korea, USA won 85–55; she led the whole team in scoring for the tournament.\n• Feb 28, 1985 — 45 points vs. Arizona, a USC record-breaking night (after 40 vs. Cal State Fullerton and 43 vs. Louisiana Tech that same season).\n• 1986 World Championship Final — 24 points + 15 rebounds to beat the Soviet Union and win gold.\n\nLesson for #14: Cheryl didn't wait for permission or for a league to exist. She set the standard everybody else had to chase."},
- {id:"reggie",strand:"legends",icon:"🎯",title:"Reggie Miller — Miller Time",body:"Reggie Miller spent his whole 18-year NBA career with ONE team, the Indiana Pacers, wore #31 — the same number as his big sister Cheryl — and became the most feared last-minute shooter of his era. When a game was on the line, fans called it MILLER TIME.\n\n⭐ HIS STORY\n• Born with hip problems and leg braces until age 4 (see the Miller Story lesson) — doctors doubted he would walk properly.\n• UCLA college star, drafted 11th by Indiana in 1987. Fans actually BOOED the pick at first. He spent 18 years proving them wrong.\n• He retired holding the NBA record for 3-pointers made (2,560), won Olympic gold in 1996, and entered the Hall of Fame in 2012 — just like Cheryl. Two siblings, two Hall of Famers.\n\n🏀 HIS BEST GAMES\n• Nov 28, 1992 — CAREER-HIGH 57 POINTS vs. the Charlotte Hornets (Pacers won 134–122). Still the Pacers' NBA team record; he also had 8 assists that night.\n• Jun 1, 1994 — 39 points vs. the New York Knicks in the playoffs, including 25 POINTS IN THE 4TH QUARTER alone. Pacers won 93–86 at Madison Square Garden.\n• May 7, 1995 — 8 POINTS IN 9 SECONDS. Down 6 with under 19 seconds left vs. the Knicks: 3-pointer, steal, another 3-pointer, then 2 free throws. Pacers won a game everybody thought was over.\n• May 1998 — a game-winning 3-pointer over Michael Jordan and the Chicago Bulls in the Eastern Conference Finals.\n• 2002 Playoffs — a 40-foot 3-pointer at the buzzer vs. the Nets to force overtime.\n\nLesson for #14: Reggie was not the strongest or the fastest. He won with the thing YOU control: thousands of practice shots, the same form, every single day."}
+ {id:"reggie",strand:"legends",icon:"🎯",title:"Reggie Miller — Miller Time",body:"Reggie Miller spent his whole 18-year NBA career with ONE team, the Indiana Pacers, wore #31 — the same number as his big sister Cheryl — and became the most feared last-minute shooter of his era. When a game was on the line, fans called it MILLER TIME.\n\n⭐ HIS STORY\n• Born with hip problems and leg braces until age 4 (see the Miller Story lesson) — doctors doubted he would walk properly.\n• UCLA college star, drafted 11th by Indiana in 1987. Fans actually BOOED the pick at first. He spent 18 years proving them wrong.\n• He retired holding the NBA record for 3-pointers made (2,560), won Olympic gold in 1996, and entered the Hall of Fame in 2012 — just like Cheryl. Two siblings, two Hall of Famers.\n\n🏀 HIS BEST GAMES\n• Nov 28, 1992 — CAREER-HIGH 57 POINTS vs. the Charlotte Hornets (Pacers won 134–122). Still the Pacers' NBA team record; he also had 8 assists that night.\n• Jun 1, 1994 — 39 points vs. the New York Knicks in the playoffs, including 25 POINTS IN THE 4TH QUARTER alone. Pacers won 93–86 at Madison Square Garden.\n• May 7, 1995 — 8 POINTS IN 9 SECONDS. Down 6 with under 19 seconds left vs. the Knicks: 3-pointer, steal, another 3-pointer, then 2 free throws. Pacers won a game everybody thought was over.\n• May 1998 — a game-winning 3-pointer over Michael Jordan and the Chicago Bulls in the Eastern Conference Finals.\n• 2002 Playoffs — a 40-foot 3-pointer at the buzzer vs. the Nets to force overtime.\n\nLesson for #14: Reggie was not the strongest or the fastest. He won with the thing YOU control: thousands of practice shots, the same form, every single day."},
+ {id:"beginnings",strand:"legends",icon:"🍑",title:"Basketball Beginnings — Peach Baskets & a Brand-New Game",body:"Basketball is one of the only big sports that was INVENTED on purpose — by one teacher, in about two weeks, in the winter of 1891.\n\n🧑‍🏫 THE TEACHER WITH A PROBLEM\nDr. James Naismith was a gym teacher from Canada working in Springfield, Massachusetts. His class of young men was stuck indoors by the cold and snow, bored and rowdy. His boss gave him a challenge: invent a new indoor game in 14 days — one that was fun, fair, and would not wreck the gym.\n\n📜 13 RULES AND TWO PEACH BASKETS\nNaismith thought hard about games he knew, then wrote down just 13 rules and had them posted on the gym wall. For goals, he asked the janitor for boxes. There were no boxes — but there WERE two old peach baskets! They nailed the baskets up high on the gym balcony rail, about 10 feet off the floor. That is why hoops are still 10 feet high today!\n\n🏀 THE VERY FIRST GAME (December 21, 1891)\n• 18 players — 9 on a team, because that was the whole class.\n• They played with a soccer ball, not a basketball.\n• The final score was... 1 to 0! William R. Chase scored the only basket.\n• The baskets still had their bottoms, so after a score someone had to climb up and poke the ball out with a stick. Open-bottom nets came later!\n\nThe game spread FAST through YMCAs and colleges. Girls and women started playing almost right away too — teacher Senda Berenson adapted the game for her students at Smith College in 1892.\n\n⭐ HOW THE WNBA STARTED\nFor a long time, women stars like Cheryl Miller (see her lesson!) had no pro league of their own in the United States. That changed in 1997, when the WNBA played its very first season with 8 teams.\n• The first WNBA game ever: June 21, 1997 — the New York Liberty beat the Los Angeles Sparks, 67–57.\n• Penny Toler of the Sparks scored the first basket in WNBA history.\n• The Houston Comets won the first championship — then won the next three too, four in a row, led by Cynthia Cooper, Sheryl Swoopes, and Tina Thompson.\n\nLesson for #14: every game you watch started with a teacher, 13 rules, and two fruit baskets. Somebody has to go first — and the players who go first change the game for everyone who comes after. Just ask Cheryl, and just ask the Comets."}
 ];
 const FLASHCARDS=[
  {id:"assist",word:"ASSIST",def:"A pass that leads straight to a basket"},
@@ -360,6 +690,18 @@ const QUIZZES=[
    {q:"You scored 6, 10, and 8 points in 3 games. Your average?",a:["8 points","7 points","24 points"],c:0,why:"(6+10+8) ÷ 3 = 24 ÷ 3 = 8."},
    {q:"A session is 14 minutes. You practice 4 days this week. Total minutes?",a:["42 minutes","56 minutes","18 minutes"],c:1,why:"14 × 4 = 56 minutes."},
    {q:"You need 14 makes. You've made 9. How many more?",a:["4","6","5"],c:2,why:"14 − 9 = 5 more makes."}
+ ]},
+ {id:"positions",icon:"🔢",title:"Positions Quiz",qs:[
+   {q:"Which position brings the ball up and starts the plays, like a quarterback?",a:["Point Guard","Center","Power Forward"],c:0,why:"The Point Guard (1) brings the ball up and gets the play started."},
+   {q:"Which position is usually the tallest and protects the rim?",a:["Shooting Guard","Small Forward","Center"],c:2,why:"The Center (5) is usually tallest and guards the hoop up close."},
+   {q:"What is the Shooting Guard known for?",a:["Only rebounding","Scoring from outside","Starting the jump ball"],c:1,why:"The Shooting Guard (2) scores a lot, especially from outside."},
+   {q:"The Small Forward is famous for…",a:["Doing a little bit of everything","Never shooting","Only standing under the hoop"],c:0,why:"The Small Forward (3) helps with scoring, defense, passing — a bit of everything!"}
+ ]},
+ {id:"rules2",icon:"📏",title:"Rules Quiz 2",qs:[
+   {q:"On offense, how long can you stay in the key (the painted box)?",a:["As long as you want","3 seconds at a time","10 seconds at a time"],c:1,why:"3 seconds in the key on offense — then step out and come back in!"},
+   {q:"The ball touches the out-of-bounds line. What happens?",a:["Keep playing","You get a point","The other team gets the ball"],c:2,why:"Ball or player on the line = out of bounds. The other team gets the ball."},
+   {q:"Someone fouls you while you are shooting. What might you earn?",a:["Free throws","A time-out","A new ball"],c:0,why:"A foul on a shot can earn free throws — shots from the free-throw line with nobody guarding you."},
+   {q:"How does a basketball game start?",a:["A free throw","A jump ball in the center circle","The coach picks who shoots first"],c:1,why:"The game starts with a jump ball in the center circle. Up it goes!"}
  ]}
 ];
 const WEEK_PLAN=["Rest day — stretch, watch a game, or do the Words of the Game lesson 🧠","14 for 14 driveway session ⭐","Handles day: Pound Dribbles + Crossovers, then log it 🤲","14 for 14 + Layups Both Sides 🪜","Learn day: one Basketball IQ lesson + a quiz 📚","Driveway games day: drills, then 1v1 or a free-throw contest with Dad 🏀","Choice day: repeat your favorite drill — or earn a badge you're close to 🏅"];
@@ -370,22 +712,164 @@ const BADGES=[
  {id:"makes100",icon:"💯",name:"100 Makes Club",desc:"100 total shots made",test:s=>totals(s).makes>=100},
  {id:"sharp",icon:"🎯",name:"Sharpshooter",desc:"Shoot 50%+ in a session (10+ tries)",test:s=>s.sessions.some(x=>x.attempts>=10&&x.makes/x.attempts>=0.5)},
  {id:"scholar",icon:"🎓",name:"Hoops Scholar",desc:"Finish 3 lessons",test:s=>s.lessonsDone.length>=3},
- {id:"quizace",icon:"🧠",name:"Quiz Ace",desc:"Get a perfect score on any quiz",test:s=>(s.quizBest.iq>=5)||(s.quizBest.math>=4)||(s.quizBest.miller>=5)},
+ {id:"quizace",icon:"🧠",name:"Quiz Ace",desc:"Get a perfect score on any quiz",test:s=>(s.quizBest.iq>=5)||(s.quizBest.math>=4)||(s.quizBest.miller>=5)||(s.quizBest.positions>=4)||(s.quizBest.rules2>=4)},
  {id:"fourteen",icon:"1️⃣4️⃣",name:"Perfect 14",desc:"Make exactly 14+ shots in one session",test:s=>s.sessions.some(x=>x.makes>=14)},
  {id:"bookworm",icon:"📚",name:"Bookworm",desc:"Finish 6 lessons",test:s=>s.lessonsDone.length>=6},
  {id:"legendscholar",icon:"👑",name:"Legend Scholar",desc:"Finish all 3 Miller lessons",test:s=>["millers","cheryl","reggie"].every(id=>s.lessonsDone.includes(id))},
- {id:"lefthand",icon:"🤚",name:"Left-Hand Hero",desc:"Log a weak-hand drill 3 times",test:s=>s.sessions.filter(x=>Array.isArray(x.drills)&&(x.drills.includes("weakhand")||x.drills.includes("weaklayup"))).length>=3},
+ {id:"lefthand",icon:"🤚",name:"Left-Hand Hero",desc:"Log a weak-hand drill 3 times",test:s=>s.sessions.filter(x=>Array.isArray(x.drills)&&(x.drills.includes("weakhand")||x.drills.includes("weaklayup")||x.drills.includes("weakmikan"))).length>=3},
  {id:"makes250",icon:"🏆",name:"250 Makes Club",desc:"250 total shots made",test:s=>totals(s).makes>=250}
 ];
 /* ================= STATE ================= */
 const KEY="nealaHoops_v1";
-function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.sessions)){d.lessonsDone=Array.isArray(d.lessonsDone)?d.lessonsDone:[];d.quizBest=d.quizBest||{iq:0,math:0,miller:0};d.weeklyPlanOverrides=(d.weeklyPlanOverrides&&typeof d.weeklyPlanOverrides==="object"&&!Array.isArray(d.weeklyPlanOverrides))?d.weeklyPlanOverrides:{};d.flashcardsKnown=Array.isArray(d.flashcardsKnown)?d.flashcardsKnown.filter(id=>FLASHCARDS.some(c=>c.id===id)):[];d.storyBest=(typeof d.storyBest==="number"&&d.storyBest>=0&&d.storyBest<=STORY.qs.length)?Math.floor(d.storyBest):0;return d;}}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,createdAt:new Date().toISOString()};}
+const ACCENTS=["orange","teal","pink","gold"];
+const ACCENT_NAMES={orange:"Orange",teal:"Teal",pink:"Pink",gold:"Gold"};
+const MASCOTS=["🏀","⭐","🐢","🦄","🐯","🌈"];
+const MASCOT_NAMES={"🏀":"Basketball","⭐":"Star","🐢":"Turtle","🦄":"Unicorn","🐯":"Tiger","🌈":"Rainbow"};
+function normalizeData(d){
+  if(!d||!Array.isArray(d.sessions))return null;
+  d.lessonsDone=Array.isArray(d.lessonsDone)?d.lessonsDone:[];
+  d.quizBest=(d.quizBest&&typeof d.quizBest==="object"&&!Array.isArray(d.quizBest))?d.quizBest:{};
+  ["iq","math","miller","positions","rules2"].forEach(k=>{d.quizBest[k]=(typeof d.quizBest[k]==="number"&&d.quizBest[k]>=0)?Math.floor(d.quizBest[k]):0;});
+  d.weeklyPlanOverrides=(d.weeklyPlanOverrides&&typeof d.weeklyPlanOverrides==="object"&&!Array.isArray(d.weeklyPlanOverrides))?d.weeklyPlanOverrides:{};
+  d.flashcardsKnown=Array.isArray(d.flashcardsKnown)?d.flashcardsKnown.filter(id=>FLASHCARDS.some(c=>c.id===id)):[];
+  d.storyBest=(typeof d.storyBest==="number"&&d.storyBest>=0&&d.storyBest<=STORY.qs.length)?Math.floor(d.storyBest):0;
+  d.textSize=(d.textSize==="big"||d.textSize==="normal")?d.textSize:"normal";
+  d.calmMode=d.calmMode===true;
+  d.gearCheck=(d.gearCheck&&typeof d.gearCheck==="object"&&!Array.isArray(d.gearCheck))?{ball:!!d.gearCheck.ball,hoop:!!d.gearCheck.hoop,shoes:!!d.gearCheck.shoes}:{};
+  d.packingCheck=(d.packingCheck&&typeof d.packingCheck==="object"&&!Array.isArray(d.packingCheck))?{jersey:!!d.packingCheck.jersey,shorts:!!d.packingCheck.shorts,shoes:!!d.packingCheck.shoes,water:!!d.packingCheck.water,snack:!!d.packingCheck.snack,ball:!!d.packingCheck.ball,hair:!!d.packingCheck.hair}:{};
+  d.lastExportAt=(typeof d.lastExportAt==="string")?d.lastExportAt:null;
+  d.coachNotes=Array.isArray(d.coachNotes)?d.coachNotes.filter(n=>n&&typeof n.text==="string"&&n.text.trim()&&typeof n.date==="string"&&n.date).map((n,i)=>({id:(typeof n.id==="number"&&n.id)?n.id:(1700000000000+i),date:n.date,text:n.text})):[];
+  d.games=Array.isArray(d.games)?d.games.filter(g=>g&&typeof g.opponent==="string"&&g.opponent.trim()&&typeof g.date==="string"&&g.date).map((g,i)=>({id:(typeof g.id==="number"&&g.id)?g.id:(1700000000000+i),date:g.date,opponent:g.opponent.trim().slice(0,60),points:Math.max(0,Math.floor(+g.points||0)),rebounds:Math.max(0,Math.floor(+g.rebounds||0)),assists:Math.max(0,Math.floor(+g.assists||0)),minutes:Math.max(0,Math.floor(+g.minutes||0))})):[];
+  d.weeklyGoals=normalizeWeeklyGoals(d.weeklyGoals);
+  d.favoriteDrills=Array.isArray(d.favoriteDrills)?[...new Set(d.favoriteDrills.filter(id=>typeof id==="string"&&DRILLS.some(dr=>dr.id===id)))]:[];
+  d.accent=ACCENTS.includes(d.accent)?d.accent:"orange";
+  d.mascot=MASCOTS.includes(d.mascot)?d.mascot:"🏀";
+  d.champBest=(typeof d.champBest==="number"&&d.champBest>=0)?Math.min(10,Math.floor(d.champBest)):0;
+  d.champBestDate=(typeof d.champBestDate==="string"&&d.champBestDate)?d.champBestDate:null;
+  d.soundOn=d.soundOn!==false;
+  d.metronomeBpm=(typeof d.metronomeBpm==="number"&&isFinite(d.metronomeBpm))?Math.min(180,Math.max(40,Math.floor(d.metronomeBpm))):80;
+  return d;
+}
+const WEEKLY_GOALS_DEFAULT={sessions:3,minutes:30};
+function normalizeWeeklyGoals(g){
+  const s=g&&typeof g==="object"&&!Array.isArray(g)?g:{};
+  const sessions=(typeof s.sessions==="number"&&isFinite(s.sessions))?Math.min(14,Math.max(1,Math.floor(s.sessions))):WEEKLY_GOALS_DEFAULT.sessions;
+  const minutes=(typeof s.minutes==="number"&&isFinite(s.minutes))?Math.min(300,Math.max(5,Math.floor(s.minutes))):WEEKLY_GOALS_DEFAULT.minutes;
+  return{sessions,minutes};
+}
+function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,createdAt:new Date().toISOString()};}
 let state=load();
 const DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 let editingDow=null;
 function planForDay(dow){const o=state.weeklyPlanOverrides&&state.weeklyPlanOverrides[String(dow)];return(typeof o==="string"&&o.trim())?o:WEEK_PLAN[dow];}
 function hasPlanOverride(dow){const o=state.weeklyPlanOverrides&&state.weeklyPlanOverrides[String(dow)];return typeof o==="string"&&!!o.trim();}
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+/* ================= COMFY READING (cycle 12) + COMFORT ROUND 2 (cycle 31) ================= */
+function systemPrefersReducedMotion(){try{return !!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);}catch(e){return false;}}
+function prefersReducedMotion(){return (typeof state!=="undefined"&&state&&state.calmMode===true)||systemPrefersReducedMotion();}
+function scrollBehavior(){return prefersReducedMotion()?"auto":"smooth";}
+function calmIsOn(){return typeof state!=="undefined"&&state&&state.calmMode===true;}
+function applyCalmMode(){
+  const on=calmIsOn(),systemCalm=systemPrefersReducedMotion();
+  document.body.classList.toggle("calm",on);
+  document.documentElement.dataset.calm=on?"on":"off";
+  document.querySelectorAll("#calmChips [data-calm]").forEach(b=>{const btnOn=(b.dataset.calm==="on")===on;b.classList.toggle("on",btnOn);b.setAttribute("aria-pressed",btnOn?"true":"false");});
+  const msg=document.getElementById("calmMsg");
+  if(msg)msg.textContent=on?"🌙 Calm Mode is ON — animations are quiet now. Cozy and calm, #14!":(systemCalm?"Calm Mode is OFF here, but your device is asking for less motion — so this app is staying calm anyway. 💛":"Calm Mode is OFF — animations play like normal. Tap Calm any time for a quieter app.");
+}
+function setCalmMode(on){state.calmMode=!!on;save();applyCalmMode();}
+function applyTextSize(){
+  const big=state.textSize==="big";
+  document.body.classList.toggle("text-big",big);
+  document.documentElement.dataset.textSize=big?"big":"normal";
+  const btn=document.getElementById("textSizeToggle");
+  if(btn){btn.setAttribute("aria-pressed",big?"true":"false");btn.textContent=big?"Text: Big":"Text: Normal";}
+  document.querySelectorAll("[data-textsize]").forEach(b=>{const on=b.dataset.textsize===(big?"big":"normal");b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");});
+  const msg=document.getElementById("textSizeMsg");
+  if(msg)msg.textContent=big?"Big text is ON — bigger, comfier words, same bright colors. Great reading, #14! 🔤":"Normal text is ON — tap Big Text any time for bigger, comfier words.";
+}
+function setTextSize(size){state.textSize=size==="big"?"big":"normal";save();applyTextSize();}
+/* ================= MAKE IT HERS (cycle 25) ================= */
+function applyPersonalization(){
+  const accent=ACCENTS.includes(state.accent)?state.accent:"orange";
+  const mascot=MASCOTS.includes(state.mascot)?state.mascot:"🏀";
+  document.body.dataset.accent=accent;
+  document.documentElement.dataset.accent=accent;
+  const mascotEl=document.getElementById("headerMascot");
+  if(mascotEl)mascotEl.textContent=mascot;
+  document.querySelectorAll("[data-accent-choice]").forEach(b=>{const on=b.dataset.accentChoice===accent;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");});
+  document.querySelectorAll("[data-mascot-choice]").forEach(b=>{const on=b.dataset.mascotChoice===mascot;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");});
+  const msg=document.getElementById("personalizeMsg");
+  if(msg)msg.textContent=(accent==="orange"&&mascot==="🏀")?"Orange + 🏀 Basketball is your look right now — the classic #14 style!":ACCENT_NAMES[accent]+" + "+mascot+" "+MASCOT_NAMES[mascot]+" is your look right now — looking great, #14! 🎨";
+}
+function setAccent(accent){if(!ACCENTS.includes(accent))return;state.accent=accent;save();applyPersonalization();}
+function setMascot(mascot){if(!MASCOTS.includes(mascot))return;state.mascot=mascot;save();applyPersonalization();}
+/* ================= SOUND + DRIBBLE BEAT (cycle 26) ================= */
+function soundIsOn(){return state.soundOn!==false;}
+function applySoundSetting(){
+  const on=soundIsOn();
+  document.querySelectorAll("[data-sound-toggle]").forEach(b=>{b.setAttribute("aria-pressed",on?"true":"false");b.textContent=on?"🔊 Sound: On":"🔇 Sound: Off";});
+}
+function setSoundOn(on){
+  state.soundOn=!!on;save();applySoundSetting();
+  const msg=document.getElementById("metroMsg");
+  if(msg)msg.textContent=on?"🔊 Sound is ON — clicks and beeps will play.":"🔇 Sound is OFF — no clicks or beeps anywhere. The beat light still flashes so you can dribble along quietly!";
+}
+/* ================= DRIBBLE BEAT METRONOME (cycle 26) ================= */
+let metroRunning=false,metroInterval=null,metroBeat=0,metroPulseTimer=null;
+function metroBpm(){return (typeof state.metronomeBpm==="number"&&isFinite(state.metronomeBpm))?Math.min(180,Math.max(40,Math.floor(state.metronomeBpm))):80;}
+function ensureAudioCtx(){
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;
+  timerAudioCtx=timerAudioCtx||new AC();
+  if(timerAudioCtx.state==="suspended")timerAudioCtx.resume();
+  return timerAudioCtx;
+}
+function metroClick(accent){
+  if(!soundIsOn())return;
+  try{
+    const ctx=ensureAudioCtx();if(!ctx)return;
+    const t=ctx.currentTime,osc=ctx.createOscillator(),gain=ctx.createGain();
+    osc.type="square";osc.frequency.setValueAtTime(accent?1320:880,t);
+    gain.gain.setValueAtTime(0.0001,t);gain.gain.exponentialRampToValueAtTime(accent?0.14:0.10,t+0.005);gain.gain.exponentialRampToValueAtTime(0.0001,t+0.07);
+    osc.connect(gain);gain.connect(ctx.destination);osc.start(t);osc.stop(t+0.08);
+  }catch(e){/* Click is a nice-to-have — the flashing light still keeps the beat. */}
+}
+function renderMetronome(){
+  const bpm=metroBpm();
+  const disp=document.getElementById("metroBpmDisplay");if(disp)disp.textContent=String(bpm);
+  const slider=document.getElementById("metroBpm");if(slider&&+slider.value!==bpm)slider.value=String(bpm);
+  document.querySelectorAll("[data-metro-preset]").forEach(c=>{const on=+c.dataset.metroPreset===bpm;c.classList.toggle("on",on);c.setAttribute("aria-pressed",on?"true":"false");});
+  const cnt=document.getElementById("metroBeatCount");if(cnt)cnt.textContent=String(metroBeat);
+  const btn=document.getElementById("metroStartStop");if(btn)btn.textContent=metroRunning?"⏹️ Stop the Beat":"▶️ Start the Beat";
+}
+function metroTick(){
+  metroBeat++;
+  const accent=(metroBeat-1)%4===0;
+  const dot=document.getElementById("metroDot");
+  if(dot){dot.classList.add("on");dot.classList.toggle("accent",accent);if(metroPulseTimer)clearTimeout(metroPulseTimer);metroPulseTimer=setTimeout(()=>{dot.classList.remove("on");},Math.min(160,Math.max(80,(60000/metroBpm())*0.35)));}
+  metroClick(accent);
+  const cnt=document.getElementById("metroBeatCount");if(cnt)cnt.textContent=String(metroBeat);
+}
+function metroStartInterval(){if(metroInterval)clearInterval(metroInterval);metroInterval=setInterval(metroTick,60000/metroBpm());}
+function startMetronome(){
+  try{ensureAudioCtx();}catch(e){}
+  metroBeat=0;metroRunning=true;metroStartInterval();renderMetronome();
+  const msg=document.getElementById("metroMsg");if(msg)msg.textContent=soundIsOn()?"🥁 The beat is ON at "+metroBpm()+" BPM — dribble every click! Beat 1 of each group of 4 clicks louder.":"🥁 The beat is ON at "+metroBpm()+" BPM — sound is off, so follow the flashing light and dribble every flash!";
+}
+function stopMetronome(){
+  metroRunning=false;if(metroInterval){clearInterval(metroInterval);metroInterval=null;}
+  if(metroPulseTimer){clearTimeout(metroPulseTimer);metroPulseTimer=null;}
+  const dot=document.getElementById("metroDot");if(dot)dot.classList.remove("on");
+  renderMetronome();
+  const msg=document.getElementById("metroMsg");if(msg)msg.textContent="Beat stopped after "+metroBeat+" beat"+(metroBeat===1?"":"s")+" — great dribbling, #14! Tap Start to go again.";
+}
+function setMetronomeBpm(bpm){
+  bpm=Math.floor(+bpm);
+  if(!bpm||bpm<40||bpm>180)return;
+  state.metronomeBpm=bpm;save();
+  if(metroRunning)metroStartInterval();
+  renderMetronome();
+}
 function totals(s){return s.sessions.reduce((t,x)=>({sessions:s.sessions.length,makes:t.makes+(+x.makes||0),attempts:t.attempts+(+x.attempts||0),minutes:t.minutes+(+x.minutes||0),rebounds:t.rebounds+(+x.rebounds||0),assists:t.assists+(+x.assists||0)}),{sessions:0,makes:0,attempts:0,minutes:0,rebounds:0,assists:0});}
 function sessionAverages(s){const t=totals(s);const n=t.sessions;const avg=v=>n?v/n:0;return{sessions:n,makes:t.makes,attempts:t.attempts,minutes:t.minutes,rebounds:t.rebounds,assists:t.assists,avgMakes:avg(t.makes),avgAttempts:avg(t.attempts),avgMinutes:avg(t.minutes),avgRebounds:avg(t.rebounds),avgAssists:avg(t.assists),makesPerMin:t.minutes?t.makes/t.minutes:0};}
 function fmtAvg(v){return (Math.round(v*10)/10).toFixed(1);}
@@ -401,8 +885,8 @@ function streakOf(sessions){
 /* ================= NAV ================= */
 function goto(v){
   document.querySelectorAll(".view").forEach(el=>el.classList.toggle("active",el.id==="view-"+v));
-  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.goto===v));
-  window.scrollTo({top:0});render();
+  document.querySelectorAll("nav button").forEach(b=>{const on=b.dataset.goto===v;b.classList.toggle("on",on);if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
+  window.scrollTo({top:0,behavior:"instant"});render();
 }
 document.addEventListener("click",e=>{const b=e.target.closest("[data-goto]");if(b)goto(b.dataset.goto);});
 /* ================= RENDER ================= */
@@ -445,16 +929,69 @@ function renderWeeklyPlan(){
   if(WEEK_PLAN.includes(effective))sel.value=effective;
   $("weeklyPlanCustom").value=hasPlanOverride(editingDow)&&!WEEK_PLAN.includes(effective)?effective:"";
 }
+/* ================= WEEKLY GOALS (cycle 18) ================= */
+let editingWeeklyGoals=false;
+function weeklyGoalProgress(){
+  const wk=weekRange(new Date());
+  const sessions=(Array.isArray(state.sessions)?state.sessions:[]).filter(x=>x&&typeof x.date==="string"&&x.date>=wk.startKey&&x.date<=wk.endKey);
+  const minutes=sessions.reduce((n,x)=>n+(+x.minutes||0),0);
+  const goals=normalizeWeeklyGoals(state.weeklyGoals);
+  return{wk,count:sessions.length,minutes,goals,
+    sessionsPct:goals.sessions?Math.min(100,Math.round(sessions.length/goals.sessions*100)):0,
+    minutesPct:goals.minutes?Math.min(100,Math.round(minutes/goals.minutes*100)):0,
+    sessionsMet:sessions.length>=goals.sessions,minutesMet:minutes>=goals.minutes};
+}
+function renderWeeklyGoals(){
+  const view=$("weeklyGoalsView");if(!view)return;
+  const p=weeklyGoalProgress();
+  const fmtD=d=>d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  let cheer;
+  if(p.sessionsMet&&p.minutesMet)cheer="🏆 GOALS CRUSHED! You hit BOTH goals this week — superstar work, #14! 🎉";
+  else if(p.count===0&&p.minutes===0)cheer="Fresh week, fresh start! Log your first practice and watch these bars grow. You've got this! 💪";
+  else if(p.sessionsMet||p.minutesMet)cheer="⭐ One goal done — so close on the other one! Keep going, #14!";
+  else cheer="Great start — every practice moves your bars a little closer. Keep showing up! 🌱";
+  view.innerHTML=`<p class="small muted" style="margin:4px 0 10px">📅 Week of ${escapeHtml(fmtD(p.wk.start))} – ${escapeHtml(fmtD(p.wk.end))} (Monday–Sunday)</p>
+  <div class="bar-row"><span>🏀 Practices</span><div class="bar" role="progressbar" aria-label="Practices this week: ${p.count} of ${p.goals.sessions}" aria-valuenow="${p.sessionsPct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p.sessionsPct}%"></i></div><b>${p.count}/${p.goals.sessions}</b></div>
+  <div class="bar-row"><span>⏱️ Minutes</span><div class="bar" role="progressbar" aria-label="Minutes this week: ${p.minutes} of ${p.goals.minutes}" aria-valuenow="${p.minutesPct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${p.minutesPct}%"></i></div><b>${p.minutes}/${p.goals.minutes}</b></div>
+  <p class="small" role="status" style="margin:10px 0">${escapeHtml(cheer)}</p>
+  <button type="button" class="btn ghost full" id="weeklyGoalsEditBtn">✏️ Change My Goals</button>`;
+  const editor=$("weeklyGoalsEditor");if(!editor)return;
+  editor.hidden=!editingWeeklyGoals;
+  if(editingWeeklyGoals){
+    const sIn=$("weeklyGoalSessions"),mIn=$("weeklyGoalMinutes");
+    if(sIn&&document.activeElement!==sIn)sIn.value=p.goals.sessions;
+    if(mIn&&document.activeElement!==mIn)mIn.value=p.goals.minutes;
+  }
+}
+/* ================= SEARCH (cycle 23) ================= */
+let drillSearchQuery="",learnSearchQuery="";
+function searchWords(q){return String(q||"").toLowerCase().split(/\s+/).filter(Boolean);}
+function matchesSearch(haystack,q){const words=searchWords(q);if(!words.length)return true;const hay=String(haystack||"").toLowerCase();return words.every(w=>hay.includes(w));}
+function drillHaystack(d){return [d.name,d.builds,d.reps,SKILLS[d.skill]||d.skill,"level "+d.level,...(Array.isArray(d.cues)?d.cues:[])].join(" ");}
+function lessonHaystack(l){return [l.title,l.body,l.strand==="iq"?"Basketball IQ":l.strand==="legends"?"Legends":"School Skills"].join(" ");}
+function quizHaystack(qz){return [qz.title,...(Array.isArray(qz.qs)?qz.qs:[]).flatMap(q=>[q.q,...(Array.isArray(q.a)?q.a:[]),q.why||""])].join(" ");}
+function isFavorite(id){return Array.isArray(state.favoriteDrills)&&state.favoriteDrills.includes(id);}
+function toggleFavorite(id){
+  if(!DRILLS.some(d=>d.id===id))return;
+  state.favoriteDrills=isFavorite(id)?state.favoriteDrills.filter(x=>x!==id):[...(Array.isArray(state.favoriteDrills)?state.favoriteDrills:[]),id];
+  save();renderDrills(currentSkill);
+}
 function renderDrills(filter){
-  const list=DRILLS.filter(d=>!filter||filter==="all"||d.skill===filter);
-  $("drillList").innerHTML=list.map(d=>`<article class="card drill ${d.skill}">
+  const favs=filter==="favorites";
+  const base=DRILLS.filter(d=>!filter||filter==="all"||(favs?isFavorite(d.id):d.skill===filter));
+  const list=base.filter(d=>matchesSearch(drillHaystack(d),drillSearchQuery));
+  const searching=!!String(drillSearchQuery||"").trim();
+  const dMsg=$("drillSearchMsg");if(dMsg)dMsg.textContent=searching?`🔍 Found ${list.length} drill${list.length===1?"":"s"} for “${String(drillSearchQuery).trim()}” — tap Clear Search to see them all again.`:"Type to find a drill fast — search works together with the skill buttons below!";
+  const dClear=$("drillSearchClear");if(dClear)dClear.hidden=!searching;
+  $("drillList").innerHTML=list.map(d=>{const fav=isFavorite(d.id);return `<article class="card drill ${d.skill}">
+    <button type="button" class="favbtn ${fav?"on":""}" data-fav="${d.id}" aria-pressed="${fav?"true":"false"}" aria-label="${fav?"Remove":"Add"} ${escapeHtml(d.name)} ${fav?"from":"to"} favorites">${fav?"⭐ Favorite":"☆ Favorite"}</button>
     <span class="tag">${SKILLS[d.skill]} • Level ${d.level} • ~${d.mins} min</span>
     <h3 style="margin-top:8px">${escapeHtml(d.name)}</h3>
     <p class="muted" style="margin:4px 0"><b style="color:var(--ink)">Builds:</b> ${escapeHtml(d.builds)}</p>
     <p style="margin:4px 0"><b>Reps:</b> ${escapeHtml(d.reps)}</p>
     <p style="margin:8px 0 0"><b>Form cues:</b></p>
     <ul class="cues">${d.cues.map(c=>`<li>${escapeHtml(c)}</li>`).join("")}</ul>
-  </article>`).join("")||`<p class="muted">No drills here yet.</p>`;
+  </article>`;}).join("")||(searching?`<p class="muted">No drills match “${escapeHtml(String(drillSearchQuery).trim())}” here. Try a shorter word — like “layup”, “defense”, or “dribble” — or tap <b style="color:var(--ink)">✖ Clear Search</b> above. You’ve got this, #14! 🔍</p>`:favs?`<p class="muted">No favorites yet — tap <b style="color:var(--ink)">☆ Favorite</b> on any drill you love, and it will wait for you right here, #14! ⭐</p>`:`<p class="muted">No drills here yet.</p>`);
 }
 function renderLogForm(){
   $("fDrills").innerHTML=DRILLS.map(d=>`<label class="check"><input type="checkbox" name="drill" value="${d.id}"><span>${escapeHtml(d.name)} <span class="muted small">(${SKILLS[d.skill]})</span></span></label>`).join("");
@@ -463,13 +1000,14 @@ function renderLogForm(){
     ${(x.rebounds!==undefined||x.assists!==undefined)?`<br><span class="small">🧲 ${+x.rebounds||0} rebounds • 🤝 ${+x.assists||0} assists</span>`:""}
     <br><span class="muted small">${x.drills.length?x.drills.map(id=>{const d=DRILLS.find(dr=>dr.id===id);return d?escapeHtml(d.name):id;}).join(", "):"Free play"}</span>
     ${x.notes?`<br><span class="small">${escapeHtml(x.notes)}</span>`:""}
-    <br><button class="btn ghost" style="min-height:40px;padding:6px 14px;margin-top:8px" data-del="${x.id}">Delete</button></div>`).join("")
+    <br><button type="button" class="btn ghost" style="min-height:48px;padding:6px 14px;margin-top:8px" data-del="${x.id}" aria-label="Delete practice from ${escapeHtml(x.date)}">Delete</button></div>`).join("")
     :`<p class="muted">Nothing logged yet — your first practice goes here.</p>`;
 }
 let fcOrder=FLASHCARDS.map((_,i)=>i),fcPos=0,fcFlipped=false;
 function currentFlashcard(){return FLASHCARDS[fcOrder[((fcPos%fcOrder.length)+fcOrder.length)%fcOrder.length]];}
 function renderFlashcards(filter){
   const area=$("flashcardArea");if(!area)return;
+  if(String(learnSearchQuery||"").trim()){area.innerHTML="";return;}
   const show=filter==="all"||filter==="school";
   if(!show){area.innerHTML="";return;}
   const card=currentFlashcard();if(!card){area.innerHTML="";return;}
@@ -496,6 +1034,7 @@ function renderFlashcards(filter){
 let storyState={answered:{},score:0};
 function renderStory(filter){
   const area=$("storyArea");if(!area)return;
+  if(String(learnSearchQuery||"").trim()){area.innerHTML="";return;}
   const show=filter==="all"||filter==="school";
   if(!show){area.innerHTML="";return;}
   const done=Object.keys(storyState.answered).length===STORY.qs.length;
@@ -524,21 +1063,115 @@ function renderLearn(filter){
   renderStory(filter);
   const showLessons=filter==="all"||filter==="iq"||filter==="school"||filter==="legends";
   const showQuiz=filter==="all"||filter==="quiz";
-  $("lessonList").innerHTML=showLessons?LESSONS.filter(l=>filter==="all"||l.strand===filter).map(l=>{
+  const searching=!!String(learnSearchQuery||"").trim();
+  const lessonsFiltered=LESSONS.filter(l=>(filter==="all"||l.strand===filter)&&matchesSearch(lessonHaystack(l),learnSearchQuery));
+  const quizzesFiltered=QUIZZES.filter(qz=>matchesSearch(quizHaystack(qz),learnSearchQuery));
+  const lMsg=$("learnSearchMsg");if(lMsg)lMsg.textContent=searching?`🔍 Found ${(showLessons?lessonsFiltered.length:0)} lesson${(showLessons?lessonsFiltered.length:0)===1?"":"s"} and ${(showQuiz?quizzesFiltered.length:0)} quiz${(showQuiz?quizzesFiltered.length:0)===1?"":"zes"} for “${String(learnSearchQuery).trim()}”. Flashcards and Story Time come back when you clear the search.`:"Type to find a lesson or quiz fast — search works together with the buttons below!";
+  const lClear=$("learnSearchClear");if(lClear)lClear.hidden=!searching;
+  $("lessonList").innerHTML=showLessons?(lessonsFiltered.length?lessonsFiltered.map(l=>{
     const done=state.lessonsDone.includes(l.id);
     return `<article class="card"><span class="tag">${l.strand==="iq"?"🏀 Basketball IQ":l.strand==="legends"?"👑 Legends":"📚 School Skills"}</span>
     <h3 style="margin-top:8px">${l.icon} ${escapeHtml(l.title)} ${done?"✅":""}</h3>
     <div class="lesson-body">${escapeHtml(l.body)}</div>
     <button class="btn ${done?"ghost":"teal"} full" style="margin-top:12px" data-lesson="${l.id}">${done?"Finished — tap to undo":"I Finished This Lesson ✅"}</button></article>`;
-  }).join(""):"";
-  $("quizArea").innerHTML=showQuiz?QUIZZES.map(qz=>`<article class="card">
+  }).join(""):(searching?`<p class="muted">No lessons match “${escapeHtml(String(learnSearchQuery).trim())}” here. Try a shorter word — like “Miller”, “rebound”, or “math” — or tap <b style="color:var(--ink)">✖ Clear Search</b> above. 🔍</p>`:`<p class="muted">No lessons here yet.</p>`)):"";
+  $("quizArea").innerHTML=showQuiz?(quizzesFiltered.length?quizzesFiltered.map(qz=>`<article class="card">
     <span class="tag">❓ Quiz • Best score: ${state.quizBest[qz.id]||0}/${qz.qs.length}</span>
     <h3 style="margin-top:8px">${qz.icon} ${escapeHtml(qz.title)}</h3>
     <div id="quiz-${qz.id}">${qz.qs.map((q,qi)=>`<div class="quiz-q"><p><b>Q${qi+1}.</b> ${escapeHtml(q.q)}</p>
       ${q.a.map((a,ai)=>`<button type="button" data-quiz="${qz.id}" data-q="${qi}" data-a="${ai}">${escapeHtml(a)}</button>`).join("")}
       <p class="small muted" id="why-${qz.id}-${qi}"></p></div>`).join("")}</div>
     <p class="big" style="font-size:18px" id="score-${qz.id}"></p>
-    <button class="btn ghost full" data-retake="${qz.id}">Start / Retake Quiz</button></article>`).join(""):"";
+    <button class="btn ghost full" data-retake="${qz.id}">Start / Retake Quiz</button></article>`).join(""):(searching?`<p class="muted">No quizzes match “${escapeHtml(String(learnSearchQuery).trim())}”. Try a word from a quiz question — or tap <b style="color:var(--ink)">✖ Clear Search</b> above. 🔍</p>`:"")):"";
+  renderChampionship(filter);
+}
+/* ================= QUIZ CHAMPIONSHIP (cycle 30) ================= */
+let champState={active:false,questions:[],answered:{},score:0,finished:false};
+function buildChampQuestions(){
+  const day=Math.floor(Date.now()/86400000);
+  const perQuiz=QUIZZES.map((qz,zi)=>{
+    const start=((day+zi)%qz.qs.length+qz.qs.length)%qz.qs.length;
+    const picks=[];
+    for(let k=0;k<2&&k<qz.qs.length;k++){
+      const q=qz.qs[(start+k)%qz.qs.length];
+      picks.push({quizId:qz.id,quizTitle:qz.title,icon:qz.icon,q:q.q,a:q.a,c:q.c,why:q.why});
+    }
+    return picks;
+  });
+  const mixed=[];
+  for(let k=0;k<2;k++)perQuiz.forEach(p=>{if(p[k])mixed.push(p[k]);});
+  const rot=mixed.length?((day%mixed.length)+mixed.length)%mixed.length:0;
+  return mixed.slice(rot).concat(mixed.slice(0,rot));
+}
+function champDateLabel(dateStr){
+  if(!dateStr)return "";
+  const d=new Date(String(dateStr)+"T12:00:00");
+  return isNaN(d.getTime())?"":d.toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"});
+}
+function champCertHTML(score,dateStr){
+  const when=champDateLabel(dateStr);
+  return `<div class="champ-cert" role="status">
+    <div aria-hidden="true" style="font-size:34px">🏆</div>
+    <p class="cert-big">Quiz Championship Certificate</p>
+    <p style="margin:4px 0">This certificate celebrates</p>
+    <p class="cert-name">Ne'ala</p>
+    <div><span class="cert-num">14</span></div>
+    <p style="margin:6px 0">Jersey #14 scored <b>${score} out of 10</b> in the Quiz Championship${when?` on ${escapeHtml(when)}`:""} — a true Hoops Scholar performance! 🧠🏀</p>
+    <button type="button" class="btn teal full" data-champ-print="${score}" data-champ-date="${escapeHtml(dateStr||"")}">🖨️ Print My Certificate</button>
+  </div>`;
+}
+function renderPrintCertificate(score,dateStr){
+  const el=$("printCertificate");if(!el)return;
+  const when=champDateLabel(dateStr);
+  el.innerHTML=`<div class="cert-box">
+    <p class="cert-kicker">Ne'ala Hoops • Quiz Championship</p>
+    <h1 class="cert-title">🏆 Certificate of Achievement 🏆</h1>
+    <p class="cert-line">This certificate proudly celebrates</p>
+    <p class="cert-name">Ne'ala</p>
+    <p class="cert-num">#14</p>
+    <p class="cert-line">for scoring <b>${score} out of 10</b> in the Quiz Championship — answering questions from every quiz in the app${when?` on ${escapeHtml(when)}`:""}. Brain work is basketball work: knowing the game makes you a stronger player. Way to go, #14!</p>
+    <p class="cert-line">Signed, Coach Dad 💛</p>
+  </div>`;
+}
+function champScoreText(){
+  const s=champState.score,n=champState.questions.length||10;
+  if(s===n)return `You scored ${s}/${n}! PERFECT CHAMPION! 🏆🏆`;
+  if(s>=8)return `You scored ${s}/${n}! CHAMPION! 🏆 You earned a certificate — print it below!`;
+  if(s>=5)return `You scored ${s}/${n}! Strong run, #14 — 8 or more earns the certificate. One more try? 💪`;
+  return `You scored ${s}/${n}! Every champion starts with a first run — peek at the lessons and try again. You've got this! 🌟`;
+}
+function renderChampionship(filter){
+  const area=$("champArea");if(!area)return;
+  const showQuiz=filter==="all"||filter==="quiz";
+  const searching=!!String(learnSearchQuery||"").trim();
+  if(!showQuiz||searching){area.innerHTML="";return;}
+  const best=state.champBest||0;
+  if(champState.active&&champState.questions.length){
+    const qs=champState.questions;
+    area.innerHTML=`<article class="card champ-card">
+    <span class="tag">🏆 Championship Run • Best score: ${best}/10</span>
+    <h3 style="margin-top:8px">🏆 Quiz Championship</h3>
+    <p class="muted small" style="margin:4px 0 10px">10 questions — 2 from EVERY quiz in the app. Take your time, #14. Score 8 or more to earn your printable certificate!</p>
+    <div>${qs.map((q,qi)=>`<div class="quiz-q"><p><b>Q${qi+1}.</b> <span class="tag">${q.icon} ${escapeHtml(q.quizTitle)}</span></p><p style="margin:4px 0">${escapeHtml(q.q)}</p>
+      ${q.a.map((a,ai)=>`<button type="button" data-champ-q="${qi}" data-champ-a="${ai}">${escapeHtml(a)}</button>`).join("")}
+      <p class="small muted" id="champ-why-${qi}"></p></div>`).join("")}</div>
+    <p class="big" style="font-size:18px" id="champScore">${champState.finished?escapeHtml(champScoreText()):""}</p>
+    <div id="champCert">${champState.finished&&champState.score>=8?champCertHTML(champState.score,dayStr(new Date())):""}</div>
+    <button class="btn ghost full" data-champ-start="1">↺ Start a New Championship Run</button></article>`;
+    qs.forEach((q,qi)=>{
+      if(champState.answered[qi]===undefined)return;
+      document.querySelectorAll(`[data-champ-q="${qi}"]`).forEach(b=>{if(+b.dataset.champA===q.c)b.classList.add("right");else if(champState.answered[qi]===+b.dataset.champA)b.classList.add("wrong");});
+      const why=$("champ-why-"+qi);if(why)why.textContent=(champState.answered[qi]===q.c?"✅ Yes! ":"Not quite — ")+q.why;
+    });
+    return;
+  }
+  area.innerHTML=`<article class="card champ-card">
+    <span class="tag">🏆 Championship • Best score: ${best}/10</span>
+    <h3 style="margin-top:8px">🏆 Quiz Championship</h3>
+    <p>The BIG test, #14! One championship run mixes <b>10 questions — 2 from every quiz</b>: Basketball IQ, the Miller Legends, Math, Positions, and Rules. All the brain work you have been practicing, in one game.</p>
+    <p class="small muted">Score <b style="color:var(--ink)">8 or more</b> and you earn a printable championship certificate with your name and #14 on it. Miss a few? No stress — learn from the answers and run it back anytime. Champions retake! 💪</p>
+    <div id="champCert">${best>=8?champCertHTML(best,state.champBestDate):""}</div>
+    <button class="btn full" data-champ-start="1" style="margin-top:12px">🏆 Start the Championship</button></article>`;
 }
 let calSelectedDate=null;
 function localDayKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
@@ -596,13 +1229,173 @@ function renderProgress(){
   $("chart").innerHTML=last.length?last.map(x=>`<div class="bar-row"><span>${x.date.slice(5)}</span><div class="bar"><i style="width:${Math.min(100,(x.makes/Math.max(1,...last.map(y=>y.makes)))*100)}%"></i></div><b>${x.makes} 🏀</b></div>`).join("")+`<p class="small muted">Bar = shots made that day. Longer bar = more makes. Watch them grow!</p>`:`<p class="muted">Log a practice and your chart appears here.</p>`;
   $("badgeList").innerHTML=BADGES.map(b=>{const got=b.test(state);return `<div class="badge ${got?"":"locked"}" style="padding:8px 0;border-bottom:1px solid var(--line)"><div class="ic">${b.icon}</div><div><b>${escapeHtml(b.name)}</b> ${got?"✅":"🔒"}<br><span class="muted small">${escapeHtml(b.desc)}</span></div></div>`;}).join("");
 }
-function render(){renderHome();renderWeeklyPlan();renderDrills(currentSkill);renderLogForm();renderLearn(currentLearn);renderProgress();}
+/* ================= DAD'S CORNER (cycle 13) ================= */
+const TIPOFF_DATE=new Date(2026,10,21); // Turkey Tip-Off — Saturday, Nov 21, 2026
+const GEAR_KEYS=["ball","hoop","shoes"];
+function tipoffDays(){const now=new Date();const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());return Math.round((TIPOFF_DATE-today)/86400000);}
+function renderTipoff(){
+  const days=tipoffDays();
+  const home=$("tipoffCountdown"),dad=$("tipoffDad");
+  let big,line;
+  if(days>1){big=`<p style="margin:4px 0"><span class="big">${days}</span> <b>days to go!</b></p><p class="muted" style="margin:4px 0">Plenty of time to practice, learn, and get those shoes ready. One day at a time, #14! 💪</p>`;line=`🦃 Turkey Tip-Off: <b>${days} days</b> to go (Nov 21, 2026).`;}
+  else if(days===1){big=`<p class="big" style="margin:4px 0">Tomorrow! 🎉</p><p class="muted" style="margin:4px 0">The Turkey Tip-Off is tomorrow, November 21. Lay out your gear tonight, get good sleep, and have FUN out there, #14!</p>`;line="🦃 Turkey Tip-Off is <b>tomorrow</b> (Nov 21, 2026) — gear ready tonight!";}
+  else if(days===0){big=`<p class="big" style="margin:4px 0">It's TODAY! 🦃🏀</p><p class="muted" style="margin:4px 0">Turkey Tip-Off day — November 21, 2026. Be brave, cheer for your teammates, and enjoy every minute, #14!</p>`;line="🦃 Turkey Tip-Off is <b>TODAY</b> (Nov 21, 2026). Let's go, #14!";}
+  else{big=`<p class="big" style="font-size:22px;margin:4px 0">The big day happened! 🦃🏀</p><p class="muted" style="margin:4px 0">The Turkey Tip-Off was November 21, 2026. However it went, showing up and playing makes you a real player, #14. Keep practicing!</p>`;line="🦃 The Turkey Tip-Off was Nov 21, 2026 — it's in the books!";}
+  if(home)home.innerHTML=big;
+  if(dad)dad.innerHTML=line;
+}
+const PACKING_KEYS=["jersey","shorts","shoes","water","snack","ball","hair"];
+function renderPacking(){
+  const pc=state.packingCheck||{};
+  let n=0;
+  document.querySelectorAll("[data-pack]").forEach(cb=>{
+    const on=!!pc[cb.dataset.pack];cb.checked=on;if(on)n++;
+    const lab=cb.closest(".check");if(lab)lab.classList.toggle("done",on);
+  });
+  const msg=$("packingMsg");
+  if(msg)msg.textContent=n===0?"Nothing packed yet — start with your jersey #14 tonight, no rush.":n>=PACKING_KEYS.length?"Bag is PACKED! 🎉 Everything is ready — sleep well and play brave, #14!":`${n} of ${PACKING_KEYS.length} packed — great getting ready, #14! 🎒`;
+}
+function renderGear(){
+  const gc=state.gearCheck||{};
+  let n=0;
+  document.querySelectorAll("[data-gear]").forEach(cb=>{
+    const on=!!gc[cb.dataset.gear];cb.checked=on;if(on)n++;
+    const lab=cb.closest(".check");if(lab)lab.classList.toggle("done",on);
+  });
+  const msg=$("gearMsg");
+  if(msg)msg.textContent=n===0?"Nothing checked yet — no rush, one thing at a time.":n>=GEAR_KEYS.length?"All gear ready! 🎉 Nothing left to pack — just play, #14!":`${n} of ${GEAR_KEYS.length} ready — nice work getting set up! 👍`;
+}
+/* ================= COACH NOTES + PRINTABLE WEEKLY SUMMARY (cycle 15) ================= */
+let editingCoachNoteId=null;
+function weekRange(ref){
+  const base=new Date(ref.getFullYear(),ref.getMonth(),ref.getDate());
+  const dow=base.getDay();
+  const start=new Date(base);start.setDate(base.getDate()+(dow===0?-6:1-dow));
+  const end=new Date(start);end.setDate(start.getDate()+6);
+  return{start,end,startKey:localDayKey(start),endKey:localDayKey(end)};
+}
+function sortedCoachNotes(){return [...(Array.isArray(state.coachNotes)?state.coachNotes:[])].sort((a,b)=>String(b.date).localeCompare(String(a.date))||b.id-a.id);}
+function renderCoachNotes(){
+  const list=$("coachNotesList");
+  if(list){
+    const notes=sortedCoachNotes();
+    list.innerHTML=notes.length?notes.map(n=>`<div class="coach-note"><b>${escapeHtml(n.date)}</b>${editingCoachNoteId===n.id?` <span class="tag">Editing ✏️</span>`:""}<div style="white-space:pre-line;margin-top:6px;line-height:1.5">${escapeHtml(n.text)}</div><div class="note-actions"><button type="button" class="btn ghost" data-coach-edit="${n.id}" aria-label="Edit coach note from ${escapeHtml(n.date)}">✏️ Edit</button><button type="button" class="btn ghost" data-coach-del="${n.id}" aria-label="Delete coach note from ${escapeHtml(n.date)}">🗑️ Delete</button></div></div>`).join(""):`<p class="muted small">No coach notes yet — jot down the first thing you notice at her next practice, Coach. 📝</p>`;
+  }
+  renderPrintSummary();
+}
+function renderPrintSummary(){
+  const el=$("printSummary");if(!el)return;
+  const wk=weekRange(new Date());
+  const weekSessions=(Array.isArray(state.sessions)?state.sessions:[]).filter(x=>x&&typeof x.date==="string"&&x.date>=wk.startKey&&x.date<=wk.endKey).sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id);
+  const wt=totals({sessions:weekSessions});
+  const all=totals(state);
+  const fmtD=d=>d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric",year:"numeric"});
+  const drillNames=x=>(Array.isArray(x.drills)&&x.drills.length)?x.drills.map(id=>{const d=DRILLS.find(dr=>dr.id===id);return d?d.name:id;}).join(", "):"Free play";
+  el.innerHTML=`<h1>🏀 Ne'ala Hoops #14 — Weekly Summary</h1>
+  <p class="muted">Week of ${escapeHtml(fmtD(wk.start))} to ${escapeHtml(fmtD(wk.end))} (Monday–Sunday) • Printed ${escapeHtml(new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"}))}</p>
+  <h2>This Week's Stats</h2>
+  <table><tr><th>Practices</th><th>Minutes</th><th>Shots Made</th><th>Shots Tried</th><th>Shooting %</th><th>Rebounds</th><th>Assists</th></tr>
+  <tr><td>${wt.sessions}</td><td>${wt.minutes}</td><td>${wt.makes}</td><td>${wt.attempts}</td><td>${wt.attempts?fgPct(wt)+"%":"—"}</td><td>${wt.rebounds}</td><td>${wt.assists}</td></tr></table>
+  <h2>Sessions This Week</h2>
+  ${weekSessions.length?`<table><tr><th>Date</th><th>Minutes</th><th>Shots</th><th>Reb / Ast</th><th>Drills &amp; Notes</th></tr>${weekSessions.map(x=>`<tr><td>${escapeHtml(x.date)}</td><td>${+x.minutes||0}</td><td>${+x.makes||0} / ${+x.attempts||0}</td><td>${+x.rebounds||0} / ${+x.assists||0}</td><td>${escapeHtml(drillNames(x))}${x.notes?` — ${escapeHtml(x.notes)}`:""}</td></tr>`).join("")}</table>`:`<p>No practices logged this week yet — every week is a fresh start, #14!</p>`}
+  <h2>Season So Far</h2>
+  <p>${all.sessions} practice${all.sessions===1?"":"s"} • ${all.minutes} minutes • ${all.makes} shots made${all.attempts?` (${fgPct(all)}%)`:""} • 🧲 ${all.rebounds} rebounds • 🤝 ${all.assists} assists</p>
+  <p>Keep showing up, #14 — great work adds up! 💛</p>`;
+}
+function backupCounts(d){
+  const t=totals(d);
+  return [
+    ["Practices logged",d.sessions.length],
+    ["Total minutes",t.minutes],
+    ["Shots made",t.makes],
+    ["Lessons finished",(d.lessonsDone||[]).length],
+    ["Flashcards known",(d.flashcardsKnown||[]).length],
+    ["Story best score",(d.storyBest||0)+" / "+STORY.qs.length],
+    ["Quiz Championship best",(d.champBest||0)+" / 10"],
+    ["Week days Dad & Ne'ala customized",Object.keys(d.weeklyPlanOverrides||{}).length],
+    ["Gear items checked",GEAR_KEYS.filter(k=>d.gearCheck&&d.gearCheck[k]).length+" / "+GEAR_KEYS.length],
+    ["Game-day packing checked",PACKING_KEYS.filter(k=>d.packingCheck&&d.packingCheck[k]).length+" / "+PACKING_KEYS.length],
+    ["Coach notes",(d.coachNotes||[]).length],
+    ["Games logged",(d.games||[]).length],
+    ["Weekly goal",(()=>{const g=normalizeWeeklyGoals(d.weeklyGoals);return g.sessions+" practices • "+g.minutes+" minutes";})()]
+  ];
+}
+/* ================= DATA SAFETY (cycle 28) ================= */
+function formatStorageSize(bytes){
+  if(!(bytes>0))return "0 bytes";
+  if(bytes<1024)return bytes+" bytes";
+  if(bytes<1024*1024)return (Math.round(bytes/102.4)/10).toFixed(1)+" KB";
+  return (Math.round(bytes/(1024*102.4))/10).toFixed(1)+" MB";
+}
+function storageSizeBytes(){
+  try{
+    const raw=localStorage.getItem(KEY)||JSON.stringify(state);
+    return new Blob([KEY+raw]).size;
+  }catch(e){
+    try{return (KEY+JSON.stringify(state)).length;}catch(e2){return 0;}
+  }
+}
+function renderDataSafety(){
+  const el=document.getElementById("dataSafety");if(!el)return;
+  const size=formatStorageSize(storageSizeBytes());
+  const sessions=Array.isArray(state.sessions)?state.sessions.length:0;
+  const last=state.lastExportAt?new Date(state.lastExportAt):null;
+  const lastValid=last&&!isNaN(last.getTime());
+  let backupLine="";
+  if(!lastValid){
+    backupLine=`<p class="small" style="margin:6px 0 0">⚠️ <b>No backup yet.</b> Export a backup above so Ne'ala's progress stays safe — it only takes a tap, Coach!</p>`;
+  }else{
+    const days=Math.floor((Date.now()-last.getTime())/86400000);
+    const when=last.toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
+    if(days>7){
+      backupLine=`<p class="small" style="margin:6px 0 0">⚠️ <b>Backup check:</b> your last backup was ${days} day${days===1?"":"s"} ago (${escapeHtml(when)}) — that's more than a week. Tap <b>⬇️ Export Backup</b> above for a fresh one, Coach!</p>`;
+    }else if(days<=0){
+      backupLine=`<p class="small" style="margin:6px 0 0">✅ <b>Last backup:</b> today (${escapeHtml(when)}) — nice and fresh. Great protecting, Coach!</p>`;
+    }else{
+      backupLine=`<p class="small" style="margin:6px 0 0">✅ <b>Last backup:</b> ${days} day${days===1?"":"s"} ago (${escapeHtml(when)}) — still fresh, within the last week. Nice work, Coach!</p>`;
+    }
+  }
+  el.innerHTML=`<p class="small" style="margin:0">💾 <b>Storage used:</b> ${escapeHtml(size)} on this device for Ne'ala's saved progress (${sessions} practice${sessions===1?"":"s"} logged).</p>${backupLine}`;
+}
+function sessionFingerprint(s){
+  if(!s)return "";
+  const drills=Array.isArray(s.drills)?[...s.drills].sort().join(","):"";
+  return [String(s.date||""),+s.minutes||0,drills,+s.makes||0,+s.attempts||0,+s.rebounds||0,+s.assists||0,String(s.notes||"").trim()].join("|");
+}
+function isDuplicateOfPrevious(entry){
+  const list=Array.isArray(state.sessions)?state.sessions:[];
+  if(!list.length||!entry)return false;
+  return sessionFingerprint(list[list.length-1])===sessionFingerprint(entry);
+}
+/* ================= GAME LOG LITE (cycle 21) ================= */
+function gameTotalsOf(games){const list=Array.isArray(games)?games:[];return list.reduce((t,g)=>({games:list.length,points:t.points+(+g.points||0),rebounds:t.rebounds+(+g.rebounds||0),assists:t.assists+(+g.assists||0),minutes:t.minutes+(+g.minutes||0)}),{games:0,points:0,rebounds:0,assists:0,minutes:0});}
+function sortedGames(){return [...(Array.isArray(state.games)?state.games:[])].sort((a,b)=>String(b.date).localeCompare(String(a.date))||b.id-a.id);}
+function renderGames(){
+  const totalsEl=$("gameTotals"),listEl=$("gameList");if(!totalsEl||!listEl)return;
+  const games=sortedGames(),t=gameTotalsOf(games);
+  if(!t.games){totalsEl.innerHTML=`<p class="muted">No games logged yet — your season totals will appear here after your first game.</p>`;listEl.innerHTML=`<p class="muted small">No games yet. Your first real game goes here — you can do this, #14!</p>`;return;}
+  const per=v=>fmtAvg(t.games?v/t.games:0);
+  totalsEl.innerHTML=`<div class="grid">
+    <div class="stat"><b>${t.games}</b><span>Games</span></div>
+    <div class="stat"><b>${t.points}</b><span>Points</span></div>
+    <div class="stat"><b>${t.rebounds}</b><span>Rebounds</span></div>
+    <div class="stat"><b>${t.assists}</b><span>Assists</span></div>
+  </div>
+  <p class="small muted" style="margin:10px 0 0">⏱️ ${t.minutes} total minutes played • Per game averages: ${per(t.points)} points • ${per(t.rebounds)} rebounds • ${per(t.assists)} assists. Totals add up all by themselves as you log games — great season building, #14! 🏀</p>`;
+  listEl.innerHTML=games.map(g=>`<div class="coach-note"><b>${escapeHtml(g.date)}</b> — vs ${escapeHtml(g.opponent)}<div style="margin-top:6px;line-height:1.5">🏀 ${+g.points||0} points • 🧲 ${+g.rebounds||0} rebounds • 🤝 ${+g.assists||0} assists • ⏱️ ${+g.minutes||0} minutes</div><div class="note-actions"><button type="button" class="btn ghost" data-game-del="${g.id}" aria-label="Delete game against ${escapeHtml(g.opponent)} on ${escapeHtml(g.date)}">🗑️ Delete Game</button></div></div>`).join("");
+}
+function render(){applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();renderHome();renderTipoff();renderPacking();renderWeeklyPlan();renderWeeklyGoals();renderDrills(currentSkill);renderLogForm();renderGames();renderLearn(currentLearn);renderProgress();renderGear();renderCoachNotes();renderDataSafety();applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();}
 function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 /* ================= INTERACTIONS ================= */
 let currentSkill="all",currentLearn="all";
-$("skillChips").innerHTML=[["all","⭐ All Skills"],...Object.entries(SKILLS)].map(([k,v])=>`<button class="chip ${k==="all"?"on":""}" data-skill="${k}">${v}</button>`).join("");
-$("skillChips").addEventListener("click",e=>{const b=e.target.closest("[data-skill]");if(!b)return;currentSkill=b.dataset.skill;document.querySelectorAll("#skillChips .chip").forEach(c=>c.classList.toggle("on",c===b));renderDrills(currentSkill);});
-$("learnChips").addEventListener("click",e=>{const b=e.target.closest("[data-learn]");if(!b)return;currentLearn=b.dataset.learn;document.querySelectorAll("#learnChips .chip").forEach(c=>c.classList.toggle("on",c===b));renderLearn(currentLearn);});
+$("skillChips").innerHTML=[["all","⭐ All Skills"],["favorites","⭐ Favorites"],...Object.entries(SKILLS)].map(([k,v])=>`<button type="button" class="chip ${k==="all"?"on":""}" data-skill="${k}" aria-pressed="${k==="all"?"true":"false"}" aria-label="Filter drills: ${escapeHtml(v)}">${v}</button>`).join("");
+$("drillList").addEventListener("click",e=>{const b=e.target.closest("[data-fav]");if(!b)return;toggleFavorite(b.dataset.fav);});
+$("skillChips").addEventListener("click",e=>{const b=e.target.closest("[data-skill]");if(!b)return;currentSkill=b.dataset.skill;document.querySelectorAll("#skillChips .chip").forEach(c=>{const on=c===b;c.classList.toggle("on",on);c.setAttribute("aria-pressed",on?"true":"false");});renderDrills(currentSkill);});
+$("learnChips").addEventListener("click",e=>{const b=e.target.closest("[data-learn]");if(!b)return;currentLearn=b.dataset.learn;document.querySelectorAll("#learnChips .chip").forEach(c=>{const on=c===b;c.classList.toggle("on",on);c.setAttribute("aria-pressed",on?"true":"false");});renderLearn(currentLearn);});
+$("drillSearch").addEventListener("input",e=>{drillSearchQuery=e.target.value;renderDrills(currentSkill);});
+$("drillSearchClear").addEventListener("click",()=>{drillSearchQuery="";$("drillSearch").value="";renderDrills(currentSkill);$("drillSearch").focus();});
+$("learnSearch").addEventListener("input",e=>{learnSearchQuery=e.target.value;renderLearn(currentLearn);});
+$("learnSearchClear").addEventListener("click",()=>{learnSearchQuery="";$("learnSearch").value="";renderLearn(currentLearn);$("learnSearch").focus();});
 $("flashcardArea").addEventListener("click",e=>{
   const b=e.target.closest("[data-fc-action]");if(!b)return;
   const action=b.dataset.fcAction;
@@ -629,13 +1422,45 @@ $("storyArea").addEventListener("click",e=>{
     if(storyState.score>(state.storyBest||0)){state.storyBest=storyState.score;save();}
   }
 });
+/* ================= QUIZ CHAMPIONSHIP ACTIONS (cycle 30) ================= */
+$("champArea").addEventListener("click",e=>{
+  const start=e.target.closest("[data-champ-start]");
+  if(start){champState={active:true,questions:buildChampQuestions(),answered:{},score:0,finished:false};renderChampionship(currentLearn);const area=$("champArea");if(area)area.scrollIntoView({block:"nearest",behavior:scrollBehavior()});return;}
+  const printBtn=e.target.closest("[data-champ-print]");
+  if(printBtn){
+    const score=+printBtn.dataset.champPrint||0;
+    const dateStr=printBtn.dataset.champDate||state.champBestDate||dayStr(new Date());
+    renderPrintCertificate(score,dateStr);
+    document.body.classList.add("printing-cert");
+    const cleanup=()=>document.body.classList.remove("printing-cert");
+    window.addEventListener("afterprint",cleanup,{once:true});
+    window.print();
+    setTimeout(cleanup,1000);
+    return;
+  }
+  const qb=e.target.closest("[data-champ-q]");if(!qb)return;
+  if(!champState.active||champState.finished)return;
+  const qi=+qb.dataset.champQ,q=champState.questions[qi];if(!q)return;
+  if(champState.answered[qi]!==undefined)return;
+  const chosen=+qb.dataset.champA,correct=chosen===q.c;
+  champState.answered[qi]=chosen;if(correct)champState.score++;
+  qb.classList.add(correct?"right":"wrong");
+  document.querySelectorAll(`[data-champ-q="${qi}"]`).forEach(b=>{if(+b.dataset.champA===q.c)b.classList.add("right");});
+  const why=$("champ-why-"+qi);if(why)why.textContent=(correct?"✅ Yes! ":"Not quite — ")+q.why;
+  if(Object.keys(champState.answered).length===champState.questions.length){
+    champState.finished=true;
+    const sc=$("champScore");if(sc)sc.textContent=champScoreText();
+    if(champState.score>(state.champBest||0)){state.champBest=champState.score;state.champBestDate=dayStr(new Date());save();}
+    if(champState.score>=8){const cert=$("champCert");if(cert)cert.innerHTML=champCertHTML(champState.score,dayStr(new Date()));}
+  }
+});
 /* ================= WEEKLY PLAN EDITOR ================= */
 $("weeklyPlanList").addEventListener("click",e=>{
   const b=e.target.closest("[data-weekday]");if(!b)return;
   editingDow=+b.dataset.weekday;
   renderWeeklyPlan();
   $("weeklyPlanMsg").textContent="Pick a plan or write your own for "+DAY_NAMES[editingDow]+", then tap Save. You can change it anytime!";
-  const ed=$("weeklyPlanEditor");if(ed)ed.scrollIntoView({block:"nearest",behavior:"smooth"});
+  const ed=$("weeklyPlanEditor");if(ed)ed.scrollIntoView({block:"nearest",behavior:scrollBehavior()});
 });
 $("weeklyPlanSave").addEventListener("click",()=>{
   if(editingDow===null)return;
@@ -654,6 +1479,27 @@ $("weeklyPlanReset").addEventListener("click",()=>{
   save();editingDow=null;render();
 });
 $("weeklyPlanCancel").addEventListener("click",()=>{editingDow=null;renderWeeklyPlan();});
+/* ================= WEEKLY GOALS ACTIONS (cycle 18) ================= */
+$("weeklyGoalsView").addEventListener("click",e=>{
+  const b=e.target.closest("#weeklyGoalsEditBtn");if(!b)return;
+  editingWeeklyGoals=true;renderWeeklyGoals();
+  const msg=$("weeklyGoalsMsg");if(msg)msg.textContent="Pick your goals for the week, then tap Save My Goals. You can change them anytime!";
+  const ed=$("weeklyGoalsEditor");if(ed)ed.scrollIntoView({block:"nearest",behavior:scrollBehavior()});
+});
+$("weeklyGoalsSave").addEventListener("click",()=>{
+  const sessions=Math.floor(+$("weeklyGoalSessions").value);
+  const minutes=Math.floor(+$("weeklyGoalMinutes").value);
+  if(!sessions||sessions<1||sessions>14){$("weeklyGoalsMsg").textContent="⚠️ Practices goal needs to be a whole number from 1 to 14.";return;}
+  if(!minutes||minutes<5||minutes>300){$("weeklyGoalsMsg").textContent="⚠️ Minutes goal needs to be a whole number from 5 to 300.";return;}
+  state.weeklyGoals={sessions,minutes};
+  save();editingWeeklyGoals=false;render();
+  const view=$("weeklyGoalsView");if(view)view.scrollIntoView({block:"nearest",behavior:scrollBehavior()});
+});
+$("weeklyGoalsReset").addEventListener("click",()=>{
+  state.weeklyGoals={...WEEKLY_GOALS_DEFAULT};
+  save();editingWeeklyGoals=false;render();
+});
+$("weeklyGoalsCancel").addEventListener("click",()=>{editingWeeklyGoals=false;renderWeeklyGoals();});
 document.addEventListener("click",e=>{
   const del=e.target.closest("[data-del]");if(del){state.sessions=state.sessions.filter(x=>x.id!==+del.dataset.del);save();render();return;}
   const les=e.target.closest("[data-lesson]");if(les){const id=les.dataset.lesson;state.lessonsDone=state.lessonsDone.includes(id)?state.lessonsDone.filter(x=>x!==id):[...state.lessonsDone,id];save();render();return;}
@@ -689,7 +1535,7 @@ function showBadgeCelebration(newBadges){
   const emojis=["⭐","🎉","🏀","✨","🌟"];
   const colors=["#fbbf24","#ff7a1a","#2dd4bf","#f472b6","#4ade80"];
   let pieces="";
-  for(let i=0;i<28;i++){
+  for(let i=0;i<(prefersReducedMotion()?0:28);i++){
     const left=(i*37)%100,delay=((i*13)%10)/10,dur=(2.1+((i*7)%6)/10).toFixed(1);
     if(i%3===0)pieces+=`<span class="piece square" style="left:${left}%;background:${colors[i%colors.length]};animation-delay:${delay}s;animation-duration:${dur}s"></span>`;
     else pieces+=`<span class="piece" style="left:${left}%;animation-delay:${delay}s;animation-duration:${dur}s">${emojis[i%emojis.length]}</span>`;
@@ -704,15 +1550,58 @@ $("logForm").addEventListener("submit",e=>{
   if(attempts&&makes>attempts){$("logMsg").textContent="⚠️ Makes can't be more than tries — check those numbers.";return;}
   const beforeBadges=unlockedBadgeIds();
   const rebounds=Math.max(0,+($("fRebounds").value||0)),assists=Math.max(0,+($("fAssists").value||0));
-  state.sessions.push({id:Date.now(),date:$("fDate").value,minutes:+$("fMinutes").value,drills:[...document.querySelectorAll('input[name="drill"]:checked')].map(x=>x.value),makes,attempts,rebounds,assists,notes:$("fNotes").value.trim()});
+  const entry={id:Date.now(),date:$("fDate").value,minutes:+$("fMinutes").value,drills:[...document.querySelectorAll('input[name="drill"]:checked')].map(x=>x.value),makes,attempts,rebounds,assists,notes:$("fNotes").value.trim()};
+  const isDuplicate=isDuplicateOfPrevious(entry);
+  state.sessions.push(entry);
   save();
   const newBadges=BADGES.filter(b=>!beforeBadges.has(b.id)&&unlockedBadgeIds().has(b.id));
   e.target.reset();$("fDate").value=dayStr(new Date());
+  if(isDuplicate){
+    render();
+    $("logMsg").textContent="⚠️ Heads up, #14 — this practice looks exactly like your previous one (same date, minutes, shots, drills, and notes), so it might be a double-tap. It was saved anyway — nothing was blocked. If it was a mistake, tap Delete on one copy in Your practices below. 👍";
+    return;
+  }
   $("logMsg").textContent=newBadges.length?`🏅 Saved — and you unlocked ${newBadges.length} new badge${newBadges.length>1?"s":""}! Great work, #14!`:"✅ Saved! Check your Dashboard and Progress — great work, #14!";
   render();goto("home");
   showBadgeCelebration(newBadges);
 });
 $("resetBtn").addEventListener("click",()=>{if(confirm("Reset ALL Ne'ala Hoops data on this device? This cannot be undone.")){localStorage.removeItem(KEY);state=load();render();alert("Data reset. Fresh start, #14!");}});
+/* ================= CHALLENGE MODES (cycle 10) ================= */
+function prefillLog(pref){
+  goto("log");
+  // goto() re-renders (and rebuilds the drill checkboxes), so set fields AFTER it
+  if(pref.minutes!=null)$("fMinutes").value=pref.minutes;
+  if(pref.makes!=null)$("fMakes").value=pref.makes;
+  if(pref.attempts!=null)$("fAttempts").value=pref.attempts;
+  document.querySelectorAll('input[name="drill"]').forEach(cb=>{cb.checked=Array.isArray(pref.drills)&&pref.drills.includes(cb.value);});
+  if(pref.notes!=null)$("fNotes").value=pref.notes;
+  $("logMsg").textContent="🎮 Challenge filled in for you! Check the numbers, then tap Save Practice ✅";
+  const form=$("logForm");if(form)form.scrollIntoView({block:"start",behavior:scrollBehavior()});
+}
+function aroundDoneCount(){return document.querySelectorAll("[data-around-spot]:checked").length;}
+function renderAroundProgress(){
+  const n=aroundDoneCount();const el=$("aroundProgress");if(!el)return;
+  document.querySelectorAll("[data-around-spot]").forEach(cb=>{const lab=cb.closest(".challenge-spot");if(lab)lab.classList.toggle("done",cb.checked);});
+  el.textContent=n===5?"🎉 All 5 spots done — Around the Driveway complete! Amazing work, #14! Now log it below!":n===0?"0 of 5 spots done — pick your first spot and start shooting! 🎯":`${n} of 5 spots done — ${5-n} to go. Keep that B.E.E.F. form, #14! 💪`;
+}
+$("aroundSpots").addEventListener("change",renderAroundProgress);
+$("aroundResetBtn").addEventListener("click",()=>{document.querySelectorAll("[data-around-spot]").forEach(cb=>{cb.checked=false;});renderAroundProgress();});
+$("aroundLogBtn").addEventListener("click",()=>{
+  const n=aroundDoneCount();
+  const minutes=Math.max(1,+($("aroundMinutes").value||10));
+  const attemptsVal=$("aroundAttempts").value;
+  prefillLog({minutes,makes:n*3,attempts:attemptsVal===""?null:Math.max(0,+attemptsVal||0),drills:["bankshot","beef"],notes:`Challenge: Around the Driveway — ${n}/5 spots done!`});
+});
+$("beatSetTimerBtn").addEventListener("click",()=>{
+  if(typeof setTimerMinutes==="function")setTimerMinutes(2);
+  $("beatMsg").textContent="⏱️ Practice Timer is set to 2 minutes — scroll up to the timer, tap Start, and go!";
+  const t=$("practiceTimer");if(t)t.scrollIntoView({block:"start",behavior:scrollBehavior()});
+});
+$("beatLogBtn").addEventListener("click",()=>{
+  const makesVal=$("beatMakes").value,attemptsVal=$("beatAttempts").value;
+  if(makesVal===""&&attemptsVal===""){$("beatMsg").textContent="⚠️ Add your makes first — how many shots went in during the 2 minutes?";return;}
+  prefillLog({minutes:2,makes:Math.max(0,+(makesVal||0)),attempts:attemptsVal===""?null:Math.max(0,+attemptsVal||0),drills:["14for14","beef"],notes:`Challenge: Beat the Clock — ${Math.max(0,+(makesVal||0))} makes in 2 minutes!`});
+});
 /* ================= PRACTICE TIMER ================= */
 let timerTotalSec=14*60,timerRemainingSec=timerTotalSec,timerRunning=false,timerEndAt=0,timerInterval=null,timerAudioCtx=null;
 function timerFormat(sec){sec=Math.max(0,Math.ceil(sec));return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");}
@@ -724,6 +1613,7 @@ function renderTimer(){
 }
 function timerStopInterval(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
 function timerBeep(){
+  if(!soundIsOn())return;
   try{
     const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
     timerAudioCtx=timerAudioCtx||new AC();
@@ -755,12 +1645,12 @@ function setTimerMinutes(min,quiet){
 }
 $("timerPresets").addEventListener("click",e=>{
   const b=e.target.closest("[data-timer-preset]");if(!b)return;
-  document.querySelectorAll("#timerPresets .chip").forEach(c=>c.classList.toggle("on",c===b));
+  document.querySelectorAll("#timerPresets .chip").forEach(c=>{const on=c===b;c.classList.toggle("on",on);c.setAttribute("aria-pressed",on?"true":"false");});
   setTimerMinutes(+b.dataset.timerPreset);
 });
 $("timerSetCustom").addEventListener("click",()=>{
   if(setTimerMinutes($("timerCustom").value)){
-    document.querySelectorAll("#timerPresets .chip").forEach(c=>c.classList.remove("on"));
+    document.querySelectorAll("#timerPresets .chip").forEach(c=>{c.classList.remove("on");c.setAttribute("aria-pressed","false");});
   }
 });
 $("timerStartPause").addEventListener("click",()=>{
@@ -779,8 +1669,275 @@ $("timerReset").addEventListener("click",()=>{
   $("timerMsg").textContent="Timer reset. Ready when you are!";
 });
 renderTimer();
+/* ================= DAD'S CORNER ACTIONS (cycle 13) ================= */
+$("gearList").addEventListener("change",e=>{
+  const cb=e.target.closest("[data-gear]");if(!cb)return;
+  state.gearCheck=state.gearCheck||{};
+  state.gearCheck[cb.dataset.gear]=cb.checked;
+  save();renderGear();
+});
+$("packingList").addEventListener("change",e=>{
+  const cb=e.target.closest("[data-pack]");if(!cb)return;
+  state.packingCheck=state.packingCheck||{};
+  state.packingCheck[cb.dataset.pack]=cb.checked;
+  save();renderPacking();
+});
+/* ================= COACH NOTES ACTIONS (cycle 15) ================= */
+function resetCoachNoteForm(){
+  editingCoachNoteId=null;
+  $("coachNoteText").value="";
+  $("coachNoteDate").value=dayStr(new Date());
+  $("coachNoteCancelBtn").hidden=true;
+  $("coachNoteSaveBtn").textContent="📝 Save Note";
+}
+$("coachNoteSaveBtn").addEventListener("click",()=>{
+  const text=$("coachNoteText").value.trim();
+  const date=$("coachNoteDate").value||dayStr(new Date());
+  if(!text){$("coachNoteMsg").textContent="⚠️ Write a note first, Coach — even one sentence counts.";return;}
+  state.coachNotes=Array.isArray(state.coachNotes)?state.coachNotes:[];
+  const wasEditing=editingCoachNoteId!==null;
+  if(wasEditing){
+    const n=state.coachNotes.find(x=>x.id===editingCoachNoteId);
+    if(n){n.date=date;n.text=text;}
+  }else{
+    state.coachNotes.push({id:Date.now(),date,text});
+  }
+  save();resetCoachNoteForm();renderCoachNotes();
+  $("coachNoteMsg").textContent=wasEditing?"✅ Coach note updated — nice remembering, Coach!":"✅ Coach note saved — just for you, Coach!";
+});
+$("coachNoteCancelBtn").addEventListener("click",()=>{
+  resetCoachNoteForm();renderCoachNotes();
+  $("coachNoteMsg").textContent="Edit cancelled — your notes are just as they were. 👍";
+});
+$("coachNotesList").addEventListener("click",e=>{
+  const editBtn=e.target.closest("[data-coach-edit]");
+  const delBtn=e.target.closest("[data-coach-del]");
+  if(editBtn){
+    const n=(state.coachNotes||[]).find(x=>x.id===+editBtn.dataset.coachEdit);
+    if(!n)return;
+    editingCoachNoteId=n.id;
+    $("coachNoteDate").value=n.date;
+    $("coachNoteText").value=n.text;
+    $("coachNoteCancelBtn").hidden=false;
+    $("coachNoteSaveBtn").textContent="✅ Save Edited Note";
+    $("coachNoteMsg").textContent="✏️ Editing your note from "+n.date+" — change anything, then tap Save Edited Note.";
+    renderCoachNotes();
+    $("coachNoteText").focus();
+    $("coachNoteText").scrollIntoView({block:"nearest",behavior:scrollBehavior()});
+    return;
+  }
+  if(delBtn){
+    const id=+delBtn.dataset.coachDel;
+    const n=(state.coachNotes||[]).find(x=>x.id===id);
+    if(!n)return;
+    if(!confirm("Delete this coach note from "+n.date+"? This cannot be undone."))return;
+    state.coachNotes=state.coachNotes.filter(x=>x.id!==id);
+    if(editingCoachNoteId===id)resetCoachNoteForm();
+    save();renderCoachNotes();
+    $("coachNoteMsg").textContent="🗑️ Coach note deleted.";
+  }
+});
+/* ================= GAME LOG ACTIONS (cycle 21) ================= */
+$("gameForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const opponent=$("gOpponent").value.trim();
+  const date=$("gDate").value||dayStr(new Date());
+  const minutes=Math.floor(+$("gMinutes").value);
+  if(!opponent){$("gameMsg").textContent="⚠️ Who did you play? Write the opponent's name first.";return;}
+  if(!minutes||minutes<1||minutes>120){$("gameMsg").textContent="⚠️ Minutes played needs to be a whole number from 1 to 120.";return;}
+  state.games=Array.isArray(state.games)?state.games:[];
+  state.games.push({id:Date.now(),date,opponent:opponent.slice(0,60),points:Math.max(0,Math.floor(+$("gPoints").value||0)),rebounds:Math.max(0,Math.floor(+$("gRebounds").value||0)),assists:Math.max(0,Math.floor(+$("gAssists").value||0)),minutes});
+  save();e.target.reset();$("gDate").value=dayStr(new Date());renderGames();
+  $("gameMsg").textContent="✅ Game saved! Your season totals just grew — way to play, #14! 🏀";
+});
+$("gameList").addEventListener("click",e=>{
+  const delBtn=e.target.closest("[data-game-del]");if(!delBtn)return;
+  const id=+delBtn.dataset.gameDel;
+  const g=(state.games||[]).find(x=>x.id===id);if(!g)return;
+  if(!confirm("Delete this game vs "+g.opponent+" ("+g.date+")? This cannot be undone."))return;
+  state.games=state.games.filter(x=>x.id!==id);
+  save();renderGames();
+  $("gameMsg").textContent="🗑️ Game deleted — season totals updated.";
+});
+$("printSummaryBtn").addEventListener("click",()=>{
+  renderPrintSummary();
+  window.print();
+});
+/* ================= SHARE THE WEEK (cycle 27) ================= */
+function buildShareWeekText(){
+  const wk=weekRange(new Date());
+  const weekSessions=(Array.isArray(state.sessions)?state.sessions:[]).filter(x=>x&&typeof x.date==="string"&&x.date>=wk.startKey&&x.date<=wk.endKey);
+  const wt=totals({sessions:weekSessions});
+  const earned=BADGES.filter(b=>{try{return !!b.test(state);}catch(e){return false;}});
+  const fmtD=d=>d.toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
+  const fgLine=wt.attempts?`${wt.makes} of ${wt.attempts} shots made (${fgPct(wt)}% FG%)`:`${wt.makes} shots made (no shots tried counted yet)`;
+  const badgeLine=earned.length?earned.map(b=>`${b.icon} ${b.name}`).join(", "):"No badges yet — the first one is coming soon!";
+  const lines=[
+    "🏀 Ne'ala Hoops #14 — This Week!",
+    `📅 Week of ${fmtD(wk.start)} – ${fmtD(wk.end)} (Monday–Sunday)`,
+    `🏀 Practices: ${wt.sessions}`,
+    `⏱️ Minutes practiced: ${wt.minutes}`,
+    `🎯 Shots: ${fgLine}`,
+    `🧲 Rebounds: ${wt.rebounds} • 🤝 Assists: ${wt.assists}`,
+    `🏅 Badges earned: ${earned.length} of ${BADGES.length}${earned.length?" — "+badgeLine:" — "+badgeLine}`,
+    wt.sessions?"Great work adding up, #14 — keep showing up! 💪":"A fresh week to get started — every practice counts, #14! 💪"
+  ];
+  return lines.join("\n");
+}
+function showShareFallback(text){
+  const box=$("shareWeekFallback"),ta=$("shareWeekText");
+  if(ta)ta.value=text;
+  if(box)box.hidden=false;
+  if(ta){try{ta.focus();ta.select();}catch(e){}}
+}
+$("shareWeekBtn").addEventListener("click",async()=>{
+  const text=buildShareWeekText();
+  const msg=$("shareWeekMsg");
+  let copied=false;
+  try{
+    if(navigator.clipboard&&typeof navigator.clipboard.writeText==="function"){
+      await navigator.clipboard.writeText(text);
+      copied=true;
+    }
+  }catch(e){copied=false;}
+  if(!copied){
+    /* Clipboard blocked or unavailable — fall back to a selectable textarea (and one legacy copy attempt). */
+    showShareFallback(text);
+    try{
+      const ta=$("shareWeekText");
+      if(ta){ta.select();copied=!!(document.execCommand&&document.execCommand("copy"));}
+    }catch(e){copied=false;}
+    if(msg)msg.textContent=copied?"✅ Copied! Paste Ne'ala's weekly summary wherever you like, Coach. 📤":"📋 Your weekly summary is in the box below — select all and copy it to share, Coach.";
+    return;
+  }
+  const box=$("shareWeekFallback");if(box)box.hidden=true;
+  if(msg)msg.textContent="✅ Copied! Paste Ne'ala's weekly summary wherever you like, Coach. 📤";
+});
+/* ================= LOG EXPORT — CSV (cycle 24) ================= */
+function csvCell(v){const s=String(v??"");return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
+function buildPracticeCsv(sessions){
+  const rows=[["Date","Minutes","Shots Made","Shots Tried","Shooting %","Rebounds","Assists","Drills","Notes"].join(",")];
+  const sorted=[...(Array.isArray(sessions)?sessions:[])].filter(x=>x&&typeof x.date==="string").sort((a,b)=>a.date.localeCompare(b.date)||((+a.id||0)-(+b.id||0)));
+  sorted.forEach(x=>{
+    const makes=+x.makes||0,attempts=+x.attempts||0;
+    const pct=attempts?Math.round(makes/attempts*100)+"%":"";
+    const drills=(Array.isArray(x.drills)&&x.drills.length)?x.drills.map(id=>{const d=DRILLS.find(dr=>dr.id===id);return d?d.name:id;}).join("; "):"Free play";
+    rows.push([x.date,+x.minutes||0,makes,attempts,pct,+x.rebounds||0,+x.assists||0,drills,x.notes||""].map(csvCell).join(","));
+  });
+  return rows.join("\r\n")+"\r\n";
+}
+$("csvExportBtn").addEventListener("click",()=>{
+  const sessions=Array.isArray(state.sessions)?state.sessions:[];
+  if(!sessions.length){$("csvExportMsg").textContent="No practices logged yet — log a practice first, then this button will download her whole history, #14! 📓";return;}
+  try{
+    const csv=buildPracticeCsv(sessions);
+    const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;a.download="neala-hoops-practice-history-"+dayStr(new Date())+".csv";
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    $("csvExportMsg").textContent=`✅ Downloaded! ${sessions.length} practice${sessions.length===1?"":"s"} in one spreadsheet file — open it in Sheets or Excel anytime, Coach. 📋`;
+  }catch(err){
+    $("csvExportMsg").textContent="Hmm, the CSV download didn't work on this browser. Nothing was changed — try again, Coach.";
+  }
+});
+$("exportBtn").addEventListener("click",()=>{
+  try{
+    state.lastExportAt=new Date().toISOString();save();
+    const payload={app:"Ne'ala Hoops #14",kind:"neala-hoops-backup",version:1,exportedAt:state.lastExportAt,data:state};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;a.download="neala-hoops-backup-"+dayStr(new Date())+".json";
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+    $("backupMsg").textContent="✅ Backup saved! Keep that file somewhere safe — it has all of Ne'ala's progress in it.";
+    renderDataSafety();
+  }catch(err){
+    $("backupMsg").textContent="Hmm, the export didn't work on this browser. Nothing was changed — try again, Coach.";
+  }
+});
+let pendingImport=null;
+$("importBtn").addEventListener("click",()=>{$("importFile").click();});
+$("importFile").addEventListener("change",e=>{
+  const file=e.target.files&&e.target.files[0];
+  e.target.value="";
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    let parsed=null;
+    try{parsed=JSON.parse(String(reader.result||""));}catch(err){parsed=null;}
+    const candidate=parsed&&(parsed.data!==undefined?parsed.data:parsed);
+    const clean=normalizeData(candidate);
+    if(!clean){
+      pendingImport=null;$("importPreview").hidden=true;
+      $("backupMsg").textContent="⚠️ That file doesn't look like a Ne'ala Hoops backup — nothing was changed.";
+      return;
+    }
+    pendingImport=clean;
+    const bRows=backupCounts(clean),cRows=backupCounts(state);
+    $("importPreviewBody").innerHTML=`<table class="plan"><tr><th></th><th>Backup file</th><th>This device now</th></tr>${bRows.map((r,i)=>`<tr><td>${escapeHtml(r[0])}</td><td><b>${escapeHtml(String(r[1]))}</b></td><td>${escapeHtml(String(cRows[i][1]))}</td></tr>`).join("")}</table>`;
+    $("importMsg").textContent="";
+    $("importPreview").hidden=false;
+    $("backupMsg").textContent="👀 Backup loaded — check the preview, then choose below. Nothing has changed yet.";
+    $("importPreview").scrollIntoView({behavior:scrollBehavior(),block:"nearest"});
+  };
+  reader.onerror=()=>{$("backupMsg").textContent="⚠️ Couldn't read that file — nothing was changed.";};
+  reader.readAsText(file);
+});
+$("importCancelBtn").addEventListener("click",()=>{
+  pendingImport=null;$("importPreview").hidden=true;
+  $("backupMsg").textContent="Okay — import cancelled. Everything on this device stays just as it was. 👍";
+});
+$("importConfirmBtn").addEventListener("click",()=>{
+  if(!pendingImport){$("importPreview").hidden=true;return;}
+  state=pendingImport;pendingImport=null;
+  save();render();
+  $("importPreview").hidden=true;
+  $("backupMsg").textContent="✅ Backup imported! This device now matches the backup file. Great work, #14!";
+});
+/* ================= PWA (cycle 11) ================= */
+/* Defensive by design: only on http(s), only when the repo files exist,
+   and every failure is silent — the single file must always work standalone. */
+(function registerPwa(){
+  try{
+    if(!("serviceWorker" in navigator))return;
+    if(location.protocol!=="https:"&&location.protocol!=="http:")return;
+    fetch("manifest.json",{method:"HEAD",cache:"no-store"}).then(function(manifestRes){
+      if(!manifestRes||!manifestRes.ok)return null;
+      return fetch("sw.js",{method:"HEAD",cache:"no-store"});
+    }).then(function(swRes){
+      if(!swRes||!swRes.ok)return;
+      const manifestLink=document.createElement("link");
+      manifestLink.rel="manifest";manifestLink.href="manifest.json";
+      document.head.appendChild(manifestLink);
+      const iconLink=document.createElement("link");
+      iconLink.rel="apple-touch-icon";iconLink.href="icon.svg";
+      document.head.appendChild(iconLink);
+      return navigator.serviceWorker.register("sw.js");
+    }).catch(function(){/* Repo PWA files unavailable — standalone file use is unaffected. */});
+  }catch(e){/* PWA is a bonus — never let it break the app. */}
+})();
+/* ================= COMFY READING CONTROLS (cycle 12) ================= */
+$("textSizeToggle").addEventListener("click",()=>{setTextSize(state.textSize==="big"?"normal":"big");});
+$("textSizeChips").addEventListener("click",e=>{const b=e.target.closest("[data-textsize]");if(!b)return;setTextSize(b.dataset.textsize);});
+$("calmChips").addEventListener("click",e=>{const b=e.target.closest("[data-calm]");if(!b)return;setCalmMode(b.dataset.calm==="on");});
+applyTextSize();applyCalmMode();
+/* ================= MAKE IT HERS CONTROLS (cycle 25) ================= */
+$("accentChips").addEventListener("click",e=>{const b=e.target.closest("[data-accent-choice]");if(!b)return;setAccent(b.dataset.accentChoice);});
+$("mascotChips").addEventListener("click",e=>{const b=e.target.closest("[data-mascot-choice]");if(!b)return;setMascot(b.dataset.mascotChoice);});
+applyPersonalization();
+/* ================= DRIBBLE BEAT CONTROLS (cycle 26) ================= */
+document.querySelectorAll("[data-sound-toggle]").forEach(b=>b.addEventListener("click",()=>setSoundOn(!soundIsOn())));
+$("metroStartStop").addEventListener("click",()=>{metroRunning?stopMetronome():startMetronome();});
+$("metroBpm").addEventListener("input",e=>{setMetronomeBpm(e.target.value);});
+$("metroPresets").addEventListener("click",e=>{const b=e.target.closest("[data-metro-preset]");if(!b)return;setMetronomeBpm(+b.dataset.metroPreset);const msg=$("metroMsg");if(msg)msg.textContent="🥁 Beat speed set to "+metroBpm()+" BPM — tap Start the Beat when you're ready!";});
+applySoundSetting();renderMetronome();
 /* ================= INIT ================= */
 $("fDate").value=dayStr(new Date());
+$("gDate").value=dayStr(new Date());
+$("coachNoteDate").value=dayStr(new Date());
 render();
 </script>
 </body>
