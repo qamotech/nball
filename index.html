@@ -169,6 +169,14 @@ body.calm .btn:active,body.calm .week-day:active,body.calm .flashcard:active,bod
 body[data-accent="teal"]{--orange:#2dd4bf;--orange2:#5eead4}
 body[data-accent="pink"]{--orange:#f472b6;--orange2:#f9a8d4}
 body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
+body[data-accent="blue"]{--orange:#38bdf8;--orange2:#bae6fd}
+.art{margin:0 0 12px}.art svg{width:100%;height:auto;display:block;border-radius:14px;border:1px solid var(--line)}
+body.kitty header{border-bottom-color:#f472b6;background:linear-gradient(135deg,#0c2438,#2a1030)}
+body.kitty .jersey{position:relative;border-color:#f9a8d4}
+body.kitty .jersey::after{content:"🎀";position:absolute;top:-14px;right:-10px;font-size:20px;transform:rotate(14deg)}
+body.kitty .card{border-color:#33507a}
+body.kitty .card.hot{border-color:#f472b6}
+body.kitty h2::after{content:" 🎀";font-size:.75em}
 .accent-dot{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid #0006;vertical-align:-3px;margin-right:7px}
 .mascot-emoji{font-size:22px;vertical-align:-3px;margin-right:6px}
 @media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}}
@@ -188,10 +196,16 @@ body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
 <!-- ============ HOME ============ -->
 <section class="view active" id="view-home">
   <div class="card hot">
+    <div class="art" data-art="hero"></div>
     <h2 id="greeting">Hey Ne'ala! 👋</h2>
     <p id="todayLine" class="muted">Loading today's plan…</p>
     <div id="todayPlan"></div>
     <button class="btn full" data-goto="train">Start Training →</button>
+  </div>
+  <div class="card" id="affirmCard">
+    <h3>💙 Today's Affirmation</h3>
+    <p id="affirmText" class="big" style="font-size:19px;margin:6px 0">You belong on this court.</p>
+    <p class="small muted" style="margin:0">A new one every day — say it out loud before you play. There are 14, one for every day of two weeks!</p>
   </div>
   <div class="card" id="weeklyPlanCard">
     <h3>📅 Your Week — Tap a Day to Change It</h3>
@@ -240,7 +254,11 @@ body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
       <button type="button" class="chip" data-accent-choice="teal" aria-pressed="false"><span class="accent-dot" style="background:#2dd4bf"></span>Teal</button>
       <button type="button" class="chip" data-accent-choice="pink" aria-pressed="false"><span class="accent-dot" style="background:#f472b6"></span>Pink</button>
       <button type="button" class="chip" data-accent-choice="gold" aria-pressed="false"><span class="accent-dot" style="background:#fbbf24"></span>Gold</button>
+      <button type="button" class="chip" data-accent-choice="blue" aria-pressed="false"><span class="accent-dot" style="background:#38bdf8"></span>Kitty Blue 💙</button>
     </div>
+    <p style="margin:12px 0 6px"><b>🎀 Kitty Bow Mode</b></p>
+    <p class="muted small" style="margin:0 0 8px">Your favorite! One tap sets Kitty Blue + 🐱 Kitty and adds pink bows all over your app. Tap it again to keep your colors but hide the bows.</p>
+    <button type="button" class="btn full" id="kittyModeBtn" aria-pressed="false">🎀 Turn Kitty Bow Mode ON</button>
     <p style="margin:12px 0 6px"><b>Pick your mascot</b></p>
     <div class="chips" id="mascotChips" role="group" aria-label="Choose mascot" style="margin-bottom:6px">
       <button type="button" class="chip on" data-mascot-choice="🏀" aria-pressed="true"><span class="mascot-emoji">🏀</span>Basketball</button>
@@ -249,6 +267,8 @@ body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
       <button type="button" class="chip" data-mascot-choice="🦄" aria-pressed="false"><span class="mascot-emoji">🦄</span>Unicorn</button>
       <button type="button" class="chip" data-mascot-choice="🐯" aria-pressed="false"><span class="mascot-emoji">🐯</span>Tiger</button>
       <button type="button" class="chip" data-mascot-choice="🌈" aria-pressed="false"><span class="mascot-emoji">🌈</span>Rainbow</button>
+      <button type="button" class="chip" data-mascot-choice="🐱" aria-pressed="false"><span class="mascot-emoji">🐱</span>Kitty</button>
+      <button type="button" class="chip" data-mascot-choice="🎀" aria-pressed="false"><span class="mascot-emoji">🎀</span>Bow</button>
     </div>
     <p id="personalizeMsg" class="small" role="status" style="margin:4px 0 0">Orange + 🏀 Basketball is your look right now — the classic #14 style!</p>
   </div>
@@ -257,6 +277,11 @@ body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
     <h3>🌟 Drill of the Day</h3>
     <div id="drillOfDay"><p class="muted">Loading today's drill…</p></div>
     <button class="btn full" data-goto="train">Try It in Training →</button>
+  </div>
+  <div class="card" id="coachsPickCard">
+    <h3>🧢 Coach's Pick For You</h3>
+    <div id="coachsPick"><p class="muted">Loading your coach's pick…</p></div>
+    <button class="btn full" data-goto="train">Find It in Training →</button>
   </div>
   <div class="card">
     <h3>🔥 Your Streak</h3>
@@ -294,6 +319,13 @@ body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
 <!-- ============ TRAIN ============ -->
 <section class="view" id="view-train">
   <h2>🏋️ Training</h2>
+  <div class="art" data-art="train"></div>
+  <div class="card" id="surpriseCard">
+    <h3>🎲 Surprise Drill</h3>
+    <p class="muted small" style="margin:4px 0 10px">Can't decide what to practice? Let the app pick for you — a brand-new adventure every tap!</p>
+    <button type="button" class="btn full" id="surpriseBtn">🎲 Pick a Surprise Drill For Me!</button>
+    <div id="surpriseResult" role="status" style="margin-top:10px"></div>
+  </div>
   <div class="card hot" id="fourteen">
     <h3>⭐ 14 for 14 — Driveway Session (14 minutes)</h3>
     <table class="plan">
@@ -408,6 +440,7 @@ body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
 <!-- ============ LOG ============ -->
 <section class="view" id="view-log">
   <h2>📓 Practice Log</h2>
+  <div class="art" data-art="log"></div>
   <form class="card" id="logForm">
     <label for="fDate">Date</label>
     <input type="date" id="fDate" required>
@@ -461,6 +494,7 @@ body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
 <!-- ============ LEARN ============ -->
 <section class="view" id="view-learn">
   <h2>🧠 Learn</h2>
+  <div class="art" data-art="learn"></div>
   <p class="muted">Basketball IQ + school skills, taught through the game you love. Finish lessons and quizzes to earn Scholar badges.</p>
   <div class="card" id="comfyReadingCard">
     <h3>🔤 Comfy Reading &amp; Calm</h3>
@@ -503,7 +537,13 @@ body[data-accent="gold"]{--orange:#fbbf24;--orange2:#fcd34d}
 <!-- ============ PROGRESS ============ -->
 <section class="view" id="view-progress">
   <h2>📈 Progress</h2>
+  <div class="art" data-art="progress"></div>
   <div class="grid" id="progressStats"></div>
+  <div class="card" id="recordsCard">
+    <h3>🏆 My Personal Records</h3>
+    <p class="muted small" style="margin:4px 0 10px">Your very best days, saved forever. Records are made to be broken — by YOU!</p>
+    <div id="recordsList"><p class="muted">Log a practice or a game and your records appear here.</p></div>
+  </div>
   <div class="card" id="sessionAveragesCard">
     <h3>📊 Your Averages — Per Practice</h3>
     <p class="muted small" style="margin:4px 0 10px">An average tells what a normal practice looks like for you: add everything up, then divide by how many practices you logged. Your Progress page does that math with YOUR real numbers!</p>
@@ -721,10 +761,10 @@ const BADGES=[
 ];
 /* ================= STATE ================= */
 const KEY="nealaHoops_v1";
-const ACCENTS=["orange","teal","pink","gold"];
-const ACCENT_NAMES={orange:"Orange",teal:"Teal",pink:"Pink",gold:"Gold"};
-const MASCOTS=["🏀","⭐","🐢","🦄","🐯","🌈"];
-const MASCOT_NAMES={"🏀":"Basketball","⭐":"Star","🐢":"Turtle","🦄":"Unicorn","🐯":"Tiger","🌈":"Rainbow"};
+const ACCENTS=["orange","teal","pink","gold","blue"];
+const ACCENT_NAMES={orange:"Orange",teal:"Teal",pink:"Pink",gold:"Gold",blue:"Kitty Blue"};
+const MASCOTS=["🏀","⭐","🐢","🦄","🐯","🌈","🐱","🎀"];
+const MASCOT_NAMES={"🏀":"Basketball","⭐":"Star","🐢":"Turtle","🦄":"Unicorn","🐯":"Tiger","🌈":"Rainbow","🐱":"Kitty","🎀":"Bow"};
 function normalizeData(d){
   if(!d||!Array.isArray(d.sessions))return null;
   d.lessonsDone=Array.isArray(d.lessonsDone)?d.lessonsDone:[];
@@ -744,6 +784,7 @@ function normalizeData(d){
   d.favoriteDrills=Array.isArray(d.favoriteDrills)?[...new Set(d.favoriteDrills.filter(id=>typeof id==="string"&&DRILLS.some(dr=>dr.id===id)))]:[];
   d.accent=ACCENTS.includes(d.accent)?d.accent:"orange";
   d.mascot=MASCOTS.includes(d.mascot)?d.mascot:"🏀";
+  d.kittyMode=d.kittyMode===true;
   d.champBest=(typeof d.champBest==="number"&&d.champBest>=0)?Math.min(10,Math.floor(d.champBest)):0;
   d.champBestDate=(typeof d.champBestDate==="string"&&d.champBestDate)?d.champBestDate:null;
   d.soundOn=d.soundOn!==false;
@@ -757,7 +798,7 @@ function normalizeWeeklyGoals(g){
   const minutes=(typeof s.minutes==="number"&&isFinite(s.minutes))?Math.min(300,Math.max(5,Math.floor(s.minutes))):WEEKLY_GOALS_DEFAULT.minutes;
   return{sessions,minutes};
 }
-function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,createdAt:new Date().toISOString()};}
+function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,createdAt:new Date().toISOString()};}
 let state=load();
 const DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 let editingDow=null;
@@ -799,11 +840,95 @@ function applyPersonalization(){
   if(mascotEl)mascotEl.textContent=mascot;
   document.querySelectorAll("[data-accent-choice]").forEach(b=>{const on=b.dataset.accentChoice===accent;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");});
   document.querySelectorAll("[data-mascot-choice]").forEach(b=>{const on=b.dataset.mascotChoice===mascot;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");});
+  document.body.classList.toggle("kitty",state.kittyMode===true);
+  const kb=document.getElementById("kittyModeBtn");
+  if(kb){kb.setAttribute("aria-pressed",state.kittyMode===true?"true":"false");kb.textContent=state.kittyMode===true?"🎀 Kitty Bow Mode is ON — tap to turn off":"🎀 Turn Kitty Bow Mode ON";}
   const msg=document.getElementById("personalizeMsg");
-  if(msg)msg.textContent=(accent==="orange"&&mascot==="🏀")?"Orange + 🏀 Basketball is your look right now — the classic #14 style!":ACCENT_NAMES[accent]+" + "+mascot+" "+MASCOT_NAMES[mascot]+" is your look right now — looking great, #14! 🎨";
+  if(msg)msg.textContent=state.kittyMode===true?"🎀 Kitty Bow Mode is ON — bows everywhere, just how you like it! 💙":((accent==="orange"&&mascot==="🏀")?"Orange + 🏀 Basketball is your look right now — the classic #14 style!":ACCENT_NAMES[accent]+" + "+mascot+" "+MASCOT_NAMES[mascot]+" is your look right now — looking great, #14! 🎨");
 }
 function setAccent(accent){if(!ACCENTS.includes(accent))return;state.accent=accent;save();applyPersonalization();}
 function setMascot(mascot){if(!MASCOTS.includes(mascot))return;state.mascot=mascot;save();applyPersonalization();}
+function setKittyMode(on){
+  state.kittyMode=!!on;
+  if(on){state.accent="blue";state.mascot="🐱";}
+  save();applyPersonalization();
+}
+/* ================= PICTURE GALLERY + EXTRAS (Kitty Blue update) ================= */
+function kittyFigure(prop){
+  let held="";
+  if(prop==="ball")held=`<circle cx="180" cy="133" r="17" fill="#ff7a1a" stroke="#7c2d12" stroke-width="2"/><path d="M163 133h34M180 116v34M168 121c7 6 17 6 24 0M168 145c7-6 17-6 24 0" stroke="#7c2d12" stroke-width="1.6" fill="none"/>`;
+  if(prop==="book")held=`<rect x="152" y="118" width="56" height="34" rx="3" fill="#38bdf8" stroke="#0c4a6e" stroke-width="2" transform="rotate(-4 180 135)"/><path d="M180 116v34" stroke="#0c4a6e" stroke-width="2"/><path d="M160 126h14M160 134h14M187 126h14M187 134h14" stroke="#e0f2fe" stroke-width="2.4"/>`;
+  if(prop==="trophy")held=`<path d="M160 112h40v10c0 12-9 20-20 20s-20-8-20-20z" fill="#fbbf24" stroke="#92400e" stroke-width="2"/><path d="M160 116c-10-2-14-10-12-16h12M200 116c10-2 14-10 12-16h-12" fill="none" stroke="#92400e" stroke-width="2.4"/><rect x="174" y="142" width="12" height="7" fill="#fbbf24" stroke="#92400e" stroke-width="2"/><rect x="164" y="149" width="32" height="6" rx="2" fill="#fbbf24" stroke="#92400e" stroke-width="2"/><text x="180" y="131" font-size="13" text-anchor="middle">⭐</text>`;
+  if(prop==="clip")held=`<rect x="158" y="112" width="44" height="44" rx="4" fill="#f8fafc" stroke="#475569" stroke-width="2"/><rect x="170" y="106" width="20" height="10" rx="3" fill="#38bdf8" stroke="#0c4a6e" stroke-width="2"/><path d="M166 126l5 5 9-10M166 140l5 5 9-10" stroke="#16a34a" stroke-width="2.6" fill="none"/><path d="M186 128h10M186 142h10" stroke="#94a3b8" stroke-width="2.4"/>`;
+  return `<g>
+  <polygon points="146,58 152,30 172,48" fill="#fff" stroke="#334155" stroke-width="2.4" stroke-linejoin="round"/>
+  <polygon points="214,58 208,30 188,48" fill="#fff" stroke="#334155" stroke-width="2.4" stroke-linejoin="round"/>
+  <polygon points="150,54 154,38 166,48" fill="#fbcfe8"/>
+  <polygon points="210,54 206,38 194,48" fill="#fbcfe8"/>
+  <rect x="150" y="104" width="60" height="48" rx="12" fill="#2563eb" stroke="#1e3a8a" stroke-width="2.4"/>
+  <text x="180" y="136" font-family="Arial,sans-serif" font-size="21" font-weight="bold" fill="#fff" text-anchor="middle">14</text>
+  <ellipse cx="180" cy="76" rx="37" ry="31" fill="#fff" stroke="#334155" stroke-width="2.4"/>
+  <g transform="translate(208,44) rotate(18)"><ellipse cx="-9" cy="0" rx="10" ry="6.5" fill="#f472b6" stroke="#be185d" stroke-width="1.6"/><ellipse cx="9" cy="0" rx="10" ry="6.5" fill="#f472b6" stroke="#be185d" stroke-width="1.6"/><circle cx="0" cy="0" r="4.4" fill="#ec4899" stroke="#be185d" stroke-width="1.6"/></g>
+  <ellipse cx="168" cy="74" rx="3.4" ry="5" fill="#1e293b"/><ellipse cx="192" cy="74" rx="3.4" ry="5" fill="#1e293b"/>
+  <ellipse cx="180" cy="82" rx="3.6" ry="2.6" fill="#f472b6" stroke="#be185d" stroke-width="1"/>
+  <path d="M174 88q6 5 12 0" stroke="#334155" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <circle cx="156" cy="86" r="5" fill="#fbcfe8" opacity=".85"/><circle cx="204" cy="86" r="5" fill="#fbcfe8" opacity=".85"/>
+  <path d="M146 78l-14-3M147 86l-13 3M214 78l14-3M213 86l13 3" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M152 116q-12 4-14 16M208 116q12 4 14 16" stroke="#334155" stroke-width="5" fill="none" stroke-linecap="round"/>
+  ${held}</g>`;
+}
+function artSVG(kind){
+  const defs=`<defs><linearGradient id="sky-${kind}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d4ed8"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient></defs>`;
+  const base=`<rect width="360" height="170" fill="url(#sky-${kind})"/><rect y="140" width="360" height="30" fill="#b45309"/><path d="M0 140h360" stroke="#fde68a" stroke-width="2"/><circle cx="180" cy="140" r="17" fill="none" stroke="#fde68a" stroke-width="2"/>`;
+  let extra="";
+  if(kind==="hero")extra=`<g><rect x="288" y="26" width="52" height="36" fill="#f8fafc" stroke="#334155" stroke-width="2.4"/><rect x="302" y="62" width="24" height="7" fill="#ff7a1a"/><path d="M305 69l3 16M313 69v16M321 69l-3 16M305 77h16" stroke="#e2e8f0" stroke-width="1.6"/></g><text x="34" y="42" font-size="19">⭐</text><text x="52" y="66" font-size="13">✨</text><text x="316" y="112" font-size="15">💙</text><text x="30" y="118" font-size="15">🎀</text>`;
+  if(kind==="train")extra=`<path d="M28 138q40-26 84-8" stroke="#fff" stroke-width="2.4" stroke-dasharray="6 7" fill="none" opacity=".8"/><polygon points="46,140 58,118 70,140" fill="#38bdf8" stroke="#0c4a6e" stroke-width="2"/><polygon points="282,140 294,116 306,140" fill="#f472b6" stroke="#be185d" stroke-width="2"/><circle cx="96" cy="128" r="12" fill="#ff7a1a" stroke="#7c2d12" stroke-width="2"/><path d="M84 128h24M96 116v24" stroke="#7c2d12" stroke-width="1.4"/><text x="312" y="48" font-size="16">💪</text><text x="36" y="44" font-size="14">✨</text>`;
+  if(kind==="learn")extra=`<g><rect x="36" y="118" width="34" height="10" rx="2" fill="#f472b6"/><rect x="32" y="106" width="40" height="10" rx="2" fill="#38bdf8"/><rect x="38" y="94" width="30" height="10" rx="2" fill="#fbbf24"/></g><path d="M286 128l20-34 7 4-20 34z" fill="#fbbf24" stroke="#92400e" stroke-width="1.6"/><path d="M306 94l7 4-4 8z" fill="#fde68a"/><text x="298" y="52" font-size="17">💡</text><text x="40" y="52" font-size="14">📚</text>`;
+  if(kind==="progress")extra=`<g fill="#f472b6"><circle cx="40" cy="34" r="3.4"/><circle cx="86" cy="20" r="3"/><circle cx="322" cy="30" r="3.4"/><circle cx="286" cy="16" r="3"/></g><g fill="#fbbf24"><circle cx="62" cy="56" r="2.8"/><circle cx="306" cy="58" r="2.8"/></g><path d="M20 12l14 12 14-12 14 12 14-12" stroke="#f472b6" stroke-width="3" fill="none"/><path d="M284 12l14 12 14-12 14 12 14-12" stroke="#38bdf8" stroke-width="3" fill="none"/><text x="36" y="112" font-size="17">🏆</text><text x="310" y="112" font-size="17">📈</text>`;
+  if(kind==="log")extra=`<g><rect x="292" y="88" width="46" height="52" rx="4" fill="#f8fafc" stroke="#475569" stroke-width="2"/><path d="M298 102h34M298 114h34M298 126h34" stroke="#cbd5e1" stroke-width="2"/><circle cx="306" cy="96" r="3" fill="#38bdf8"/><circle cx="322" cy="96" r="3" fill="#f472b6"/></g><text x="36" y="46" font-size="16">📓</text><text x="42" y="112" font-size="14">✏️</text>`;
+  return `<svg viewBox="0 0 360 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ne'ala's kitty teammate in her blue number 14 jersey">${defs}${base}${extra}${kittyFigure(kind==="hero"?"ball":kind==="learn"?"book":kind==="progress"?"trophy":kind==="log"?"clip":"ball")}</svg>`;
+}
+function fillArt(){document.querySelectorAll("[data-art]").forEach(el=>{el.innerHTML=artSVG(el.dataset.art);});}
+const AFFIRMATIONS=["I belong on this court.","I get better every time I practice.","Missing a shot just means my next one is coming.","I am brave enough to try.","My hard work is making me stronger.","I cheer for my teammates AND for myself.","Small steps every day become big skills.","I can do hard things — one dribble at a time.","I am a kind teammate and a fierce competitor.","My coach believes in me, and I believe in me too.","Every expert was once a beginner. That's me — a beginner going UP.","I play with joy. Joy is my superpower.","I learn from every game — win or learn.","I am #14 — there is only one me, and I'm just getting started."];
+function coachsPick(){
+  const counts={};Object.keys(SKILLS).forEach(k=>counts[k]=0);
+  state.sessions.forEach(s=>{(Array.isArray(s.drills)?s.drills:[]).forEach(id=>{const d=DRILLS.find(dr=>dr.id===id);if(d&&counts[d.skill]!==undefined)counts[d.skill]++;});});
+  const least=Object.keys(SKILLS).reduce((a,b)=>counts[a]<=counts[b]?a:b);
+  const pool=DRILLS.filter(d=>d.skill===least);
+  const seed=Math.floor(Date.now()/86400000);
+  const d=pool[((seed%pool.length)+pool.length)%pool.length];
+  const reason=state.sessions.length?`You've practiced <b>${SKILLS[least]}</b> the least so far — this drill grows that skill next. Balanced players practice everything!`:`Start anywhere — this friendly <b>${SKILLS[least]}</b> drill is a perfect first adventure.`;
+  return {d,reason};
+}
+function renderExtras(){
+  const affEl=$("affirmText");
+  if(affEl){const now=new Date();const doy=Math.floor((now-new Date(now.getFullYear(),0,0).getTime())/86400000);affEl.textContent=AFFIRMATIONS[((doy%AFFIRMATIONS.length)+AFFIRMATIONS.length)%AFFIRMATIONS.length];}
+  const pickEl=$("coachsPick");
+  if(pickEl){const {d,reason}=coachsPick();pickEl.innerHTML=`<p class="muted small" style="margin:4px 0">${reason}</p><p style="margin:4px 0"><span class="tag">${SKILLS[d.skill]} • Level ${d.level} • ~${d.mins} min</span></p><p class="big" style="font-size:20px;margin:6px 0">${escapeHtml(d.name)}</p><p class="muted" style="margin:4px 0"><b style="color:var(--ink)">Builds:</b> ${escapeHtml(d.builds)}</p><p style="margin:4px 0"><b>Reps:</b> ${escapeHtml(d.reps)}</p>`;}
+}
+function renderRecords(){
+  const el=$("recordsList");if(!el)return;
+  const ss=state.sessions||[],gs=state.games||[];
+  if(!ss.length&&!gs.length){el.innerHTML=`<p class="muted">Log a practice or a game and your records appear here — your first record is just one practice away!</p>`;return;}
+  const rows=[];
+  if(ss.length){
+    const bestMakes=[...ss].sort((a,b)=>(b.makes||0)-(a.makes||0))[0];
+    rows.push(["🏀 Most Makes in a Practice",`${bestMakes.makes||0} makes — ${bestMakes.date}`]);
+    const qual=ss.filter(s=>(s.attempts||0)>=10);
+    if(qual.length){const bp=[...qual].sort((a,b)=>((b.makes||0)/(b.attempts||1))-((a.makes||0)/(a.attempts||1)))[0];rows.push(["🎯 Best Shooting Day (10+ tries)",`${Math.round(100*(bp.makes||0)/(bp.attempts||1))}% — ${bp.makes}/${bp.attempts} on ${bp.date}`]);}
+    const longest=[...ss].sort((a,b)=>(b.minutes||0)-(a.minutes||0))[0];
+    rows.push(["⏱️ Longest Practice",`${longest.minutes||0} minutes — ${longest.date}`]);
+  }
+  if(gs.length){
+    const bp=[...gs].sort((a,b)=>(b.points||0)-(a.points||0))[0];
+    rows.push(["⭐ Most Points in a Game",`${bp.points||0} pts vs ${escapeHtml(bp.opponent)} — ${bp.date}`]);
+    const br=[...gs].sort((a,b)=>(b.rebounds||0)-(a.rebounds||0))[0];
+    rows.push(["🧲 Most Rebounds in a Game",`${br.rebounds||0} vs ${escapeHtml(br.opponent)} — ${br.date}`]);
+    const ba=[...gs].sort((a,b)=>(b.assists||0)-(a.assists||0))[0];
+    rows.push(["🤝 Most Assists in a Game",`${ba.assists||0} vs ${escapeHtml(ba.opponent)} — ${ba.date}`]);
+  }
+  el.innerHTML=`<div class="grid">${rows.map(r=>`<div class="stat"><b style="font-size:17px">${r[1]}</b><span>${r[0]}</span></div>`).join("")}</div>`;
+}
 /* ================= SOUND + DRIBBLE BEAT (cycle 26) ================= */
 function soundIsOn(){return state.soundOn!==false;}
 function applySoundSetting(){
@@ -911,6 +1036,7 @@ function renderHome(){
   $("streakNum").textContent=streak;
   const last=[...state.sessions].sort((a,b)=>b.date.localeCompare(a.date))[0];
   if(last)$("recentSession").innerHTML=`<p><b>${last.date}</b> — ${last.minutes} min • ${last.makes}/${last.attempts} shots${(last.rebounds!==undefined||last.assists!==undefined)?` • 🧲 ${+last.rebounds||0} rebounds • 🤝 ${+last.assists||0} assists`:""}</p><p class="muted">${last.notes?escapeHtml(last.notes):"No notes — great work showing up!"}</p>`;
+  renderExtras();
 }
 function renderWeeklyPlan(){
   const list=$("weeklyPlanList");if(!list)return;
@@ -1228,6 +1354,7 @@ function renderProgress(){
   const last=[...state.sessions].sort((a,b)=>a.date.localeCompare(b.date)).slice(-7);
   $("chart").innerHTML=last.length?last.map(x=>`<div class="bar-row"><span>${x.date.slice(5)}</span><div class="bar"><i style="width:${Math.min(100,(x.makes/Math.max(1,...last.map(y=>y.makes)))*100)}%"></i></div><b>${x.makes} 🏀</b></div>`).join("")+`<p class="small muted">Bar = shots made that day. Longer bar = more makes. Watch them grow!</p>`:`<p class="muted">Log a practice and your chart appears here.</p>`;
   $("badgeList").innerHTML=BADGES.map(b=>{const got=b.test(state);return `<div class="badge ${got?"":"locked"}" style="padding:8px 0;border-bottom:1px solid var(--line)"><div class="ic">${b.icon}</div><div><b>${escapeHtml(b.name)}</b> ${got?"✅":"🔒"}<br><span class="muted small">${escapeHtml(b.desc)}</span></div></div>`;}).join("");
+  renderRecords();
 }
 /* ================= DAD'S CORNER (cycle 13) ================= */
 const TIPOFF_DATE=new Date(2026,10,21); // Turkey Tip-Off — Saturday, Nov 21, 2026
@@ -1926,6 +2053,8 @@ $("calmChips").addEventListener("click",e=>{const b=e.target.closest("[data-calm
 applyTextSize();applyCalmMode();
 /* ================= MAKE IT HERS CONTROLS (cycle 25) ================= */
 $("accentChips").addEventListener("click",e=>{const b=e.target.closest("[data-accent-choice]");if(!b)return;setAccent(b.dataset.accentChoice);});
+$("kittyModeBtn").addEventListener("click",()=>{setKittyMode(!(state.kittyMode===true));});
+$("surpriseBtn").addEventListener("click",()=>{const pool=DRILLS.filter(x=>x.level<=2);const d=pool[Math.floor(Math.random()*pool.length)];const el=$("surpriseResult");el.innerHTML=`<p style="margin:4px 0"><span class="tag">${SKILLS[d.skill]} • Level ${d.level} • ~${d.mins} min</span></p><p class="big" style="font-size:20px;margin:6px 0">${escapeHtml(d.name)}</p><p class="muted" style="margin:4px 0"><b style="color:var(--ink)">Builds:</b> ${escapeHtml(d.builds)}</p><p style="margin:4px 0"><b>Coach cue:</b> ${escapeHtml((d.cues&&d.cues[0])||"")}</p><p style="margin:4px 0"><b>Reps:</b> ${escapeHtml(d.reps)}</p><p class="small muted">Find it in the drill list below, practice it, then log it in your Practice Log. Surprise = adventure! 🎉</p>`;el.scrollIntoView({behavior:scrollBehavior(),block:"nearest"});});
 $("mascotChips").addEventListener("click",e=>{const b=e.target.closest("[data-mascot-choice]");if(!b)return;setMascot(b.dataset.mascotChoice);});
 applyPersonalization();
 /* ================= DRIBBLE BEAT CONTROLS (cycle 26) ================= */
@@ -1938,6 +2067,7 @@ applySoundSetting();renderMetronome();
 $("fDate").value=dayStr(new Date());
 $("gDate").value=dayStr(new Date());
 $("coachNoteDate").value=dayStr(new Date());
+fillArt();
 render();
 </script>
 </body>
