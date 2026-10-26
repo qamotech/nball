@@ -132,6 +132,9 @@ body.text-big table.plan{font-size:16px} body.text-big .week-day .day-plan{font-
 .coach-note{border:1px solid var(--line);background:var(--card2);border-radius:12px;padding:12px;margin:0 0 10px}
 .coach-note .note-actions{display:flex;gap:8px;margin-top:10px}
 .coach-note .note-actions .btn{flex:1;min-height:48px;padding:8px 12px}
+#shotCourt{width:100%;height:auto;display:block;cursor:pointer;touch-action:manipulation;border-radius:14px;border:1px solid var(--line);background:#0d1322}
+.zone-row{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:9px 12px;margin:0 0 8px;font-size:14px}
+.zone-row b{font-size:15px}
 .print-summary{display:none}
 @media print{
   body{background:#fff!important;color:#000!important;padding:0!important}
@@ -561,6 +564,38 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <h3>Shots made — your last practices</h3>
     <div id="chart"><p class="muted">Log a practice and your chart appears here.</p></div>
   </div>
+  <div class="card" id="shotChartCard">
+    <h3>🎯 Shot Chart — Heat Map</h3>
+    <p class="muted small" style="margin:4px 0 10px">Tap the court where you shot from! First pick <b style="color:var(--ink)">Make</b> or <b style="color:var(--ink)">Miss</b>, then tap your spot. Green ● = made it, red ✕ = missed. Your zones below change color — green means you're HOT there, red means that spot wants more practice. Today's shots are saved on this device. 🎯</p>
+    <div class="chips" role="group" aria-label="Shot chart: make or miss mode" style="margin-bottom:8px">
+      <button type="button" class="chip on" data-shot-mode="make" aria-pressed="true">✅ Make — It Went In!</button>
+      <button type="button" class="chip" data-shot-mode="miss" aria-pressed="false">❌ Miss — Not This Time</button>
+    </div>
+    <div class="chips" role="group" aria-label="Shot chart: which shots to show" style="margin-bottom:10px">
+      <button type="button" class="chip on" data-shot-view="today" aria-pressed="true">📅 Today</button>
+      <button type="button" class="chip" data-shot-view="all" aria-pressed="false">⭐ All My Shots</button>
+    </div>
+    <svg id="shotCourt" viewBox="0 0 300 285" role="img" aria-label="Half-court shot chart. Tap a spot to log a shot there.">
+      <rect x="4" y="4" width="292" height="277" rx="4" fill="#16233f" stroke="#a8b3cf" stroke-width="2"/>
+      <rect x="102" y="4" width="96" height="120" fill="#24304f" stroke="#a8b3cf" stroke-width="2"/>
+      <circle cx="150" cy="124" r="36" fill="none" stroke="#a8b3cf" stroke-width="2"/>
+      <path d="M16,4 L16,82 A140,140 0 0 0 284,82 L284,4" fill="none" stroke="#a8b3cf" stroke-width="2"/>
+      <path d="M126,42 A24,24 0 0 0 174,42" fill="none" stroke="#a8b3cf" stroke-width="2"/>
+      <line x1="124" y1="30" x2="176" y2="30" stroke="#f4f7ff" stroke-width="3"/>
+      <circle cx="150" cy="42" r="9" fill="none" stroke="#ff7a1a" stroke-width="3"/>
+      <path d="M114,281 A36,36 0 0 1 186,281" fill="none" stroke="#a8b3cf" stroke-width="2"/>
+      <text x="150" y="272" font-size="15" font-weight="900" fill="#fbbf24" text-anchor="middle">14</text>
+      <g id="shotDots"></g>
+    </svg>
+    <p id="shotSummary" class="small" role="status" style="margin:10px 0 0"></p>
+    <p id="shotMsg" class="small" role="status" style="margin:6px 0 0"></p>
+    <h3 style="margin-top:14px">🌡️ Your Zones — Where You're Hot</h3>
+    <div id="shotZones"></div>
+    <div class="timer-row">
+      <button type="button" class="btn ghost" id="shotUndoBtn">↩ Undo Last Shot</button>
+      <button type="button" class="btn ghost" id="shotClearBtn">🧹 Clear Today's Shots</button>
+    </div>
+  </div>
   <div class="card">
     <h3>🏅 Badges</h3>
     <div id="badgeList"></div>
@@ -789,6 +824,7 @@ function normalizeData(d){
   d.champBestDate=(typeof d.champBestDate==="string"&&d.champBestDate)?d.champBestDate:null;
   d.soundOn=d.soundOn!==false;
   d.metronomeBpm=(typeof d.metronomeBpm==="number"&&isFinite(d.metronomeBpm))?Math.min(180,Math.max(40,Math.floor(d.metronomeBpm))):80;
+  d.shots=Array.isArray(d.shots)?d.shots.filter(sh=>sh&&isFinite(+sh.x)&&isFinite(+sh.y)).map(sh=>({x:Math.min(300,Math.max(0,+sh.x)),y:Math.min(285,Math.max(0,+sh.y)),made:sh.made===true,date:(typeof sh.date==="string"&&sh.date)?sh.date:""})).slice(-600):[];
   return d;
 }
 const WEEKLY_GOALS_DEFAULT={sessions:3,minutes:30};
@@ -798,7 +834,7 @@ function normalizeWeeklyGoals(g){
   const minutes=(typeof s.minutes==="number"&&isFinite(s.minutes))?Math.min(300,Math.max(5,Math.floor(s.minutes))):WEEKLY_GOALS_DEFAULT.minutes;
   return{sessions,minutes};
 }
-function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,createdAt:new Date().toISOString()};}
+function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
 let state=load();
 const DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 let editingDow=null;
@@ -1356,6 +1392,58 @@ function renderProgress(){
   $("badgeList").innerHTML=BADGES.map(b=>{const got=b.test(state);return `<div class="badge ${got?"":"locked"}" style="padding:8px 0;border-bottom:1px solid var(--line)"><div class="ic">${b.icon}</div><div><b>${escapeHtml(b.name)}</b> ${got?"✅":"🔒"}<br><span class="muted small">${escapeHtml(b.desc)}</span></div></div>`;}).join("");
   renderRecords();
 }
+/* ================= SHOT CHART HEAT MAP ================= */
+const SHOT_ZONES=[
+ {id:"paint",name:"🎨 In the Paint"},
+ {id:"midL",name:"🏀 Midrange Left"},
+ {id:"midC",name:"🏀 Midrange Middle"},
+ {id:"midR",name:"🏀 Midrange Right"},
+ {id:"threeL",name:"🎯 Left Three"},
+ {id:"threeTop",name:"🎯 Top Three"},
+ {id:"threeR",name:"🎯 Right Three"}
+];
+let shotMode="make",shotView="today";
+function shotZoneFor(x,y){
+  if(x>=102&&x<=198&&y<=124)return "paint";
+  const dx=x-150,dy=y-42,d=Math.sqrt(dx*dx+dy*dy);
+  const beyond=d>140||(y<82&&(x<16||x>284));
+  if(beyond){if(x<105)return "threeL";if(x>195)return "threeR";return "threeTop";}
+  if(x<105)return "midL";if(x>195)return "midR";return "midC";
+}
+function shotHeat(pct,att){
+  if(!att)return{bg:"#1e2947",fg:"#a8b3cf",label:"No shots yet — be the first!"};
+  if(pct>=50)return{bg:"#14532d",fg:"#4ade80",label:"🔥 Hot zone!"};
+  if(pct>=35)return{bg:"#2a2103",fg:"#fbbf24",label:"Warming up"};
+  return{bg:"#450a0a",fg:"#f87171",label:"🧊 Cold — practice here!"};
+}
+function shotsForView(){
+  const all=Array.isArray(state.shots)?state.shots:[];
+  return shotView==="all"?all:all.filter(sh=>sh.date===dayStr(new Date()));
+}
+function renderShotChart(){
+  const dots=$("shotDots"),zonesEl=$("shotZones"),sumEl=$("shotSummary");if(!dots||!zonesEl||!sumEl)return;
+  document.querySelectorAll("[data-shot-mode]").forEach(b=>{const on=b.dataset.shotMode===shotMode;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");});
+  document.querySelectorAll("[data-shot-view]").forEach(b=>{const on=b.dataset.shotView===shotView;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");});
+  const list=shotsForView();
+  dots.innerHTML=list.map(sh=>sh.made
+    ?`<circle cx="${sh.x}" cy="${sh.y}" r="6" fill="#4ade80" stroke="#052e12" stroke-width="2"/>`
+    :`<g stroke="#f87171" stroke-width="3" stroke-linecap="round"><path d="M${sh.x-5},${sh.y-5} L${sh.x+5},${sh.y+5} M${sh.x+5},${sh.y-5} L${sh.x-5},${sh.y+5}"/></g>`).join("");
+  const att=list.length,mk=list.filter(sh=>sh.made).length,pct=att?Math.round(mk/att*100):0;
+  sumEl.innerHTML=att?`<b>${shotView==="all"?"All my shots":"Today"}:</b> ${att} shot${att===1?"":"s"} tried • ${mk} made • <b>${pct}% FG</b> ${pct>=50?"🔥":pct>=35?"💪":"🎯"}`
+    :`${shotView==="all"?"No shots on your chart yet":"No shots today yet"} — pick Make or Miss, then tap the court where you shot from! 🎯`;
+  zonesEl.innerHTML=SHOT_ZONES.map(z=>{
+    const zs=list.filter(sh=>shotZoneFor(sh.x,sh.y)===z.id);
+    const za=zs.length,zm=zs.filter(sh=>sh.made).length,zp=za?Math.round(zm/za*100):0;
+    const h=shotHeat(zp,za);
+    return `<div class="zone-row" style="background:${h.bg}"><span><b>${z.name}</b><br><span class="small" style="color:${h.fg}">${h.label}</span></span><span style="text-align:right"><b>${za?zp+"%":"—"}</b><br><span class="small" style="color:#a8b3cf">${zm} of ${za} shots</span></span></div>`;
+  }).join("");
+}
+function addShot(x,y){
+  if(!Array.isArray(state.shots))state.shots=[];
+  state.shots.push({x:Math.round(x*10)/10,y:Math.round(y*10)/10,made:shotMode==="make",date:dayStr(new Date())});
+  save();renderShotChart();
+  const msg=$("shotMsg");if(msg)msg.textContent=shotMode==="make"?"✅ Make logged! Great shot, #14!":"❌ Miss logged — the next one is going in. Keep shooting!";
+}
 /* ================= DAD'S CORNER (cycle 13) ================= */
 const TIPOFF_DATE=new Date(2026,10,21); // Turkey Tip-Off — Saturday, Nov 21, 2026
 const GEAR_KEYS=["ball","hoop","shoes"];
@@ -1444,6 +1532,7 @@ function backupCounts(d){
     ["Game-day packing checked",PACKING_KEYS.filter(k=>d.packingCheck&&d.packingCheck[k]).length+" / "+PACKING_KEYS.length],
     ["Coach notes",(d.coachNotes||[]).length],
     ["Games logged",(d.games||[]).length],
+    ["Shot-chart shots logged",(d.shots||[]).length],
     ["Weekly goal",(()=>{const g=normalizeWeeklyGoals(d.weeklyGoals);return g.sessions+" practices • "+g.minutes+" minutes";})()]
   ];
 }
@@ -1511,10 +1600,38 @@ function renderGames(){
   <p class="small muted" style="margin:10px 0 0">⏱️ ${t.minutes} total minutes played • Per game averages: ${per(t.points)} points • ${per(t.rebounds)} rebounds • ${per(t.assists)} assists. Totals add up all by themselves as you log games — great season building, #14! 🏀</p>`;
   listEl.innerHTML=games.map(g=>`<div class="coach-note"><b>${escapeHtml(g.date)}</b> — vs ${escapeHtml(g.opponent)}<div style="margin-top:6px;line-height:1.5">🏀 ${+g.points||0} points • 🧲 ${+g.rebounds||0} rebounds • 🤝 ${+g.assists||0} assists • ⏱️ ${+g.minutes||0} minutes</div><div class="note-actions"><button type="button" class="btn ghost" data-game-del="${g.id}" aria-label="Delete game against ${escapeHtml(g.opponent)} on ${escapeHtml(g.date)}">🗑️ Delete Game</button></div></div>`).join("");
 }
-function render(){applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();renderHome();renderTipoff();renderPacking();renderWeeklyPlan();renderWeeklyGoals();renderDrills(currentSkill);renderLogForm();renderGames();renderLearn(currentLearn);renderProgress();renderGear();renderCoachNotes();renderDataSafety();applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();}
+function render(){applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();renderHome();renderTipoff();renderPacking();renderWeeklyPlan();renderWeeklyGoals();renderDrills(currentSkill);renderLogForm();renderGames();renderLearn(currentLearn);renderProgress();renderShotChart();renderGear();renderCoachNotes();renderDataSafety();applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();}
 function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 /* ================= INTERACTIONS ================= */
 let currentSkill="all",currentLearn="all";
+/* ---- Shot Chart interactions ---- */
+$("shotCourt").addEventListener("click",e=>{
+  const svg=$("shotCourt"),r=svg.getBoundingClientRect();if(!r.width||!r.height)return;
+  const x=(e.clientX-r.left)/r.width*300,y=(e.clientY-r.top)/r.height*285;
+  if(x<0||x>300||y<0||y>285)return;
+  addShot(x,y);
+});
+document.querySelectorAll("[data-shot-mode]").forEach(b=>b.addEventListener("click",()=>{
+  shotMode=b.dataset.shotMode;renderShotChart();
+  const m=$("shotMsg");if(m)m.textContent=shotMode==="make"?"✅ Make mode — tap where your shot went IN!":"❌ Miss mode — tap where you shot and missed. Honest charts make better shooters!";
+}));
+document.querySelectorAll("[data-shot-view]").forEach(b=>b.addEventListener("click",()=>{shotView=b.dataset.shotView;renderShotChart();}));
+$("shotUndoBtn").addEventListener("click",()=>{
+  const all=Array.isArray(state.shots)?state.shots:[],today=dayStr(new Date());
+  for(let i=all.length-1;i>=0;i--){if(shotView==="all"||all[i].date===today){all.splice(i,1);break;}}
+  state.shots=all;save();renderShotChart();
+  const m=$("shotMsg");if(m)m.textContent="↩ Last shot removed. No worries — tap the court to log it again!";
+});
+$("shotClearBtn").addEventListener("click",()=>{
+  const today=dayStr(new Date());
+  const n=(Array.isArray(state.shots)?state.shots:[]).filter(sh=>sh.date===today).length;
+  const m=$("shotMsg");
+  if(!n){if(m)m.textContent="No shots today to clear — your chart is already fresh! 🎯";return;}
+  if(confirm("Clear ALL of today's shots from your Shot Chart? Your practice log stays just like it is.")){
+    state.shots=(state.shots||[]).filter(sh=>sh.date!==today);save();renderShotChart();
+    if(m)m.textContent="🧹 Today's shots cleared. Fresh chart — go fill it up, #14!";
+  }
+});
 $("skillChips").innerHTML=[["all","⭐ All Skills"],["favorites","⭐ Favorites"],...Object.entries(SKILLS)].map(([k,v])=>`<button type="button" class="chip ${k==="all"?"on":""}" data-skill="${k}" aria-pressed="${k==="all"?"true":"false"}" aria-label="Filter drills: ${escapeHtml(v)}">${v}</button>`).join("");
 $("drillList").addEventListener("click",e=>{const b=e.target.closest("[data-fav]");if(!b)return;toggleFavorite(b.dataset.fav);});
 $("skillChips").addEventListener("click",e=>{const b=e.target.closest("[data-skill]");if(!b)return;currentSkill=b.dataset.skill;document.querySelectorAll("#skillChips .chip").forEach(c=>{const on=c===b;c.classList.toggle("on",on);c.setAttribute("aria-pressed",on?"true":"false");});renderDrills(currentSkill);});
