@@ -1,1 +1,38 @@
-{"background_color":"#0b0f1a","description":"A phone-first basketball training and learning app for Ne'ala, #14.","display":"standalone","icons":[{"purpose":"any","sizes":"any","src":"icon.svg","type":"image/svg+xml"},{"purpose":"maskable","sizes":"512x512","src":"icon.svg","type":"image/svg+xml"}],"id":"./","name":"Ne'ala Hoops #14 — Train • Learn • Play","orientation":"portrait","scope":"./","short_name":"Ne'ala Hoops","start_url":"./","theme_color":"#0b0f1a"}
+{
+ "background_color": "#0b0f1a",
+ "description": "A phone-first basketball training and learning app for Ne'ala, #14.",
+ "display": "standalone",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "icon.svg",
+   "sizes": "any",
+   "type": "image/svg+xml",
+   "purpose": "any"
+  }
+ ],
+ "id": "./",
+ "name": "Ne'ala Hoops #14 \u2014 Train \u2022 Learn \u2022 Play",
+ "orientation": "portrait",
+ "scope": "./",
+ "short_name": "Ne'ala Hoops",
+ "start_url": "./",
+ "theme_color": "#0b0f1a"
+}

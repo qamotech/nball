@@ -1,10 +1,13 @@
 /* Ne'ala Hoops #14 — cache-first offline service worker (cycle 11) */
-const CACHE_NAME = "neala-hoops-v2";
+const CACHE_NAME = "neala-hoops-v3";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
-  "./icon.svg"
+  "./icon.svg",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./apple-touch-icon.png"
 ];
 
 self.addEventListener("install", (event) => {

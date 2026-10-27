@@ -12,7 +12,9 @@ A basketball **training + education** app built for Ne'ala, 11 — a beginner le
 - **Learn** — Basketball IQ lessons (including "What Your First Game Feels Like"), school-through-basketball (FG% & averages math, Box Score Math, vocabulary flashcards, a story with comprehension questions), **Legends: Cheryl & Reggie Miller** plus Basketball Beginnings (Naismith, peach baskets, how the WNBA started in 1997), 5 quizzes with best scores saved, lesson/quiz search, and a 10-question Quiz Championship with a printable certificate at 8+
 - **Progress** — charts, per-practice averages, a practice calendar, **🏆 Personal Records** (most makes, best shooting day, longest practice, best game points/rebounds/assists), and 12 badges earned from real logged data
 - **Dad's Corner** (in Progress) — backup export/import (with a preview before anything is replaced), CSV practice-history export, Share the Week copyable summary, Data Safety (storage used + backup-age reminder), gear checklist, a private Coach's Notebook, and a printable weekly summary
-- **Comfort** — text-size toggle (Normal/Big), Calm Mode reduced-animation toggle, 44px+ tap targets, aria labels, and visible focus — all saved on-device
+- **Comfort** — BIG text all the time (no toggles — removed by request, along with Calm Mode), 44px+ tap targets, aria labels, and visible focus
+- **Vibes update** — animated kitty artwork on all 5 tabs plus 3 new scenes (Game Log scoreboard, Badges medals, Story moonlight), 🎊 confetti celebrations for badges and perfect quizzes, **🏀 Swish Shot** tap-to-shoot timing game (best streak saved), 🎡 spinning Surprise Drill wheel, **🍩 Shooting Ring** donut on Progress, ⛶ Fullscreen button in the header, floating ⬆️⬇️ scroll-to-top/bottom buttons, and a 📲 Install card on Home
+- **Installable PWA** — manifest with real PNG icons (192/512 + maskable + apple-touch), service worker v3 offline cache; install from the Home install card or the browser menu
 
 ## How to open it
 - **Easiest:** open the live link above on any phone or computer browser.
