@@ -1,5 +1,5 @@
 /* Ne'ala Hoops #14 — cache-first offline service worker (cycle 11) */
-const CACHE_NAME = "neala-hoops-v3";
+const CACHE_NAME = "neala-hoops-v4";
 const CORE_ASSETS = [
   "./",
   "./index.html",

@@ -198,6 +198,27 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 .sg-ball.fly{transform:translate(26px,-30px) scale(.55) rotate(160deg)}
 .donut-wrap{display:flex;align-items:center;gap:16px}
 .donut-wrap svg{flex:0 0 auto}
+.update-modal{position:fixed;inset:0;background:#04060dd9;z-index:120;display:flex;align-items:center;justify-content:center;padding:16px}
+.update-modal[hidden]{display:none}
+.update-card{background:linear-gradient(160deg,#16224a,#241238);border:3px solid var(--gold);border-radius:22px;max-width:430px;width:100%;max-height:88vh;overflow:auto;padding:20px;text-align:center;box-shadow:0 24px 60px #000c;animation:burst-pop .45s ease}
+.update-card h2{margin:6px 0;font-size:26px}
+.update-ball{display:inline-block;font-size:44px;animation:ballbounce 1.1s ease-in-out infinite}
+.update-list{text-align:left;margin:12px auto;max-width:330px;line-height:1.55}
+.map-pin{cursor:pointer}
+.map-pin circle{fill:#38bdf8;stroke:#0c4a6e;stroke-width:2}
+.map-pin text{fill:#fff;font-family:Arial,sans-serif;font-weight:bold;pointer-events:none}
+.map-pin.visited circle{fill:#22c55e;stroke:#14532d}
+.map-pin.sel circle{fill:#fbbf24;stroke:#92400e;stroke-width:3}
+.pin-pulse{fill:none;stroke:#fbbf24;stroke-width:2.5;opacity:0}
+.map-pin.sel .pin-pulse{animation:pin-pulse 1.4s ease-out infinite}
+@keyframes pin-pulse{0%{r:13;opacity:.9}100%{r:30;opacity:0}}
+#routeLine{stroke:#fbbf24;stroke-width:3;stroke-dasharray:7 7;stroke-linecap:round;animation:route-dash 1s linear infinite}
+@keyframes route-dash{to{stroke-dashoffset:-14}}
+.place-row{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:var(--card2);border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin:7px 0;cursor:pointer;color:var(--ink)}
+.place-row.sel{border-color:var(--gold);background:#2a2103}
+.place-num{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--orange);color:#10131f;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:15px}
+.place-row.visited .place-num{background:#22c55e}
+.stamp-pop{display:inline-block;animation:burst-pop .4s ease}
 .accent-dot{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid #0006;vertical-align:-3px;margin-right:7px}
 .mascot-emoji{font-size:22px;vertical-align:-3px;margin-right:6px}
 @media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}}
@@ -336,6 +357,18 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     </div>
     <p id="packingMsg" class="small" role="status" style="margin:8px 0 0"></p>
     <p class="small muted" style="margin:8px 0 0">New to game day? Read <b style="color:var(--ink)">What Your First Game Feels Like</b> in Learn &gt; Basketball IQ — nerves, refs, and bench manners, all explained. 💛</p>
+  </div>
+  <div class="card" id="placesCard">
+    <h3>🗺️ Places to Play &amp; Train Near You</h3>
+    <p class="muted small" style="margin:4px 0 10px">FOURTEEN real places within about 10 miles of your neighborhood (21206) where you can play basketball or train! This map is a drawing — the pins sit about where the places really are, and the rings show about 2½, 5, and 10 miles out. Tap a pin or a name to see more. <b style="color:var(--ink)">Grown-ups:</b> gym times and programs change, so call or check before you go. Outdoor courts are first-come and weather-permitting.</p>
+    <div id="placesMapWrap"></div>
+    <div class="timer-row" style="margin-top:10px">
+      <button type="button" class="btn" id="placeSpinBtn">🎡 Spin for a Place!</button>
+      <button type="button" class="btn ghost" id="updateReopenBtn">🆕 What's New?</button>
+    </div>
+    <p id="passportLine" class="small" role="status" style="margin:10px 0 0">🧳 Places Passport: 0 of 14 places stamped. Play somewhere new, then stamp it!</p>
+    <div id="placeDetail" style="margin-top:10px"></div>
+    <div id="placesList" style="margin-top:6px"></div>
   </div>
   <div class="card" id="recentCard">
     <h3>📓 Most Recent Practice</h3>
@@ -708,6 +741,21 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 
 <footer>Ne'ala Hoops #14 • Made with Dad • Everything is saved only on this device — no accounts, no posting, just practice. 💛</footer>
 
+<div class="update-modal" id="updateModal" hidden role="dialog" aria-modal="true" aria-labelledby="updateTitle">
+  <div class="update-card">
+    <div class="update-ball" aria-hidden="true">🏀</div>
+    <h2 id="updateTitle">🎉 NEW UPDATE, Ne'ala!</h2>
+    <p class="big" style="font-size:19px;margin:6px 0">Your app just got a <b>treasure map of basketball</b>!</p>
+    <div class="update-list">
+      <p style="margin:5px 0">🗺️ <b>Places to Play &amp; Train</b> — 14 real courts, gyms and YMCAs near your neighborhood, all on one map on your Home page</p>
+      <p style="margin:5px 0">✨ Watch the <b>golden route</b> draw itself to every place you tap</p>
+      <p style="margin:5px 0">🎡 <b>Spin for a Place</b> when you can't decide where to play</p>
+      <p style="margin:5px 0">🧳 Stamp your <b>Places Passport</b> every time you play somewhere new — can you stamp all 14?</p>
+    </div>
+    <button type="button" class="btn full" id="updateGoBtn" style="margin-top:8px">🗺️ Show Me the Map!</button>
+    <button type="button" class="btn ghost full" id="updateCloseBtn" style="margin-top:8px">Maybe Later</button>
+  </div>
+</div>
 <div class="scroll-btns">
   <button type="button" id="scrollTopBtn" aria-label="Scroll to the top of the page">⬆️</button>
   <button type="button" id="scrollBotBtn" aria-label="Scroll to the bottom of the page">⬇️</button>
@@ -862,6 +910,8 @@ function normalizeData(d){
   d.mascot=MASCOTS.includes(d.mascot)?d.mascot:"🏀";
   d.kittyMode=d.kittyMode===true;
   d.shootBest=(typeof d.shootBest==="number"&&d.shootBest>=0)?Math.floor(d.shootBest):0;
+  d.placesVisited=Array.isArray(d.placesVisited)?[...new Set(d.placesVisited.filter(id=>typeof id==="string"))]:[];
+  d.seenUpdate=(typeof d.seenUpdate==="string")?d.seenUpdate:null;
   d.champBest=(typeof d.champBest==="number"&&d.champBest>=0)?Math.min(10,Math.floor(d.champBest)):0;
   d.champBestDate=(typeof d.champBestDate==="string"&&d.champBestDate)?d.champBestDate:null;
   d.soundOn=d.soundOn!==false;
@@ -876,7 +926,7 @@ function normalizeWeeklyGoals(g){
   const minutes=(typeof s.minutes==="number"&&isFinite(s.minutes))?Math.min(300,Math.max(5,Math.floor(s.minutes))):WEEKLY_GOALS_DEFAULT.minutes;
   return{sessions,minutes};
 }
-function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
+function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,placesVisited:[],seenUpdate:null,champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
 let state=load();
 const DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 let editingDow=null;
@@ -920,6 +970,122 @@ function setKittyMode(on){
   state.kittyMode=!!on;
   if(on){state.accent="blue";state.mascot="🐱";}
   save();applyPersonalization();
+}
+/* ================= PLACES TO PLAY (2026-10-30 update) ================= */
+const UPDATE_VERSION="places-2026-10";
+const PLACES=[
+ {id:"bocek",n:"Bocek Recreation Center",t:"🏠 Rec Center Gym",dist:1.7,x:172,y:184,addr:"3000 E Madison St, Baltimore",phone:"410-563-6379",note:"Indoor gym at Bocek Park — leagues, open gym and after-school fun in East Baltimore."},
+ {id:"herringrun",n:"Herring Run Park Courts — Hall Springs",t:"🌳 Outdoor Courts",dist:1.9,x:152,y:120,addr:"Argonne Dr, Herring Run Park, Baltimore",phone:"",note:"Outdoor courts in giant Herring Run Park — shoot around, then explore the trails, stream and bridges!"},
+ {id:"clifton",n:"Clifton Park Basketball Court",t:"🌳 Outdoor Court",dist:2.0,x:135,y:162,addr:"2027 Sinclair Ln, Baltimore",phone:"",note:"Outdoor court in Clifton Park, by the golf course, lake and walking trails."},
+ {id:"baker",n:"Virginia S. Baker Recreation Center",t:"🏠 Rec Center Gym",dist:2.5,x:147,y:196,addr:"2601 E Baltimore St (Patterson Park)",phone:"410-396-9156",note:"Indoor gym inside Patterson Park — and outside there's a huge park with fields, a boat lake and the famous Pagoda!"},
+ {id:"coldstream",n:"Coldstream Recreation Center",t:"🏠 Rec Center Gym",dist:2.6,x:129,y:144,addr:"1401 Fillmore St, Baltimore",phone:"410-396-6746",note:"Indoor gym near the Lake Montebello walking loop — warm up with a lap around the water!"},
+ {id:"weinberg",n:"The Weinberg Y in Waverly",t:"💪 YMCA",dist:2.8,x:117,y:129,addr:"900 E 33rd St, Baltimore",phone:"410-889-9622",note:"A big Y with a gym, youth sports and family programs. A grown-up needs a membership or guest pass."},
+ {id:"cecilkirk",n:"Cecil-Kirk Recreation Center",t:"🏠 Rec Center Gym",dist:3.0,x:112,y:162,addr:"909 E 22nd St, Baltimore",phone:"410-396-6750",note:"City rec center gym in East Baltimore — open gym, leagues and after-school programs."},
+ {id:"greenmount",n:"Greenmount Recreation Center",t:"🏠 Rec Center Gym",dist:3.2,x:96,y:150,addr:"2304 Greenmount Ave, Baltimore",phone:"410-396-6708",note:"City rec center gym that's open seven days a week — lots of chances to play!"},
+ {id:"carter",n:"Walter P. Carter Recreation Center",t:"🏠 Rec Center Gym",dist:3.3,x:129,y:108,addr:"820 E 43rd St, Baltimore",phone:"410-396-6271",note:"Rec center gym up by Morgan State — gym time plus youth programs."},
+ {id:"uahouse",n:"UA House at Fayette",t:"⭐ Youth Center",dist:3.3,x:117,y:198,addr:"1100 E Fayette St, Baltimore",phone:"",note:"Youth center run by Living Classrooms (once Carmelo Anthony's center!) with sports and after-school programs — a grown-up signs you up."},
+ {id:"marshall",n:"Robert C. Marshall Recreation Center",t:"🏠 Rec Center Gym",dist:4.4,x:100,y:180,addr:"1201 Pennsylvania Ave, Baltimore",phone:"410-396-8490",note:"Indoor courts and youth leagues in Upton, plus free youth meals on weekday afternoons."},
+ {id:"druidhill",n:"Druid Hill Park Basketball Courts",t:"🌳 Outdoor Courts",dist:4.5,x:84,y:132,addr:"Druid Hill Park, Baltimore",phone:"",note:"Famous outdoor courts in Druid Hill Park — right by the Maryland Zoo! Games here are legendary."},
+ {id:"parkvilley",n:"The Y in Parkville",t:"💪 YMCA",dist:5.8,x:187,y:57,addr:"8910 Waltham Woods Rd, Parkville",phone:"410-663-1300",note:"A huge Y with open gym and pickup basketball. A grown-up needs a membership or guest pass."},
+ {id:"backriver",n:"Back River Community Center",t:"🦁 Lady Lions Home!",dist:7.0,x:273,y:182,addr:"801 Back River Neck Rd, Essex",phone:"410-887-0217",note:"HOME of the Baltimore Lady Lions girls' program — and the Turkey Tip-Off! Indoor courts and nightly girls' practices."}
+];
+let selectedPlace=null;
+function placesMapSVG(){
+  const cx=180,cy=150;
+  const rings=[34.5,69,138].map((r,i)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#38bdf866" stroke-width="1.6" stroke-dasharray="5 6"/><text x="${cx+r*0.72}" y="${cy-r*0.72-3}" font-size="9.5" fill="#7dd3fc">${["2½","5","10"][i]} mi</text>`).join("");
+  const roads=`<path d="M10 236 Q120 196 200 172 T350 128" stroke="#f59e0b55" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M96 292 Q150 200 176 96 T206 8" stroke="#94a3b833" stroke-width="7" fill="none"/><path d="M8 92 Q140 118 352 84" stroke="#94a3b82b" stroke-width="6" fill="none"/><path d="M250 292 Q236 190 262 60" stroke="#94a3b82b" stroke-width="6" fill="none"/>`;
+  const route=selectedPlace?`<line id="routeLine" x1="${cx}" y1="${cy}" x2="${selectedPlace.x}" y2="${selectedPlace.y}"/>`:"";
+  const pins=PLACES.map((p,i)=>{
+    const visited=state.placesVisited.includes(p.id),sel=selectedPlace&&selectedPlace.id===p.id;
+    return `<g class="map-pin ${visited?"visited":""} ${sel?"sel":""}" data-pin="${p.id}" transform="translate(${p.x},${p.y})" style="animation-delay:${(i*0.06).toFixed(2)}s" role="button" aria-label="${escapeHtml(p.n)}, about ${p.dist} miles away" tabindex="0"><circle class="pin-pulse" r="13"/><circle r="11.5"/><text y="4.5" font-size="11" text-anchor="middle">${i+1}</text>${visited?`<text y="-15" font-size="11" text-anchor="middle">✅</text>`:""}</g>`;
+  }).join("");
+  return `<svg viewBox="0 0 360 300" style="width:100%;height:auto;display:block;border-radius:14px;border:1px solid var(--line)" role="img" aria-label="Drawing of a map showing 14 places to play basketball near your neighborhood">
+  <defs><linearGradient id="mapbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d2b1d"/><stop offset="1" stop-color="#0a1a33"/></linearGradient></defs>
+  <rect width="360" height="300" fill="url(#mapbg)"/>
+  <text class="anim-twinkle" x="28" y="34" font-size="13">⭐</text><text class="anim-twinkle" x="322" y="42" font-size="11">✨</text><text x="330" y="24" font-size="15" fill="#f4f7ff" font-weight="bold">N ↑</text>
+  ${roads}${rings}${route}
+  <g transform="translate(${cx},${cy})"><circle r="15" fill="#f472b6" stroke="#be185d" stroke-width="2.4"/><text y="5.5" font-size="14" text-anchor="middle">🏠</text><text y="30" font-size="9.5" fill="#f9a8d4" text-anchor="middle" font-weight="bold">YOUR NEIGHBORHOOD</text></g>
+  ${pins}</svg>`;
+}
+function selectPlace(id,scroll){
+  const p=PLACES.find(x=>x.id===id);if(!p)return;
+  selectedPlace=p;
+  renderPlaces();
+  const d=$("placeDetail");
+  if(d&&scroll)d.scrollIntoView({behavior:scrollBehavior(),block:"nearest"});
+}
+function renderPlaces(){
+  const wrap=$("placesMapWrap");if(!wrap)return;
+  wrap.innerHTML=placesMapSVG();
+  const visited=state.placesVisited.length;
+  const pl=$("passportLine");
+  if(pl)pl.innerHTML=visited>=PLACES.length?`🧳 Places Passport: <b>${visited} of ${PLACES.length}</b> — 🏆 MAP MASTER! You stamped EVERY place! Amazing exploring, #14! 🎉`:`🧳 Places Passport: <b>${visited} of ${PLACES.length}</b> places stamped. Play somewhere new, then stamp it!`;
+  const list=$("placesList");
+  if(list)list.innerHTML=PLACES.map((p,i)=>{
+    const v=state.placesVisited.includes(p.id),sel=selectedPlace&&selectedPlace.id===p.id;
+    return `<button type="button" class="place-row ${v?"visited":""} ${sel?"sel":""}" data-place-row="${p.id}" aria-pressed="${sel?"true":"false"}"><span class="place-num">${v?"✅":i+1}</span><span style="flex:1"><b>${escapeHtml(p.n)}</b><br><span class="muted small">${p.t} • about ${p.dist} mi away</span></span><span aria-hidden="true">${sel?"👀":"›"}</span></button>`;
+  }).join("");
+  const d=$("placeDetail");
+  if(d){
+    if(!selectedPlace){d.innerHTML=`<p class="muted" style="margin:0">👆 Tap a pin on the map or a name below to learn about a place!</p>`;}
+    else{
+      const p=selectedPlace,v=state.placesVisited.includes(p.id);
+      d.innerHTML=`<div style="background:var(--card2);border:2px solid var(--gold);border-radius:14px;padding:12px 14px">
+      <p class="big" style="font-size:20px;margin:2px 0">${escapeHtml(p.n)}</p>
+      <p style="margin:4px 0"><span class="tag">${p.t}</span> <span class="tag">📍 ${escapeHtml(p.addr)}</span> <span class="tag">🧭 about <b id="distCount">${p.dist}</b> miles away</span></p>
+      <p class="muted" style="margin:6px 0">${escapeHtml(p.note)}</p>
+      ${p.phone?`<p class="small muted" style="margin:4px 0">Grown-ups: call <b style="color:var(--ink)">${p.phone}</b> to check gym times and programs before you go.</p>`:`<p class="small muted" style="margin:4px 0">Grown-ups: check Baltimore City Rec &amp; Parks for the latest times before you go.</p>`}
+      <button type="button" class="btn ${v?"ghost":"teal"} full" id="stampBtn">${v?"✅ Stamped! Tap to un-stamp":"🧳 We Played Here — Stamp My Passport!"}</button>
+      </div>`;
+      const sb=$("stampBtn");
+      if(sb)sb.addEventListener("click",()=>{
+        const has=state.placesVisited.includes(p.id);
+        if(has){state.placesVisited=state.placesVisited.filter(x=>x!==p.id);}
+        else{
+          state.placesVisited=[...state.placesVisited,p.id];
+          try{metroClick(true);}catch(e){}
+          if(state.placesVisited.length>=PLACES.length){launchConfetti(36);}else{launchConfetti(12);}
+        }
+        save();renderPlaces();
+      });
+      const dc=$("distCount");
+      if(dc&&!prefersReducedMotion()){
+        const target=p.dist,t0=performance.now();
+        const tick=(now)=>{const k=Math.min(1,(now-t0)/480);dc.textContent=(target*(0.55+0.45*k)).toFixed(1);if(k<1&&selectedPlace&&selectedPlace.id===p.id)requestAnimationFrame(tick);else dc.textContent=target.toFixed(1);};
+        requestAnimationFrame(tick);
+      }
+    }
+  }
+}
+function spinForPlace(){
+  const btn=$("placeSpinBtn");if(!btn||btn.disabled)return;
+  btn.disabled=true;btn.textContent="🎡 Spinning…";
+  let ticks=0;
+  const iv=setInterval(()=>{
+    const p=PLACES[Math.floor(Math.random()*PLACES.length)];
+    selectedPlace=p;renderPlaces();
+    try{metroClick(false);}catch(e){}
+    if(++ticks>=12){
+      clearInterval(iv);
+      btn.disabled=false;btn.textContent="🎡 Spin for a Place!";
+      try{metroClick(true);}catch(e){}
+      launchConfetti(10);
+      const d=$("placeDetail");if(d)d.scrollIntoView({behavior:scrollBehavior(),block:"nearest"});
+    }
+  },110);
+}
+function showUpdateModal(){
+  const m=$("updateModal");if(!m)return;
+  m.hidden=false;
+  launchConfetti(22);
+}
+function closeUpdateModal(goMap){
+  const m=$("updateModal");if(m)m.hidden=true;
+  if(state.seenUpdate!==UPDATE_VERSION){state.seenUpdate=UPDATE_VERSION;save();}
+  if(goMap){
+    goto("home");
+    setTimeout(()=>{const c=$("placesCard");if(c)c.scrollIntoView({behavior:scrollBehavior(),block:"start"});},80);
+  }
 }
 /* ================= PICTURE GALLERY + EXTRAS (Kitty Blue update) ================= */
 function kittyFigure(prop){
@@ -1645,7 +1811,7 @@ function renderGames(){
   <p class="small muted" style="margin:10px 0 0">⏱️ ${t.minutes} total minutes played • Per game averages: ${per(t.points)} points • ${per(t.rebounds)} rebounds • ${per(t.assists)} assists. Totals add up all by themselves as you log games — great season building, #14! 🏀</p>`;
   listEl.innerHTML=games.map(g=>`<div class="coach-note"><b>${escapeHtml(g.date)}</b> — vs ${escapeHtml(g.opponent)}<div style="margin-top:6px;line-height:1.5">🏀 ${+g.points||0} points • 🧲 ${+g.rebounds||0} rebounds • 🤝 ${+g.assists||0} assists • ⏱️ ${+g.minutes||0} minutes</div><div class="note-actions"><button type="button" class="btn ghost" data-game-del="${g.id}" aria-label="Delete game against ${escapeHtml(g.opponent)} on ${escapeHtml(g.date)}">🗑️ Delete Game</button></div></div>`).join("");
 }
-function render(){applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();renderHome();renderTipoff();renderPacking();renderWeeklyPlan();renderWeeklyGoals();renderDrills(currentSkill);renderLogForm();renderGames();renderLearn(currentLearn);renderProgress();renderShotChart();renderGear();renderCoachNotes();renderDataSafety();applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();}
+function render(){applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();renderHome();renderPlaces();renderTipoff();renderPacking();renderWeeklyPlan();renderWeeklyGoals();renderDrills(currentSkill);renderLogForm();renderGames();renderLearn(currentLearn);renderProgress();renderShotChart();renderGear();renderCoachNotes();renderDataSafety();applyTextSize();applyCalmMode();applyPersonalization();applySoundSetting();renderMetronome();}
 function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 /* ================= INTERACTIONS ================= */
 let currentSkill="all",currentLearn="all";
@@ -2293,6 +2459,17 @@ $("sgShootBtn").addEventListener("click",()=>{
   sgNewZone();sgRender();
 });
 sgRender();
+const spinBtn=$("placeSpinBtn");if(spinBtn)spinBtn.addEventListener("click",spinForPlace);
+const updGo=$("updateGoBtn");if(updGo)updGo.addEventListener("click",()=>closeUpdateModal(true));
+const updClose=$("updateCloseBtn");if(updClose)updClose.addEventListener("click",()=>closeUpdateModal(false));
+const updRe=$("updateReopenBtn");if(updRe)updRe.addEventListener("click",showUpdateModal);
+const pmw=$("placesMapWrap");
+if(pmw){
+  pmw.addEventListener("click",e=>{const g=e.target.closest("[data-pin]");if(g)selectPlace(g.getAttribute("data-pin"),false);});
+  pmw.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const g=e.target.closest("[data-pin]");if(g){e.preventDefault();selectPlace(g.getAttribute("data-pin"),false);}}});
+}
+const pll=$("placesList");
+if(pll)pll.addEventListener("click",e=>{const b=e.target.closest("[data-place-row]");if(b)selectPlace(b.getAttribute("data-place-row"),true);});
 applyTextSize();applyCalmMode();
 /* ================= MAKE IT HERS CONTROLS (cycle 25) ================= */
 $("accentChips").addEventListener("click",e=>{const b=e.target.closest("[data-accent-choice]");if(!b)return;setAccent(b.dataset.accentChoice);});
@@ -2330,6 +2507,7 @@ $("gDate").value=dayStr(new Date());
 $("coachNoteDate").value=dayStr(new Date());
 fillArt();
 render();
+if(state.seenUpdate!==UPDATE_VERSION)setTimeout(showUpdateModal,650);
 </script>
 </body>
 </html>
