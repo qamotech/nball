@@ -37,3 +37,9 @@ A basketball **training + education** app built for Ne'ala, 11 — a beginner le
 - Built in 32 upgrade-loop cycles, Oct 25–26, 2026 — see `PLAN.md` for the full roadmap
 
 Made with 💛 by Dad.
+
+## Places Update (2026-10-30, per Nathan)
+- **What's New popup** on open (once per update, version `places-2026-10`; reopen anytime from the Places card) announcing the map with a confetti burst.
+- **Places to Play & Train** card (Home): a hand-drawn SVG map of **14 real places within ~10 straight-line miles of the 21206 neighborhood** — Herring Run, Bocek, Clifton, Baker/Patterson, Coldstream, Weinberg Y, Cecil-Kirk, Greenmount, Carter, UA House, Marshall, Druid Hill, Parkville Y, Back River (Lady Lions) — with 2½/5/10-mile rings. The exact home address is **not** stored anywhere in the app; the map is centered on the neighborhood only.
+- **4 effects:** animated golden route line + pulsing selected pin + distance count-up; 🎡 Spin-for-a-Place; 🧳 Places Passport stamps (`placesVisited`, MAP MASTER celebration at 14/14); popup party (bouncing ball + confetti).
+- State additions (optional/defaulted): `placesVisited` [], `seenUpdate` null. SW cache v4. Tests: `test_places.py` 29 checks, all prior suites PASS.
