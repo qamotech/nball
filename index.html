@@ -219,6 +219,48 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 .place-num{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--orange);color:#10131f;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:15px}
 .place-row.visited .place-num{background:#22c55e}
 .stamp-pop{display:inline-block;animation:burst-pop .4s ease}
+#drillList,#lessonList{max-height:560px;overflow-y:auto;scrollbar-width:thin;padding-right:4px}
+#placesList{max-height:330px;overflow-y:auto;scrollbar-width:thin}
+#historyList,#gameList{max-height:330px;overflow-y:auto;scrollbar-width:thin}
+#coachNotesList{max-height:300px;overflow-y:auto;scrollbar-width:thin}
+.jump-bar{position:sticky;top:78px;z-index:15;display:flex;gap:8px;overflow-x:auto;padding:8px 2px;background:#0b0f1ae0;scrollbar-width:none}
+.jump-chip{flex:0 0 auto;background:var(--card2);color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:8px 13px;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap}
+.jump-chip:active{border-color:var(--gold)}
+#dashModal{z-index:125}
+#updateModal{z-index:140}
+.dash-card{text-align:left}
+.dash-scene{position:relative;height:84px;background:linear-gradient(180deg,#0d2140,#123);border-radius:14px;overflow:hidden;margin:10px 0}
+.dash-scene .ball-anim{position:absolute;font-size:30px;animation:ball-arc 3.4s ease-in-out infinite}
+@keyframes ball-arc{0%{left:4%;top:56%}30%{left:38%;top:2%}55%{left:76%;top:16%}70%{left:83%;top:52%}82%{left:83%;top:64%;opacity:1}95%{left:83%;top:66%;opacity:0}100%{left:4%;top:56%;opacity:0}}
+.mascot-buddy{font-size:52px;background:none;border:none;cursor:pointer;animation:buddy-bounce 1.6s ease-in-out infinite;padding:2px}
+@keyframes buddy-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px) rotate(-5deg)}}
+.tip-pop{animation:burst-pop .35s ease}
+.dash-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin:12px 0}
+.dash-stat{background:var(--card2);border:2px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.dash-stat b{font-size:24px;display:block}
+.dash-stat span{font-size:13.5px;color:var(--muted)}
+.dash-new{background:#0e2a16;border:2px solid #22c55e55;border-radius:14px;padding:10px 14px;margin-top:12px}
+.dash-new p{margin:5px 0}
+.hs-spot{cursor:pointer}
+.hs-spot circle{fill:#1e293b;stroke:#38bdf8;stroke-width:2.5}
+.hs-spot text{pointer-events:none}
+.hs-spot.hot circle{fill:#fbbf24;stroke:#fff;animation:hs-pulse .45s ease-in-out infinite alternate}
+@keyframes hs-pulse{from{r:15}to{r:20}}
+.mm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.mm-pad{background:var(--card2);border:3px solid var(--line);border-radius:16px;padding:16px 8px;font-size:34px;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .12s,filter .12s}
+.mm-pad span{font-size:15px;font-weight:700}
+.mm-pad.lit{filter:brightness(1.8);transform:scale(1.06);border-color:var(--gold)}
+.blitz-bar{width:100%;margin:8px 0}
+.dice{font-size:46px;display:inline-block}
+.dice.rolling{animation:dice-shake .12s linear infinite}
+@keyframes dice-shake{25%{transform:rotate(-11deg) translateY(-3px)}75%{transform:rotate(11deg) translateY(3px)}}
+.trophy-shelf{display:flex;gap:10px;overflow-x:auto;padding:8px 2px;scrollbar-width:thin}
+.trophy{min-width:92px;text-align:center;background:var(--card2);border:2px solid var(--line);border-radius:14px;padding:10px 6px}
+.trophy.earned{border-color:var(--gold)}
+.trophy .tic{font-size:32px;display:block;animation:trophy-shine 2.8s ease-in-out infinite}
+.trophy.locked{opacity:.45;filter:grayscale(1)}
+.trophy.locked .tic{animation:none}
+@keyframes trophy-shine{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg) scale(1.09)}}
 .accent-dot{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid #0006;vertical-align:-3px;margin-right:7px}
 .mascot-emoji{font-size:22px;vertical-align:-3px;margin-right:6px}
 @media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}}
@@ -235,6 +277,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 </header>
 
 <main>
+  <div id="jumpBar" class="jump-bar" aria-label="Jump to a part of this page"></div>
 <!-- ============ HOME ============ -->
 <section class="view active" id="view-home">
   <div class="card hot">
@@ -321,6 +364,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <p id="personalizeMsg" class="small" role="status" style="margin:4px 0 0">Orange + 🏀 Basketball is your look right now — the classic #14 style!</p>
   </div>
   <div class="grid" id="quickStats" aria-label="Quick stats"></div>
+  <button type="button" class="btn full" id="dashOpenBtn" style="margin-top:10px">📊 See My Dashboard</button>
   <div class="card" id="drillOfDayCard">
     <h3>🌟 Drill of the Day</h3>
     <div id="drillOfDay"><p class="muted">Loading today's drill…</p></div>
@@ -397,6 +441,32 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     </div>
     <p id="sgScore" class="small" role="status" style="margin:10px 0 0">Makes: 0 • Shots: 0 • Streak: 0 • 🏆 Best streak: 0</p>
     <p id="sgMsg" class="big" style="font-size:18px;margin:6px 0 0" role="status">Press START, then shoot when the marker hits the green!</p>
+  </div>
+  <div class="card" id="hotspotCard">
+    <h3>🎯 Hot Spot Challenge</h3>
+    <p class="muted small" style="margin:4px 0 10px">A spot on the court lights up <b style="color:var(--gold)">GOLD</b> — tap it fast before it moves! You have 30 seconds. How many hot spots can you hit, #14?</p>
+    <div id="hsCourt"></div>
+    <p id="hsScore" class="small" role="status" style="margin:10px 0 0">Hits: 0 • Time: 30 • 🏆 Best: 0</p>
+    <p id="hsMsg" class="small" role="status" style="margin:6px 0"></p>
+    <button type="button" class="btn full" id="hsStartBtn">▶️ Start Hot Spot</button>
+  </div>
+  <div class="card" id="memoryCard">
+    <h3>🧠 Memory Moves</h3>
+    <p class="muted small" style="margin:4px 0 10px">Watch the moves flash, then tap them back in the SAME order. Every round adds one more move. How long a chain can you remember?</p>
+    <div class="mm-grid" id="mmPads"></div>
+    <p id="mmMsg" class="small" role="status" style="margin:6px 0">Press START and watch closely! 👀</p>
+    <button type="button" class="btn full" id="mmStartBtn">▶️ Start Memory Moves</button>
+  </div>
+  <div class="card" id="diceCard">
+    <h3>🎲 Daily Challenge Dice</h3>
+    <p class="muted small" style="margin:4px 0 10px">Roll the dice once a day for a surprise mini challenge. Finish it out in the driveway and earn a star! ⭐</p>
+    <div style="text-align:center" aria-hidden="true"><span class="dice" id="dice1">🎲</span> <span class="dice" id="dice2">🎲</span></div>
+    <p id="diceMsg" class="big" style="text-align:center;font-size:19px;margin:8px 0" role="status">Tap ROLL for today's challenge!</p>
+    <p id="diceStars" class="small" style="text-align:center" role="status"></p>
+    <div class="timer-row">
+      <button type="button" class="btn" id="diceRollBtn">🎲 Roll the Dice</button>
+      <button type="button" class="btn teal" id="diceDoneBtn" disabled>✅ I Did It!</button>
+    </div>
   </div>
   <div class="card hot" id="fourteen">
     <h3>⭐ 14 for 14 — Driveway Session (14 minutes)</h3>
@@ -569,6 +639,15 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
   <h2>🧠 Learn</h2>
   <div class="art" data-art="learn"></div>
   <p class="muted">Basketball IQ + school skills, taught through the game you love. Finish lessons and quizzes to earn Scholar badges.</p>
+  <div class="card" id="blitzCard">
+    <h3>⚡ Quiz Blitz</h3>
+    <p class="muted small" style="margin:4px 0 10px">Five quick questions — only 10 seconds each! Tap your answer before the bar runs out. Basketball brains AND math brains! 🧠</p>
+    <div class="bar blitz-bar" aria-hidden="true"><i id="blitzBarFill" style="width:100%"></i></div>
+    <p id="blitzQ" class="big" style="font-size:20px;margin:8px 0">Press START to play! 🏀</p>
+    <div id="blitzAnswers"></div>
+    <p id="blitzScore" class="small" role="status" style="margin:8px 0">Score: 0 • 🏆 Best: 0</p>
+    <button type="button" class="btn full" id="blitzStartBtn">▶️ Start Quiz Blitz</button>
+  </div>
   <div class="card" id="comfyReadingCard">
     <h3>🔤 Comfy Reading</h3>
     <p class="muted small" style="margin:4px 0 0">Good news: the words in this app are BIG all the time now — no buttons to tap, nothing to set. The bright colors and strong contrast stay exactly the same. Every button is big enough for easy tapping (at least 44 pixels tall), and a bright gold ring shows which button or box is picked when you move with a keyboard or switch. Happy reading, #14! 💛</p>
@@ -666,6 +745,11 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     </div>
   </div>
   <div class="card">
+    <h3>🏆 Trophy Shelf</h3>
+    <p class="muted small" style="margin:4px 0">Your earned trophies shine and wiggle here! The grey ones are still waiting — check the Badges list right below to see how to earn each one.</p>
+    <div class="trophy-shelf" id="trophyShelf"></div>
+  </div>
+  <div class="card">
     <div class="art" data-art="badges"></div>
     <h3>🏅 Badges</h3>
     <div id="badgeList"></div>
@@ -741,18 +825,45 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 
 <footer>Ne'ala Hoops #14 • Made with Dad • Everything is saved only on this device — no accounts, no posting, just practice. 💛</footer>
 
+<div class="update-modal" id="dashModal" hidden role="dialog" aria-modal="true" aria-labelledby="dashTitle">
+  <div class="update-card dash-card">
+    <button type="button" class="btn ghost" id="dashCloseBtn" style="float:right;padding:6px 13px" aria-label="Close dashboard">✖</button>
+    <h2 id="dashTitle" style="text-align:left">📊 Hey Ne'ala! Your Dashboard</h2>
+    <div class="dash-scene" aria-hidden="true">
+      <svg style="position:absolute;right:8%;top:6px" width="86" height="62" viewBox="0 0 86 62"><rect x="8" y="2" width="70" height="46" rx="5" fill="none" stroke="#f4f7ff" stroke-width="3.4"/><rect x="30" y="14" width="26" height="18" fill="none" stroke="#f4f7ff" stroke-width="2.4"/><ellipse cx="43" cy="50" rx="17" ry="4.6" fill="none" stroke="#f472b6" stroke-width="3.4"/></svg>
+      <span class="ball-anim">🏀</span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button type="button" class="mascot-buddy" id="mascotBuddy" aria-label="Tap your buddy for a tip">🏀</button>
+      <p id="dashTip" class="small" role="status" style="margin:0"></p>
+    </div>
+    <div class="dash-stats" id="dashStats"></div>
+    <div id="dashGoals"></div>
+    <p id="dashNext" class="small" role="status" style="margin:10px 0 0"></p>
+    <div class="dash-new">
+      <h3 style="margin:2px 0 6px">🆕 What's New in Your App</h3>
+      <div id="dashNew"></div>
+    </div>
+    <div class="timer-row" style="margin-top:14px">
+      <button type="button" class="btn" id="dashStartBtn">▶️ Start Today</button>
+      <button type="button" class="btn teal" id="dashGameBtn">🎮 Play a Game</button>
+      <button type="button" class="btn ghost" id="dashPlacesBtn">🗺️ Places Map</button>
+    </div>
+  </div>
+</div>
 <div class="update-modal" id="updateModal" hidden role="dialog" aria-modal="true" aria-labelledby="updateTitle">
   <div class="update-card">
     <div class="update-ball" aria-hidden="true">🏀</div>
     <h2 id="updateTitle">🎉 NEW UPDATE, Ne'ala!</h2>
-    <p class="big" style="font-size:19px;margin:6px 0">Your app just got a <b>treasure map of basketball</b>!</p>
+    <p class="big" style="font-size:19px;margin:6px 0">Your app got <b>GAME DAY energy</b> — and it got SHORTER too!</p>
     <div class="update-list">
-      <p style="margin:5px 0">🗺️ <b>Places to Play &amp; Train</b> — 14 real courts, gyms and YMCAs near your neighborhood, all on one map on your Home page</p>
-      <p style="margin:5px 0">✨ Watch the <b>golden route</b> draw itself to every place you tap</p>
-      <p style="margin:5px 0">🎡 <b>Spin for a Place</b> when you can't decide where to play</p>
-      <p style="margin:5px 0">🧳 Stamp your <b>Places Passport</b> every time you play somewhere new — can you stamp all 14?</p>
+      <p style="margin:5px 0">📊 A <b>Dashboard</b> now pops up EVERY visit with your streak, goals, badges and news</p>
+      <p style="margin:5px 0">🎯 <b>Hot Spot Challenge</b> + 🧠 <b>Memory Moves</b> + ⚡ <b>Quiz Blitz</b> — three new games!</p>
+      <p style="margin:5px 0">🎲 <b>Daily Challenge Dice</b> and a 🏆 <b>Trophy Shelf</b> for your badges</p>
+      <p style="margin:5px 0">✂️ Pages are <b>shorter</b> now — long lists scroll inside their own boxes, and jump chips at the top zip you anywhere</p>
+      <p style="margin:5px 0">🗺️ Your <b>Places map</b> is still here — find it with the jump chips!</p>
     </div>
-    <button type="button" class="btn full" id="updateGoBtn" style="margin-top:8px">🗺️ Show Me the Map!</button>
+    <button type="button" class="btn full" id="updateGoBtn" style="margin-top:8px">📊 See My Dashboard!</button>
     <button type="button" class="btn ghost full" id="updateCloseBtn" style="margin-top:8px">Maybe Later</button>
   </div>
 </div>
@@ -912,6 +1023,8 @@ function normalizeData(d){
   d.shootBest=(typeof d.shootBest==="number"&&d.shootBest>=0)?Math.floor(d.shootBest):0;
   d.placesVisited=Array.isArray(d.placesVisited)?[...new Set(d.placesVisited.filter(id=>typeof id==="string"))]:[];
   d.seenUpdate=(typeof d.seenUpdate==="string")?d.seenUpdate:null;
+  ["hotspotBest","blitzBest","memoryBest","diceStars"].forEach(k=>{d[k]=(typeof d[k]==="number"&&d[k]>=0)?Math.floor(d[k]):0;});
+  d.diceDay=(d.diceDay&&typeof d.diceDay==="object"&&typeof d.diceDay.date==="string"&&typeof d.diceDay.text==="string")?{date:d.diceDay.date,text:d.diceDay.text,done:d.diceDay.done===true}:{date:"",text:"",done:false};
   d.champBest=(typeof d.champBest==="number"&&d.champBest>=0)?Math.min(10,Math.floor(d.champBest)):0;
   d.champBestDate=(typeof d.champBestDate==="string"&&d.champBestDate)?d.champBestDate:null;
   d.soundOn=d.soundOn!==false;
@@ -926,7 +1039,7 @@ function normalizeWeeklyGoals(g){
   const minutes=(typeof s.minutes==="number"&&isFinite(s.minutes))?Math.min(300,Math.max(5,Math.floor(s.minutes))):WEEKLY_GOALS_DEFAULT.minutes;
   return{sessions,minutes};
 }
-function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,placesVisited:[],seenUpdate:null,champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
+function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,placesVisited:[],seenUpdate:null,hotspotBest:0,blitzBest:0,memoryBest:0,diceStars:0,diceDay:{date:"",text:"",done:false},champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
 let state=load();
 const DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 let editingDow=null;
@@ -971,8 +1084,208 @@ function setKittyMode(on){
   if(on){state.accent="blue";state.mascot="🐱";}
   save();applyPersonalization();
 }
+
+/* ================= DASHBOARD + GAMES (2026-11-01 update) ================= */
+const DASH_TIPS=[
+ "Tap me anytime for a tip! Ready to play today, #14? 💪",
+ "Eyes up when you dribble — the court is full of surprises! 👀",
+ "B.E.E.F.! Balance, Eyes, Elbow, Follow through. 🎯",
+ "Missed a shot? Next one is going in. Always believe! 💛",
+ "Your weak hand is just your strong hand in training. 🤚",
+ "Small practice every day beats one giant practice. 🌱",
+ "Finish every session on a MAKE — that's the #14 rule! ⭐",
+ "Point your follow-through at the hoop and hold your pose! 🖐️"
+];
+let dashTipIdx=0;
+function whatsNewList(){
+  return [
+   ["📊","<b>Dashboard</b> — pops up every visit with your streak, weekly goals, badges and news"],
+   ["🎯","<b>Hot Spot Challenge</b> — tap the gold spot before it moves (Train)"],
+   ["🧠","<b>Memory Moves</b> — remember the flashing moves (Train)"],
+   ["⚡","<b>Quiz Blitz</b> — 5 questions, 10 seconds each (Learn)"],
+   ["🎲","<b>Daily Challenge Dice</b> — roll once a day, earn stars (Train)"],
+   ["🏆","<b>Trophy Shelf</b> — your badges, shining (Progress)"],
+   ["🗺️","<b>Places Map &amp; Passport</b> — still on Home, under the jump chips"]
+  ].map(x=>`<p style="margin:5px 0">${x[0]} ${x[1]}</p>`).join("");
+}
+function renderDashboard(){
+  const t=totals(state),streak=streakOf(state.sessions),p=weeklyGoalProgress();
+  const fg=t.attempts?Math.round(100*t.makes/t.attempts):0;
+  const earned=BADGES.filter(b=>b.test(state));
+  const next=BADGES.find(b=>!b.test(state));
+  const last=[...state.sessions].sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];
+  const tiles=[
+   ["🔥",streak,"day streak"],["🏀",p.count,"practices this week"],["⏱️",t.minutes,"total minutes"],
+   ["🎯",fg,"% shooting"],["🏅",earned.length,"of "+BADGES.length+" badges"],["🧳",state.placesVisited.length,"of 14 places"]
+  ];
+  const ds=$("dashStats");
+  if(ds)ds.innerHTML=tiles.map(x=>`<div class="dash-stat"><b><span class="count-up" data-count="${x[1]}">0</span></b>${x[0]} <span>${x[2]}</span></div>`).join("");
+  const dg=$("dashGoals");
+  if(dg)dg.innerHTML=`
+   <div class="bar-row"><span>🏀 Practices</span><div class="bar"><i style="width:${p.sessionsPct}%"></i></div><b>${p.count}/${p.goals.sessions}</b></div>
+   <div class="bar-row"><span>⏱️ Minutes</span><div class="bar"><i style="width:${p.minutesPct}%"></i></div><b>${p.minutes}/${p.goals.minutes}</b></div>`;
+  const dn=$("dashNext");
+  if(dn)dn.innerHTML=(next?`🏅 <b>Next badge:</b> ${next.icon} ${escapeHtml(next.name)} — ${escapeHtml(next.desc)}.`:`🏅 You earned EVERY badge — LEGEND! 👑`)+(last?`<br>📓 <b>Last practice:</b> ${escapeHtml(last.date)} — ${+last.minutes||0} min, ${+last.makes||0} makes.`:`<br>📓 No practices yet — today is a perfect day for your first one!`);
+  const mb=$("mascotBuddy");if(mb)mb.textContent=state.mascot||"🏀";
+  const tip=$("dashTip");if(tip&&!tip.textContent)tip.textContent=DASH_TIPS[0];
+  const nw=$("dashNew");if(nw)nw.innerHTML=whatsNewList();
+}
+function runCountUps(){
+  document.querySelectorAll("#dashStats .count-up").forEach(el=>{
+    const target=parseInt(el.dataset.count||"0",10)||0;
+    if(prefersReducedMotion()){el.textContent=target;return;}
+    const t0=performance.now();
+    const tick=n=>{const k=Math.min(1,(n-t0)/650);el.textContent=Math.round(target*k);if(k<1)requestAnimationFrame(tick);};
+    requestAnimationFrame(tick);
+  });
+}
+function showDashboard(){
+  const m=$("dashModal");if(!m)return;
+  renderDashboard();
+  m.hidden=false;
+  runCountUps();
+}
+function closeDashboard(action){
+  const m=$("dashModal");if(m)m.hidden=true;
+  if(action==="train"){goto("train");}
+  else if(action==="game"){goto("train");setTimeout(()=>{const c=$("hotspotCard");if(c)c.scrollIntoView({behavior:scrollBehavior(),block:"start"});},90);}
+  else if(action==="places"){goto("home");setTimeout(()=>{const c=$("placesCard");if(c)c.scrollIntoView({behavior:scrollBehavior(),block:"start"});},90);}
+}
+function renderJumpChips(){
+  const bar=$("jumpBar");if(!bar)return;
+  const view=document.querySelector(".view.active");
+  if(!view){bar.innerHTML="";return;}
+  const cards=[...view.querySelectorAll(".card")].filter(c=>c.querySelector("h3")&&!c.parentElement.closest(".card"));
+  bar.innerHTML=cards.slice(0,9).map((c,i)=>`<button type="button" class="jump-chip" data-jump="${i}">${escapeHtml((c.querySelector("h3").textContent||"Section").trim())}</button>`).join("");
+  bar.querySelectorAll("[data-jump]").forEach((btn,i)=>btn.addEventListener("click",()=>{cards[i].scrollIntoView({behavior:scrollBehavior(),block:"start"});}));
+}
+function renderTrophyShelf(){
+  const sh=$("trophyShelf");if(!sh)return;
+  sh.innerHTML=BADGES.map(b=>{const got=b.test(state);return `<div class="trophy ${got?"earned":"locked"}"><span class="tic">${got?b.icon:"🔒"}</span><b class="small">${escapeHtml(b.name)}</b><br><span class="muted small">${got?"Earned! 🌟":"Locked"}</span></div>`;}).join("");
+}
+/* ---- Hot Spot Challenge ---- */
+const HS_SPOTS=[[45,150],[95,78],[150,52],[205,78],[255,150]];
+const HS={timer:null,left:30,hits:0,target:-1,active:false};
+function hsDraw(){
+  const el=$("hsCourt");if(!el)return;
+  el.innerHTML=`<svg viewBox="0 0 300 190" style="width:100%;height:auto;display:block;background:#14532d;border-radius:14px;border:1px solid var(--line)" role="img" aria-label="Mini basketball court with five spots"><rect x="6" y="6" width="288" height="178" rx="10" fill="none" stroke="#fbbf24" stroke-width="2"/><line x1="150" y1="40" x2="150" y2="184" stroke="#fbbf2455" stroke-width="2"/><rect x="118" y="6" width="64" height="34" fill="none" stroke="#fbbf24" stroke-width="2"/><circle cx="150" cy="24" r="7" fill="none" stroke="#f472b6" stroke-width="3"/>${HS_SPOTS.map((p,i)=>`<g class="hs-spot ${HS.active&&HS.target===i?"hot":""}" data-hs="${i}" transform="translate(${p[0]},${p[1]})" role="button" aria-label="Court spot ${i+1}" tabindex="0"><circle r="16"/><text y="5" font-size="13" text-anchor="middle" fill="#fff" font-weight="bold">${i+1}</text></g>`).join("")}</svg>`;
+  const sc=$("hsScore");if(sc)sc.textContent=`Hits: ${HS.hits} • Time: ${Math.ceil(HS.left)} • 🏆 Best: ${state.hotspotBest||0}`;
+}
+function hsNewTarget(){let n;do{n=Math.floor(Math.random()*HS_SPOTS.length);}while(n===HS.target);HS.target=n;hsDraw();}
+function hsEnd(){
+  HS.active=false;clearInterval(HS.timer);
+  if(HS.hits>(state.hotspotBest||0)){state.hotspotBest=HS.hits;save();}
+  const m=$("hsMsg");if(m)m.textContent=HS.hits>=10?`🏆 AMAZING! ${HS.hits} hot spots — court vision like a pro, #14!`:`⏰ Time! You hit ${HS.hits} hot spot${HS.hits===1?"":"s"}. Best: ${state.hotspotBest||0}. Tap START to beat it!`;
+  if(HS.hits>=10)launchConfetti(16);
+  hsDraw();
+}
+function hsStart(){
+  HS.hits=0;HS.left=30;HS.active=true;HS.target=-1;hsNewTarget();
+  const m=$("hsMsg");if(m)m.textContent="Go! Tap the GOLD spot! 🎯";
+  try{metroClick(true);}catch(e){}
+  clearInterval(HS.timer);
+  HS.timer=setInterval(()=>{HS.left-=0.25;if(HS.left<=0){HS.left=0;hsEnd();}else{const sc=$("hsScore");if(sc)sc.textContent=`Hits: ${HS.hits} • Time: ${Math.ceil(HS.left)} • 🏆 Best: ${state.hotspotBest||0}`;}},250);
+}
+/* ---- Memory Moves ---- */
+const MM_MOVES=[{e:"🏀",n:"Pound Dribble"},{e:"🔀",n:"Crossover"},{e:"🌀",n:"Spin Move"},{e:"🎯",n:"Shot Fake"}];
+const MM={seq:[],pos:0,accept:false,playing:false};
+function mmMsg(t){const m=$("mmMsg");if(m)m.textContent=t;}
+function mmDraw(){const el=$("mmPads");if(!el)return;el.innerHTML=MM_MOVES.map((m,i)=>`<button type="button" class="mm-pad" data-mm="${i}" aria-label="${m.n}">${m.e}<span>${m.n}</span></button>`).join("");}
+function mmFlash(i){const pad=document.querySelector(`[data-mm="${i}"]`);if(!pad)return;pad.classList.add("lit");setTimeout(()=>pad.classList.remove("lit"),430);}
+function mmPlaySeq(){
+  MM.accept=false;MM.pos=0;let k=0;
+  const step=()=>{if(k>=MM.seq.length){MM.accept=true;mmMsg("Your turn! Tap the moves back in order! 👆");return;}mmFlash(MM.seq[k]);try{metroClick(false);}catch(e){}k++;setTimeout(step,580);};
+  setTimeout(step,420);
+}
+function mmNext(){MM.seq.push(Math.floor(Math.random()*MM_MOVES.length));mmPlaySeq();}
+function mmStart(){MM.seq=[];MM.playing=true;mmMsg("Watch the moves… 👀");mmNext();}
+function mmTap(i){
+  if(!MM.accept)return;
+  mmFlash(i);
+  if(i===MM.seq[MM.pos]){
+    try{metroClick(true);}catch(e){}
+    MM.pos++;
+    if(MM.pos>=MM.seq.length){
+      const lvl=MM.seq.length;
+      if(lvl>(state.memoryBest||0)){state.memoryBest=lvl;save();}
+      mmMsg(`🎉 YES! You remembered ${lvl} move${lvl===1?"":"s"}! Best level: ${state.memoryBest||0}. Here comes one more…`);
+      MM.accept=false;
+      if(lvl>=5)launchConfetti(12);
+      setTimeout(()=>{if(MM.playing)mmNext();},1150);
+    }
+  }else{
+    try{metroClick(false);}catch(e){}
+    mmMsg(`💪 Good try! That move was ${MM_MOVES[MM.seq[MM.pos]].n}. You chained ${Math.max(0,MM.seq.length-1)} — best level: ${state.memoryBest||0}. Press START to play again!`);
+    MM.accept=false;MM.playing=false;
+  }
+}
+/* ---- Quiz Blitz ---- */
+const BLITZ_QS=[
+ {q:"How many points is a free throw?",a:["1","2","3"],c:0},
+ {q:"What is 14 + 14?",a:["24","28","30"],c:1},
+ {q:"Which one is a dribble move?",a:["Crossover","A nap","Traveling"],c:0},
+ {q:"How many players from one team are on the court?",a:["4","5","6"],c:1},
+ {q:"What is 30 − 14?",a:["14","16","18"],c:1},
+ {q:"On a bank shot, where do you aim?",a:["The square on the backboard","The floor","The bench"],c:0},
+ {q:"How many quarters are in a game?",a:["2","3","4"],c:2},
+ {q:"What is 7 × 2?",a:["12","14","16"],c:1}
+];
+const QB={qs:[],i:0,score:0,timer:null,left:10,active:false};
+function qbRender(){
+  const q=QB.qs[QB.i];if(!q)return;
+  $("blitzQ").textContent=q.q;
+  $("blitzAnswers").innerHTML=q.a.map((a,ix)=>`<button type="button" class="btn ghost full" style="margin:5px 0" data-qb="${ix}">${escapeHtml(a)}</button>`).join("");
+  $("blitzScore").textContent=`Question ${QB.i+1} of ${QB.qs.length} • Score: ${QB.score} • 🏆 Best: ${state.blitzBest||0}`;
+  const f=$("blitzBarFill");if(f)f.style.width="100%";
+}
+function qbEnd(){
+  QB.active=false;clearInterval(QB.timer);
+  if(QB.score>(state.blitzBest||0)){state.blitzBest=QB.score;save();}
+  $("blitzQ").textContent=`⏰ Blitz over! You scored ${QB.score} of ${QB.qs.length}. Best: ${state.blitzBest||0}.`;
+  $("blitzAnswers").innerHTML="";
+  $("blitzScore").textContent=`Score: ${QB.score} • 🏆 Best: ${state.blitzBest||0}`;
+  const f=$("blitzBarFill");if(f)f.style.width="0%";
+  if(QB.score>=4)launchConfetti(14);
+}
+function qbNext(){QB.i++;QB.left=10;if(QB.i>=QB.qs.length){qbEnd();return;}qbRender();}
+function qbStart(){
+  QB.qs=[...BLITZ_QS].sort(()=>Math.random()-0.5).slice(0,5);
+  QB.i=0;QB.score=0;QB.left=10;QB.active=true;qbRender();
+  clearInterval(QB.timer);
+  QB.timer=setInterval(()=>{QB.left-=0.1;const f=$("blitzBarFill");if(f)f.style.width=Math.max(0,QB.left*10)+"%";if(QB.left<=0)qbNext();},100);
+}
+/* ---- Daily Challenge Dice ---- */
+const DICE_FACES=["⚀","⚁","⚂","⚃","⚄","⚅"];
+const DICE_MOVES=["pound dribbles","crossovers","form shots","left-hand dribbles","free throws","layups — both sides"];
+function diceRender(){
+  const d=state.diceDay||{date:"",text:"",done:false};
+  const has=d.date===dayStr(new Date())&&!!d.text;
+  const msg=$("diceMsg");if(msg)msg.textContent=has?(d.done?d.text+" — ✅ DONE! Star earned! ⭐":d.text):"Tap ROLL for today's challenge!";
+  const st=$("diceStars");if(st)st.textContent=`⭐ Challenge stars: ${state.diceStars||0}`;
+  const done=$("diceDoneBtn");if(done)done.disabled=!(has&&!d.done);
+  const roll=$("diceRollBtn");if(roll)roll.disabled=!!has;
+}
+function diceRoll(){
+  const d1=$("dice1"),d2=$("dice2");if(!d1||!d2)return;
+  d1.classList.add("rolling");d2.classList.add("rolling");
+  const t0=Date.now();
+  const iv=setInterval(()=>{
+    d1.textContent=DICE_FACES[Math.floor(Math.random()*6)];
+    d2.textContent=DICE_FACES[Math.floor(Math.random()*6)];
+    if(Date.now()-t0>650){
+      clearInterval(iv);
+      const a=1+Math.floor(Math.random()*6),b=1+Math.floor(Math.random()*6);
+      d1.textContent=DICE_FACES[a-1];d2.textContent=DICE_FACES[b-1];
+      d1.classList.remove("rolling");d2.classList.remove("rolling");
+      const total=a+b+6,move=DICE_MOVES[Math.floor(Math.random()*DICE_MOVES.length)];
+      state.diceDay={date:dayStr(new Date()),text:`🎯 Today: ${total} ${move}!`,done:false};
+      save();diceRender();
+      try{metroClick(true);}catch(e){}
+    }
+  },90);
+}
 /* ================= PLACES TO PLAY (2026-10-30 update) ================= */
-const UPDATE_VERSION="places-2026-10";
+const UPDATE_VERSION="games-2026-11";
 const PLACES=[
  {id:"bocek",n:"Bocek Recreation Center",t:"🏠 Rec Center Gym",dist:1.7,x:172,y:184,addr:"3000 E Madison St, Baltimore",phone:"410-563-6379",note:"Indoor gym at Bocek Park — leagues, open gym and after-school fun in East Baltimore."},
  {id:"herringrun",n:"Herring Run Park Courts — Hall Springs",t:"🌳 Outdoor Courts",dist:1.9,x:152,y:120,addr:"Argonne Dr, Herring Run Park, Baltimore",phone:"",note:"Outdoor courts in giant Herring Run Park — shoot around, then explore the trails, stream and bridges!"},
@@ -1082,10 +1395,7 @@ function showUpdateModal(){
 function closeUpdateModal(goMap){
   const m=$("updateModal");if(m)m.hidden=true;
   if(state.seenUpdate!==UPDATE_VERSION){state.seenUpdate=UPDATE_VERSION;save();}
-  if(goMap){
-    goto("home");
-    setTimeout(()=>{const c=$("placesCard");if(c)c.scrollIntoView({behavior:scrollBehavior(),block:"start"});},80);
-  }
+  setTimeout(showDashboard,320);
 }
 /* ================= PICTURE GALLERY + EXTRAS (Kitty Blue update) ================= */
 function kittyFigure(prop){
@@ -1250,7 +1560,7 @@ function streakOf(sessions){
 function goto(v){
   document.querySelectorAll(".view").forEach(el=>el.classList.toggle("active",el.id==="view-"+v));
   document.querySelectorAll("nav button").forEach(b=>{const on=b.dataset.goto===v;b.classList.toggle("on",on);if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
-  window.scrollTo({top:0,behavior:"instant"});render();
+  window.scrollTo({top:0,behavior:"instant"});render();renderJumpChips();
 }
 document.addEventListener("click",e=>{const b=e.target.closest("[data-goto]");if(b)goto(b.dataset.goto);});
 /* ================= RENDER ================= */
@@ -1592,6 +1902,7 @@ function renderProgress(){
   :`<p class="muted">Log a practice and your averages appear here — makes per practice, minutes per practice, makes per minute, rebounds, and assists, all from your real log.</p>`;
   const last=[...state.sessions].sort((a,b)=>a.date.localeCompare(b.date)).slice(-7);
   $("chart").innerHTML=last.length?last.map(x=>`<div class="bar-row"><span>${x.date.slice(5)}</span><div class="bar"><i style="width:${Math.min(100,(x.makes/Math.max(1,...last.map(y=>y.makes)))*100)}%"></i></div><b>${x.makes} 🏀</b></div>`).join("")+`<p class="small muted">Bar = shots made that day. Longer bar = more makes. Watch them grow!</p>`:`<p class="muted">Log a practice and your chart appears here.</p>`;
+  renderTrophyShelf();
   $("badgeList").innerHTML=BADGES.map(b=>{const got=b.test(state);return `<div class="badge ${got?"":"locked"}" style="padding:8px 0;border-bottom:1px solid var(--line)"><div class="ic">${b.icon}</div><div><b>${escapeHtml(b.name)}</b> ${got?"✅":"🔒"}<br><span class="muted small">${escapeHtml(b.desc)}</span></div></div>`;}).join("");
   renderRecords();
   renderDonut();
@@ -2470,6 +2781,23 @@ if(pmw){
 }
 const pll=$("placesList");
 if(pll)pll.addEventListener("click",e=>{const b=e.target.closest("[data-place-row]");if(b)selectPlace(b.getAttribute("data-place-row"),true);});
+const hsBtn=$("hsStartBtn");if(hsBtn)hsBtn.addEventListener("click",hsStart);
+const hsC=$("hsCourt");
+if(hsC)hsC.addEventListener("click",e=>{const g=e.target.closest("[data-hs]");if(!g||!HS.active)return;const i=+g.getAttribute("data-hs");if(i===HS.target){HS.hits++;try{metroClick(true);}catch(err){}hsNewTarget();}else{try{metroClick(false);}catch(err){}}});
+const mmBtn=$("mmStartBtn");if(mmBtn)mmBtn.addEventListener("click",mmStart);
+const mmP=$("mmPads");if(mmP)mmP.addEventListener("click",e=>{const b=e.target.closest("[data-mm]");if(b)mmTap(+b.getAttribute("data-mm"));});
+const qbBtn=$("blitzStartBtn");if(qbBtn)qbBtn.addEventListener("click",qbStart);
+const qbA=$("blitzAnswers");if(qbA)qbA.addEventListener("click",e=>{const b=e.target.closest("[data-qb]");if(!b||!QB.active)return;if(+b.getAttribute("data-qb")===QB.qs[QB.i].c){QB.score++;try{metroClick(true);}catch(err){}}else{try{metroClick(false);}catch(err){}}qbNext();});
+const dRoll=$("diceRollBtn");if(dRoll)dRoll.addEventListener("click",diceRoll);
+const dDone=$("diceDoneBtn");if(dDone)dDone.addEventListener("click",()=>{if(state.diceDay&&state.diceDay.date===dayStr(new Date())&&!state.diceDay.done){state.diceDay.done=true;state.diceStars=(state.diceStars||0)+1;save();diceRender();launchConfetti(12);}});
+const dashOpen=$("dashOpenBtn");if(dashOpen)dashOpen.addEventListener("click",showDashboard);
+const dashClose=$("dashCloseBtn");if(dashClose)dashClose.addEventListener("click",()=>closeDashboard());
+const dashStart=$("dashStartBtn");if(dashStart)dashStart.addEventListener("click",()=>closeDashboard("train"));
+const dashGame=$("dashGameBtn");if(dashGame)dashGame.addEventListener("click",()=>closeDashboard("game"));
+const dashPlaces=$("dashPlacesBtn");if(dashPlaces)dashPlaces.addEventListener("click",()=>closeDashboard("places"));
+const dashModalEl=$("dashModal");if(dashModalEl)dashModalEl.addEventListener("click",e=>{if(e.target===dashModalEl)closeDashboard();});
+const buddy=$("mascotBuddy");if(buddy)buddy.addEventListener("click",()=>{dashTipIdx=(dashTipIdx+1)%DASH_TIPS.length;const tip=$("dashTip");if(tip){tip.textContent=DASH_TIPS[dashTipIdx];tip.classList.remove("tip-pop");void tip.offsetWidth;tip.classList.add("tip-pop");}try{metroClick(true);}catch(err){}});
+hsDraw();mmDraw();diceRender();renderJumpChips();
 applyTextSize();applyCalmMode();
 /* ================= MAKE IT HERS CONTROLS (cycle 25) ================= */
 $("accentChips").addEventListener("click",e=>{const b=e.target.closest("[data-accent-choice]");if(!b)return;setAccent(b.dataset.accentChoice);});
@@ -2507,7 +2835,7 @@ $("gDate").value=dayStr(new Date());
 $("coachNoteDate").value=dayStr(new Date());
 fillArt();
 render();
-if(state.seenUpdate!==UPDATE_VERSION)setTimeout(showUpdateModal,650);
+if(state.seenUpdate!==UPDATE_VERSION)setTimeout(showUpdateModal,650);else setTimeout(showDashboard,650);
 </script>
 </body>
 </html>
