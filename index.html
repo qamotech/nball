@@ -261,6 +261,13 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 .trophy.locked{opacity:.45;filter:grayscale(1)}
 .trophy.locked .tic{animation:none}
 @keyframes trophy-shine{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg) scale(1.09)}}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+.menu-card{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px;color:var(--ink);cursor:pointer;min-height:64px}
+.menu-card .mi{font-size:25px;display:block;margin-bottom:2px}
+.menu-card b{font-size:16.5px}
+.menu-card small{display:block;color:var(--muted);font-size:13px;margin-top:2px;line-height:1.35}
+.menu-card.on{border-color:var(--gold);background:#2a2103}
+.panel-off{display:none!important}
 .accent-dot{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid #0006;vertical-align:-3px;margin-right:7px}
 .mascot-emoji{font-size:22px;vertical-align:-3px;margin-right:6px}
 @media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}}
@@ -280,25 +287,32 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
   <div id="jumpBar" class="jump-bar" aria-label="Jump to a part of this page"></div>
 <!-- ============ HOME ============ -->
 <section class="view active" id="view-home">
-  <div class="card hot">
+  <div class="menu-grid" role="group" aria-label="Home menu — tap a card to open that part">
+    <button type="button" class="menu-card on" data-menu-btn="today" aria-pressed="true"><span class="mi" aria-hidden="true">🏠</span><b>Today</b><small>Hello, affirmation, my stats &amp; streak</small></button>
+    <button type="button" class="menu-card" data-menu-btn="week" aria-pressed="false"><span class="mi" aria-hidden="true">📅</span><b>My Week</b><small>Week plan + this week's goals</small></button>
+    <button type="button" class="menu-card" data-menu-btn="picks" aria-pressed="false"><span class="mi" aria-hidden="true">⭐</span><b>Picks &amp; Style</b><small>Drill of the day, coach's pick, make it hers</small></button>
+    <button type="button" class="menu-card" data-menu-btn="places" aria-pressed="false"><span class="mi" aria-hidden="true">🗺️</span><b>Places &amp; Game Day</b><small>Places map, passport &amp; Tip-Off pack list</small></button>
+  </div>
+  <p class="muted small" style="margin:0 0 12px">🗂️ <b style="color:var(--ink)">NEW MENUS!</b> Every page is organized into menu cards now — tap one to open just that part. Shorter pages, everything still here!</p>
+  <div class="card hot" data-panel="today">
     <div class="art" data-art="hero"></div>
     <h2 id="greeting">Hey Ne'ala! 👋</h2>
     <p id="todayLine" class="muted">Loading today's plan…</p>
     <div id="todayPlan"></div>
     <button class="btn full" data-goto="train">Start Training →</button>
   </div>
-  <div class="card" id="affirmCard">
+  <div class="card" id="affirmCard" data-panel="today">
     <h3>💙 Today's Affirmation</h3>
     <p id="affirmText" class="big" style="font-size:19px;margin:6px 0">You belong on this court.</p>
     <p class="small muted" style="margin:0">A new one every day — say it out loud before you play. There are 14, one for every day of two weeks!</p>
   </div>
-  <div class="card" id="installCard" hidden>
+  <div class="card" id="installCard" hidden data-panel="today">
     <h3>📲 Put Ne'ala Hoops On Your Home Screen</h3>
     <p class="muted small" style="margin:4px 0 10px">Install the app and it opens full-screen like a real game — and it works with no internet, perfect for the driveway!</p>
     <button type="button" class="btn full" id="installBtn">📲 Install This App</button>
     <p id="installMsg" class="small" role="status" style="margin:8px 0 0"></p>
   </div>
-  <div class="card" id="weeklyPlanCard">
+  <div class="card" id="weeklyPlanCard" data-panel="week">
     <h3>📅 Your Week — Tap a Day to Change It</h3>
     <p class="muted small">Dad and Ne'ala: tap any day to pick a focus from the plan list, or write your own. Your picks are saved on this device. Days you don't change keep the regular plan.</p>
     <div id="weeklyPlanList"></div>
@@ -317,7 +331,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <p id="weeklyPlanMsg" class="small" role="status" style="margin:10px 0 0"></p>
     </div>
   </div>
-  <div class="card" id="weeklyGoalsCard">
+  <div class="card" id="weeklyGoalsCard" data-panel="week">
     <h3>🎯 This Week's Goals</h3>
     <p class="muted small">Set a goal for this week, then watch your bars fill up as you log practices! Every Monday your progress starts fresh — your goals stay until you change them.</p>
     <div id="weeklyGoalsView"><p class="muted">Loading your goals…</p></div>
@@ -336,7 +350,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <p id="weeklyGoalsMsg" class="small" role="status" style="margin:10px 0 0"></p>
     </div>
   </div>
-  <div class="card" id="makeItHersCard">
+  <div class="card" id="makeItHersCard" data-panel="picks">
     <h3>🎨 Make It Hers</h3>
     <p class="muted small">This app is YOURS, Ne'ala! Pick the color that feels most like you, and pick a mascot friend for the top of the page. Your picks are saved on this device — change them any time. Your jersey stays #14, always.</p>
     <p style="margin:10px 0 6px"><b>Pick your color</b></p>
@@ -363,28 +377,28 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     </div>
     <p id="personalizeMsg" class="small" role="status" style="margin:4px 0 0">Orange + 🏀 Basketball is your look right now — the classic #14 style!</p>
   </div>
-  <div class="grid" id="quickStats" aria-label="Quick stats"></div>
-  <button type="button" class="btn full" id="dashOpenBtn" style="margin-top:10px">📊 See My Dashboard</button>
-  <div class="card" id="drillOfDayCard">
+  <div class="grid" id="quickStats" aria-label="Quick stats" data-panel="today"></div>
+  <button type="button" class="btn full" id="dashOpenBtn" style="margin-top:10px" data-panel="today">📊 See My Dashboard</button>
+  <div class="card" id="drillOfDayCard" data-panel="picks">
     <h3>🌟 Drill of the Day</h3>
     <div id="drillOfDay"><p class="muted">Loading today's drill…</p></div>
     <button class="btn full" data-goto="train">Try It in Training →</button>
   </div>
-  <div class="card" id="coachsPickCard">
+  <div class="card" id="coachsPickCard" data-panel="picks">
     <h3>🧢 Coach's Pick For You</h3>
     <div id="coachsPick"><p class="muted">Loading your coach's pick…</p></div>
     <button class="btn full" data-goto="train">Find It in Training →</button>
   </div>
-  <div class="card">
+  <div class="card" data-panel="today">
     <h3>🔥 Your Streak</h3>
     <p><span class="big" id="streakNum">0</span> <span class="muted">day streak — practice on back-to-back days to grow it. Miss a day? No stress. Start a new one today.</span></p>
   </div>
-  <div class="card">
+  <div class="card" data-panel="today">
     <h3>⭐ Featured: 14 for 14</h3>
     <p class="muted">Your number, your session. 14 minutes, finish with 14 makes. End on a make — always.</p>
     <button class="btn teal full" data-goto="train">See the 14 for 14 Session</button>
   </div>
-  <div class="card" id="tipoffCard">
+  <div class="card" id="tipoffCard" data-panel="places">
     <h3>🦃 Turkey Tip-Off Countdown</h3>
     <div id="tipoffCountdown"><p class="muted">Counting the days…</p></div>
     <p class="muted small" style="margin:6px 0 0">The Turkey Tip-Off is coming up on <b style="color:var(--ink)">Saturday, November 21, 2026</b>. A little practice each week and you'll be ready, #14! 🏀</p>
@@ -402,7 +416,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <p id="packingMsg" class="small" role="status" style="margin:8px 0 0"></p>
     <p class="small muted" style="margin:8px 0 0">New to game day? Read <b style="color:var(--ink)">What Your First Game Feels Like</b> in Learn &gt; Basketball IQ — nerves, refs, and bench manners, all explained. 💛</p>
   </div>
-  <div class="card" id="placesCard">
+  <div class="card" id="placesCard" data-panel="places">
     <h3>🗺️ Places to Play &amp; Train Near You</h3>
     <p class="muted small" style="margin:4px 0 10px">FOURTEEN real places within about 10 miles of your neighborhood (21206) where you can play basketball or train! This map is a drawing — the pins sit about where the places really are, and the rings show about 2½, 5, and 10 miles out. Tap a pin or a name to see more. <b style="color:var(--ink)">Grown-ups:</b> gym times and programs change, so call or check before you go. Outdoor courts are first-come and weather-permitting.</p>
     <div id="placesMapWrap"></div>
@@ -414,7 +428,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <div id="placeDetail" style="margin-top:10px"></div>
     <div id="placesList" style="margin-top:6px"></div>
   </div>
-  <div class="card" id="recentCard">
+  <div class="card" id="recentCard" data-panel="today">
     <h3>📓 Most Recent Practice</h3>
     <div id="recentSession"><p class="muted">No practices logged yet. Your first one is the hardest — and the most important. Log it after you play!</p></div>
   </div>
@@ -424,13 +438,18 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 <section class="view" id="view-train">
   <h2>🏋️ Training</h2>
   <div class="art" data-art="train"></div>
-  <div class="card" id="surpriseCard">
+  <div class="menu-grid" role="group" aria-label="Training menu — tap a card to open that part">
+    <button type="button" class="menu-card on" data-menu-btn="games" aria-pressed="true"><span class="mi" aria-hidden="true">🎮</span><b>Games &amp; Fun</b><small>Surprise drill, Swish Shot, Hot Spot, Memory Moves, Dice</small></button>
+    <button type="button" class="menu-card" data-menu-btn="session" aria-pressed="false"><span class="mi" aria-hidden="true">⭐</span><b>Session &amp; Tools</b><small>14 for 14, timer, dribble beat, challenge modes</small></button>
+    <button type="button" class="menu-card" data-menu-btn="drills" aria-pressed="false"><span class="mi" aria-hidden="true">🏋️</span><b>Drill Library</b><small>Every drill, searchable by skill</small></button>
+  </div>
+  <div class="card" id="surpriseCard" data-panel="games">
     <h3>🎲 Surprise Drill</h3>
     <p class="muted small" style="margin:4px 0 10px">Can't decide what to practice? Let the app pick for you — a brand-new adventure every tap!</p>
     <button type="button" class="btn full" id="surpriseBtn">🎲 Pick a Surprise Drill For Me!</button>
     <div id="surpriseResult" role="status" style="margin-top:10px"></div>
   </div>
-  <div class="card" id="shootGameCard">
+  <div class="card" id="shootGameCard" data-panel="games">
     <h3>🏀 Swish Shot — Tap-To-Shoot Game</h3>
     <p class="muted small" style="margin:4px 0">Press START and a white marker zips across the bar. Tap <b style="color:var(--ink)">SHOOT</b> when the marker is inside the green zone — that's a swish! The zone jumps to a new spot after every shot, and your streak makes the marker faster. How many in a row can you get?</p>
     <div style="text-align:center"><span class="sg-ball" id="sgBall" aria-hidden="true">🏀</span></div>
@@ -442,7 +461,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <p id="sgScore" class="small" role="status" style="margin:10px 0 0">Makes: 0 • Shots: 0 • Streak: 0 • 🏆 Best streak: 0</p>
     <p id="sgMsg" class="big" style="font-size:18px;margin:6px 0 0" role="status">Press START, then shoot when the marker hits the green!</p>
   </div>
-  <div class="card" id="hotspotCard">
+  <div class="card" id="hotspotCard" data-panel="games">
     <h3>🎯 Hot Spot Challenge</h3>
     <p class="muted small" style="margin:4px 0 10px">A spot on the court lights up <b style="color:var(--gold)">GOLD</b> — tap it fast before it moves! You have 30 seconds. How many hot spots can you hit, #14?</p>
     <div id="hsCourt"></div>
@@ -450,14 +469,14 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <p id="hsMsg" class="small" role="status" style="margin:6px 0"></p>
     <button type="button" class="btn full" id="hsStartBtn">▶️ Start Hot Spot</button>
   </div>
-  <div class="card" id="memoryCard">
+  <div class="card" id="memoryCard" data-panel="games">
     <h3>🧠 Memory Moves</h3>
     <p class="muted small" style="margin:4px 0 10px">Watch the moves flash, then tap them back in the SAME order. Every round adds one more move. How long a chain can you remember?</p>
     <div class="mm-grid" id="mmPads"></div>
     <p id="mmMsg" class="small" role="status" style="margin:6px 0">Press START and watch closely! 👀</p>
     <button type="button" class="btn full" id="mmStartBtn">▶️ Start Memory Moves</button>
   </div>
-  <div class="card" id="diceCard">
+  <div class="card" id="diceCard" data-panel="games">
     <h3>🎲 Daily Challenge Dice</h3>
     <p class="muted small" style="margin:4px 0 10px">Roll the dice once a day for a surprise mini challenge. Finish it out in the driveway and earn a star! ⭐</p>
     <div style="text-align:center" aria-hidden="true"><span class="dice" id="dice1">🎲</span> <span class="dice" id="dice2">🎲</span></div>
@@ -468,7 +487,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <button type="button" class="btn teal" id="diceDoneBtn" disabled>✅ I Did It!</button>
     </div>
   </div>
-  <div class="card hot" id="fourteen">
+  <div class="card hot" id="fourteen" data-panel="session">
     <h3>⭐ 14 for 14 — Driveway Session (14 minutes)</h3>
     <table class="plan">
       <tr><th>Block</th><th>Time</th><th>What to do</th></tr>
@@ -480,7 +499,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <p class="small muted">Hoop tip from Dad: while form is growing, 8.5–9 ft is perfect. Ball: size 6 (28.5").</p>
     <button class="btn full" data-goto="log">I Did It — Log This Session</button>
   </div>
-  <div class="card" id="practiceTimer">
+  <div class="card" id="practiceTimer" data-panel="session">
     <h3>⏱️ Practice Timer</h3>
     <p class="muted small">Pick a block from 14 for 14 — or set your own time. The timer beeps gently when time is up. You’ve got this, #14!</p>
     <div class="timer-display" id="timerDisplay" role="timer" aria-live="polite" aria-label="Practice timer">14:00</div>
@@ -505,7 +524,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     </div>
     <p class="small muted" style="margin:8px 0 0">Sound off turns off the timer beep AND the Dribble Beat clicks — everywhere in the app.</p>
   </div>
-  <div class="card" id="dribbleBeat">
+  <div class="card" id="dribbleBeat" data-panel="session">
     <h3>🥁 Dribble Beat — Metronome</h3>
     <p class="muted small">Dribble on the beat! Pick a speed, tap Start, and bounce the ball every time the light flashes and the click sounds. Start slow — steady beats beat fast beats. You’ve got this, #14!</p>
     <div class="beat-display">
@@ -529,7 +548,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     </div>
     <p id="metroMsg" class="small muted" role="status" style="margin:10px 0 0">Ready when you are — 80 BPM is a great place to start. Try Pound Dribbles or Crossovers on the beat!</p>
   </div>
-  <div class="card hot" id="challengeModes">
+  <div class="card hot" id="challengeModes" data-panel="session">
     <h3>🎮 Challenge Modes</h3>
     <p class="muted small">Two driveway games! Play one, then tap its log button — it fills in your Practice Log for you. Check the numbers, add any notes, and tap Save Practice. You’ve got this, #14!</p>
     <div style="border-top:1px solid var(--line);margin-top:12px;padding-top:12px">
@@ -567,23 +586,27 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <button type="button" class="btn full" id="beatLogBtn" style="margin-top:10px">📓 Log Beat the Clock →</button>
     </div>
   </div>
-  <p class="muted">Pick a skill. Start with Level 1 drills — they build everything else. Level 3 drills are stretch challenges: try them when Level 1–2 drills start to feel easy!</p>
-  <div class="card" id="drillSearchCard">
+  <p class="muted" data-panel="drills">Pick a skill. Start with Level 1 drills — they build everything else. Level 3 drills are stretch challenges: try them when Level 1–2 drills start to feel easy!</p>
+  <div class="card" id="drillSearchCard" data-panel="drills">
     <h3>🔍 Search Drills</h3>
     <label for="drillSearch">Search by drill name or keyword</label>
     <input type="search" id="drillSearch" placeholder="Search drills — try layup, defense, left hand…" autocomplete="off">
     <p id="drillSearchMsg" class="small muted" role="status" style="margin:8px 0 0">Type to find a drill fast — search works together with the skill buttons below!</p>
     <button type="button" class="btn ghost" id="drillSearchClear" style="margin-top:10px;min-height:48px" aria-label="Clear drill search" hidden>✖ Clear Search</button>
   </div>
-  <div class="chips" id="skillChips" role="group" aria-label="Filter drills by skill"></div>
-  <div id="drillList"></div>
+  <div class="chips" id="skillChips" role="group" aria-label="Filter drills by skill" data-panel="drills"></div>
+  <div id="drillList" data-panel="drills"></div>
 </section>
 
 <!-- ============ LOG ============ -->
 <section class="view" id="view-log">
   <h2>📓 Practice Log</h2>
   <div class="art" data-art="log"></div>
-  <form class="card" id="logForm">
+  <div class="menu-grid" role="group" aria-label="Log menu — tap a card to open that part">
+    <button type="button" class="menu-card on" data-menu-btn="practice" aria-pressed="true"><span class="mi" aria-hidden="true">📓</span><b>Practice Log</b><small>Log a practice + your practice history</small></button>
+    <button type="button" class="menu-card" data-menu-btn="games" aria-pressed="false"><span class="mi" aria-hidden="true">🏀</span><b>Game Log</b><small>Real games + season totals</small></button>
+  </div>
+  <form class="card" id="logForm" data-panel="practice">
     <label for="fDate">Date</label>
     <input type="date" id="fDate" required>
     <label for="fMinutes">Minutes practiced</label>
@@ -604,9 +627,9 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <p id="logMsg" class="small" role="status"></p>
     <button class="btn full" type="submit">Save Practice ✅</button>
   </form>
-  <h3>Your practices</h3>
-  <div id="historyList"></div>
-  <div class="card" id="gameLogCard" style="margin-top:18px">
+  <h3 data-panel="practice">Your practices</h3>
+  <div id="historyList" data-panel="practice"></div>
+  <div class="card" id="gameLogCard" style="margin-top:18px" data-panel="games">
     <div class="art" data-art="games"></div>
     <h3>🏀 Game Log — Real Games</h3>
     <p class="muted small" style="margin:4px 0 10px">Played a real game, #14? Log it here! Write who you played, how long you played, and your points, rebounds, and assists. Your season totals add themselves up below — every game counts, big or small. 🌟</p>
@@ -638,8 +661,12 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 <section class="view" id="view-learn">
   <h2>🧠 Learn</h2>
   <div class="art" data-art="learn"></div>
+  <div class="menu-grid" role="group" aria-label="Learn menu — tap a card to open that part">
+    <button type="button" class="menu-card on" data-menu-btn="lessons" aria-pressed="true"><span class="mi" aria-hidden="true">📚</span><b>Lessons &amp; Stories</b><small>Lessons, flashcards &amp; story time — incl. Caitlin Clark!</small></button>
+    <button type="button" class="menu-card" data-menu-btn="quizzes" aria-pressed="false"><span class="mi" aria-hidden="true">❓</span><b>Quizzes &amp; Championship</b><small>Quiz Blitz, all the quizzes &amp; the big Championship</small></button>
+  </div>
   <p class="muted">Basketball IQ + school skills, taught through the game you love. Finish lessons and quizzes to earn Scholar badges.</p>
-  <div class="card" id="blitzCard">
+  <div class="card" id="blitzCard" data-panel="quizzes">
     <h3>⚡ Quiz Blitz</h3>
     <p class="muted small" style="margin:4px 0 10px">Five quick questions — only 10 seconds each! Tap your answer before the bar runs out. Basketball brains AND math brains! 🧠</p>
     <div class="bar blitz-bar" aria-hidden="true"><i id="blitzBarFill" style="width:100%"></i></div>
@@ -648,38 +675,44 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <p id="blitzScore" class="small" role="status" style="margin:8px 0">Score: 0 • 🏆 Best: 0</p>
     <button type="button" class="btn full" id="blitzStartBtn">▶️ Start Quiz Blitz</button>
   </div>
-  <div class="card" id="comfyReadingCard">
+  <div class="card" id="comfyReadingCard" data-panel="lessons">
     <h3>🔤 Comfy Reading</h3>
     <p class="muted small" style="margin:4px 0 0">Good news: the words in this app are BIG all the time now — no buttons to tap, nothing to set. The bright colors and strong contrast stay exactly the same. Every button is big enough for easy tapping (at least 44 pixels tall), and a bright gold ring shows which button or box is picked when you move with a keyboard or switch. Happy reading, #14! 💛</p>
   </div>
-  <div class="card" id="learnSearchCard">
+  <div class="card" id="learnSearchCard" data-panel="lessons">
     <h3>🔍 Search Lessons &amp; Quizzes</h3>
     <label for="learnSearch">Search by title or keyword</label>
     <input type="search" id="learnSearch" placeholder="Search lessons and quizzes — try Miller, rebound, math…" autocomplete="off">
     <p id="learnSearchMsg" class="small muted" role="status" style="margin:8px 0 0">Type to find a lesson or quiz fast — search works together with the buttons below!</p>
     <button type="button" class="btn ghost" id="learnSearchClear" style="margin-top:10px;min-height:48px" aria-label="Clear lesson and quiz search" hidden>✖ Clear Search</button>
   </div>
-  <div class="chips" id="learnChips" role="group" aria-label="Filter lessons and quizzes">
+  <div class="chips" id="learnChips" role="group" aria-label="Filter lessons and quizzes" data-panel="lessons">
     <button type="button" class="chip on" data-learn="all" aria-pressed="true">All</button>
     <button type="button" class="chip" data-learn="iq" aria-pressed="false">🏀 Basketball IQ</button>
     <button type="button" class="chip" data-learn="school" aria-pressed="false">📚 School Skills</button>
     <button type="button" class="chip" data-learn="legends" aria-pressed="false">👑 Legends</button>
     <button type="button" class="chip" data-learn="quiz" aria-pressed="false">❓ Quizzes</button>
   </div>
-  <div id="flashcardArea"></div>
-  <div class="art" data-art="story"></div>
-  <div id="storyArea"></div>
-  <div id="lessonList"></div>
-  <div id="quizArea"></div>
-  <div id="champArea"></div>
+  <div id="flashcardArea" data-panel="lessons"></div>
+  <div class="art" data-art="story" data-panel="lessons"></div>
+  <div id="storyArea" data-panel="lessons"></div>
+  <div id="lessonList" data-panel="lessons"></div>
+  <div id="quizArea" data-panel="quizzes"></div>
+  <div id="champArea" data-panel="quizzes"></div>
 </section>
 
 <!-- ============ PROGRESS ============ -->
 <section class="view" id="view-progress">
   <h2>📈 Progress</h2>
   <div class="art" data-art="progress"></div>
-  <div class="grid" id="progressStats"></div>
-  <div class="card" id="donutCard">
+  <div class="menu-grid" role="group" aria-label="Progress menu — tap a card to open that part">
+    <button type="button" class="menu-card on" data-menu-btn="stats" aria-pressed="true"><span class="mi" aria-hidden="true">📊</span><b>My Stats</b><small>Totals, shooting ring, records &amp; averages</small></button>
+    <button type="button" class="menu-card" data-menu-btn="charts" aria-pressed="false"><span class="mi" aria-hidden="true">📈</span><b>Charts &amp; Shot Map</b><small>Calendar, makes chart &amp; shot heat map</small></button>
+    <button type="button" class="menu-card" data-menu-btn="awards" aria-pressed="false"><span class="mi" aria-hidden="true">🏆</span><b>Trophies &amp; Badges</b><small>Your trophy shelf + every badge</small></button>
+    <button type="button" class="menu-card" data-menu-btn="dad" aria-pressed="false"><span class="mi" aria-hidden="true">🎯</span><b>Dad's Corner</b><small>Backups, gear, coach's notebook &amp; sharing</small></button>
+  </div>
+  <div class="grid" id="progressStats" data-panel="stats"></div>
+  <div class="card" id="donutCard" data-panel="stats">
     <h3>🍩 Your Shooting Ring</h3>
     <div class="donut-wrap">
       <svg width="96" height="96" viewBox="0 0 96 96" role="img" aria-label="Shooting percentage ring">
@@ -690,29 +723,29 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <p class="muted small" style="margin:0">This ring fills up with your real shooting % from your Practice Log. More makes = more ring! Log a practice and watch it grow. 🎯</p>
     </div>
   </div>
-  <div class="card" id="recordsCard">
+  <div class="card" id="recordsCard" data-panel="stats">
     <h3>🏆 My Personal Records</h3>
     <p class="muted small" style="margin:4px 0 10px">Your very best days, saved forever. Records are made to be broken — by YOU!</p>
     <div id="recordsList"><p class="muted">Log a practice or a game and your records appear here.</p></div>
   </div>
-  <div class="card" id="sessionAveragesCard">
+  <div class="card" id="sessionAveragesCard" data-panel="stats">
     <h3>📊 Your Averages — Per Practice</h3>
     <p class="muted small" style="margin:4px 0 10px">An average tells what a normal practice looks like for you: add everything up, then divide by how many practices you logged. Your Progress page does that math with YOUR real numbers!</p>
     <div id="sessionAverages"><p class="muted">Log a practice and your averages appear here.</p></div>
     <p class="small muted">Want to see how the math works? Makes per minute = total makes ÷ total minutes. Averages per practice = total ÷ number of practices.</p>
     <button type="button" class="btn ghost full" data-goto="learn">📚 Learn the Math: Shooting % and Averages →</button>
   </div>
-  <div class="card" id="practiceCalendarCard">
+  <div class="card" id="practiceCalendarCard" data-panel="charts">
     <h3>🗓️ Practice Calendar</h3>
     <p class="muted small" style="margin:4px 0 10px">Every gold dot is a day you practiced this month — great work adds up! Tap any day to see how much you practiced and how many shots you made.</p>
     <div id="practiceCalendar"></div>
     <div id="calendarDayDetail" class="cal-detail" role="status"><p class="muted" style="margin:0">Tap a day on the calendar to see your practice for that day. 👆</p></div>
   </div>
-  <div class="card">
+  <div class="card" data-panel="charts">
     <h3>Shots made — your last practices</h3>
     <div id="chart"><p class="muted">Log a practice and your chart appears here.</p></div>
   </div>
-  <div class="card" id="shotChartCard">
+  <div class="card" id="shotChartCard" data-panel="charts">
     <h3>🎯 Shot Chart — Heat Map</h3>
     <p class="muted small" style="margin:4px 0 10px">Tap the court where you shot from! First pick <b style="color:var(--ink)">Make</b> or <b style="color:var(--ink)">Miss</b>, then tap your spot. Green ● = made it, red ✕ = missed. Your zones below change color — green means you're HOT there, red means that spot wants more practice. Today's shots are saved on this device. 🎯</p>
     <div class="chips" role="group" aria-label="Shot chart: make or miss mode" style="margin-bottom:8px">
@@ -744,17 +777,17 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <button type="button" class="btn ghost" id="shotClearBtn">🧹 Clear Today's Shots</button>
     </div>
   </div>
-  <div class="card">
+  <div class="card" data-panel="awards">
     <h3>🏆 Trophy Shelf</h3>
     <p class="muted small" style="margin:4px 0">Your earned trophies shine and wiggle here! The grey ones are still waiting — check the Badges list right below to see how to earn each one.</p>
     <div class="trophy-shelf" id="trophyShelf"></div>
   </div>
-  <div class="card">
+  <div class="card" data-panel="awards">
     <div class="art" data-art="badges"></div>
     <h3>🏅 Badges</h3>
     <div id="badgeList"></div>
   </div>
-  <div class="card" id="dadsCorner">
+  <div class="card" id="dadsCorner" data-panel="dad">
     <h3>🎯 Dad's Corner</h3>
     <p class="muted small">For Coach Nathan: totals above come straight from Ne'ala's log on this device (localStorage, nothing leaves the phone). Badges are computed from real logged data.</p>
     <p id="tipoffDad" class="small" role="status" style="margin:8px 0 0"></p>
@@ -855,13 +888,13 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
   <div class="update-card">
     <div class="update-ball" aria-hidden="true">🏀</div>
     <h2 id="updateTitle">🎉 NEW UPDATE, Ne'ala!</h2>
-    <p class="big" style="font-size:19px;margin:6px 0">Your app got <b>GAME DAY energy</b> — and it got SHORTER too!</p>
+    <p class="big" style="font-size:19px;margin:6px 0">Your app got <b>MENUS</b>, more <b>CARDS</b> — and <b>CAITLIN CLARK</b> is here! 🌟</p>
     <div class="update-list">
-      <p style="margin:5px 0">📊 A <b>Dashboard</b> now pops up EVERY visit with your streak, goals, badges and news</p>
-      <p style="margin:5px 0">🎯 <b>Hot Spot Challenge</b> + 🧠 <b>Memory Moves</b> + ⚡ <b>Quiz Blitz</b> — three new games!</p>
-      <p style="margin:5px 0">🎲 <b>Daily Challenge Dice</b> and a 🏆 <b>Trophy Shelf</b> for your badges</p>
-      <p style="margin:5px 0">✂️ Pages are <b>shorter</b> now — long lists scroll inside their own boxes, and jump chips at the top zip you anywhere</p>
-      <p style="margin:5px 0">🗺️ Your <b>Places map</b> is still here — find it with the jump chips!</p>
+      <p style="margin:5px 0">🗂️ <b>NEW MENUS</b> on every page — tap a menu card to open just that part. Pages are WAY shorter now!</p>
+      <p style="margin:5px 0">🃏 Everything is organized into <b>cards</b> — pick a card, play, done!</p>
+      <p style="margin:5px 0">🌟 <b>CAITLIN CLARK</b> joins the Legends! Two new lessons about the record-breaking #22 — 3,951 points, logo threes &amp; super passing</p>
+      <p style="margin:5px 0">❓ A new <b>Caitlin Clark Quiz</b> + the <b>Logo Three Ladder</b> drill — build YOUR deep shot step by step</p>
+      <p style="margin:5px 0">🏆 A new badge to earn: <b>Logo Three Legend</b> — finish both Clark lessons!</p>
     </div>
     <button type="button" class="btn full" id="updateGoBtn" style="margin-top:8px">📊 See My Dashboard!</button>
     <button type="button" class="btn ghost full" id="updateCloseBtn" style="margin-top:8px">Maybe Later</button>
@@ -903,6 +936,7 @@ const DRILLS=[
  {id:"btwlegs",skill:"handling",level:2,name:"Between-the-Legs (Stationary)",builds:"Low control and confidence between the legs",reps:"3 rounds × 20 seconds, standing still",mins:3,cues:["Stay low, knees bent, ball stays low too","Push the ball through, catch it with the other hand","Look up when you can — misses are part of learning"]},
  {id:"behindback",skill:"handling",level:3,name:"Behind-the-Back (Stationary)",builds:"Quick hands and control around your back",reps:"3 rounds × 20 seconds, standing still",mins:3,cues:["Stay low and still — let your hands do the traveling","Push the ball around your back and catch it with the other hand","Look up when you can — dropped balls just mean you're learning"]},
  {id:"crossbtwcombo",skill:"handling",level:3,name:"Crossover + Between-the-Legs Combo",builds:"Putting two moves together, one smooth combo",reps:"3 rounds × 30 seconds — crossover, then between-the-legs",mins:4,cues:["Start SLOW: crossover first, reset, then between-the-legs","Stay low the whole time and keep the ball low too","Smooth first, speedy later — string the moves together when they feel easy"]},
+ {id:"logoladder",skill:"shooting",level:2,name:"Logo Three Ladder 🌟",builds:"Caitlin Clark-style range, built safely step by step",reps:"Make 2 in a row, take one small step back — up to 10 minutes",mins:5,cues:["Start CLOSE with perfect B.E.E.F. form — range never beats form","Make 2 in a row? Take ONE small step back. Form breaks? Step back in","Same legs, same follow-through at every step — no heaving, ever"]},
  {id:"stepback",skill:"shooting",level:3,name:"Step-Back Form Shots",builds:"Making a little space, then shooting in balance",reps:"10 step-backs on each side, staying close to the hoop",mins:5,cues:["Dribble forward, plant your feet, then step back to make space","Land balanced with your B.E.E.F. form ready — no falling sideways","Stay close until your form looks the same on every shot"]},
  {id:"floaterlite",skill:"shooting",level:3,name:"Floater-Lite Soft Touch",builds:"A soft, high shot that floats over taller players",reps:"10 gentle floaters from close in on each side",mins:4,cues:["Shoot a soft rainbow — high and gentle, like the ball is landing on a pillow","Use your fingertips and let your hand wave goodbye in the air","Start very close — soft touch matters way more than power"]},
  {id:"chasedowncloseout",skill:"defense",level:3,name:"Chase-Down Closeout + Slide Combo",builds:"Racing out to a shooter, then sliding under control",reps:"8 combos: run out, close out, then 3 slides each way",mins:4,cues:["Sprint most of the way, then finish with short, choppy steps","Hand high and stop BALANCED — don't fly past your player","Drop low and slide both ways, feet never crossing"]},
@@ -923,6 +957,8 @@ const LESSONS=[
  {id:"millers",strand:"legends",icon:"👨‍👧",title:"The Miller Story: A Big Sister & Her Little Brother",body:"Before the NBA, before the Olympics, there was a backyard in Riverside, California — and a big sister who blocked EVERY shot.\n\nCheryl Miller (born 1964) was Reggie Miller's older sister, and she was the star first. In their driveway games she swatted Reggie's layups away again and again. So Reggie made a plan: he practiced 500–700 shots a day, backing up step by step, learning to shoot the ball HIGH over her hand. That high, looping shot became his famous NBA jump shot.\n\nReggie had to fight to even play: he was born with hip problems, doctors said he might never walk properly, and he wore leg braces until he was 4. His mom, a nurse, kept encouraging him. He walked, he ran, he practiced — and he never stopped.\n\n🏆 THE DINNER-TABLE STORY (Jan 26, 1982)\nReggie came home proud after scoring 39 points in his high school game. At dinner, Cheryl and their dad were smiling. Cheryl had scored... 105 points in HER game that same day — still one of the most amazing games ever played.\n\nLesson for #14: somebody better than you is not a wall. They are a ladder. Practice is how you climb."},
  {id:"cheryl",strand:"legends",icon:"👑",title:"Cheryl Miller — The Original Superstar",body:"Many people call Cheryl Miller one of the greatest basketball players of ALL time — not just in the women's game.\n\n⭐ HER STORY\n• Riverside Poly High School: her teams went 132–4. She was the FIRST player, boy or girl, named a Parade All-American 4 times.\n• USC (college): led the Trojans to NCAA championships in 1983 AND 1984, and was named the tournament's Most Outstanding Player both times. She won the Naismith Player of the Year award 3 times, finished with 3,018 points and 1,534 rebounds, and USC retired her #31 jersey.\n• Team USA: led the United States to Olympic GOLD at the 1984 Los Angeles Games, plus gold at the 1983 Pan Am Games and the 1986 World Championship.\n• Hall of Fame: inducted in 1995. The WNBA did not start until after knee injuries ended her playing years, so she became the FIRST head coach of the Phoenix Mercury instead — a pioneer twice.\n\n🏀 HER BEST GAMES\n• Jan 26, 1982 — 105 POINTS in one high school game vs. Norte Vista (her team won 179–15). She later joked: 'I didn't play the last two minutes, though.'\n• 1984 Olympic Gold Medal Game — 16 points + 11 rebounds vs. South Korea, USA won 85–55; she led the whole team in scoring for the tournament.\n• Feb 28, 1985 — 45 points vs. Arizona, a USC record-breaking night (after 40 vs. Cal State Fullerton and 43 vs. Louisiana Tech that same season).\n• 1986 World Championship Final — 24 points + 15 rebounds to beat the Soviet Union and win gold.\n\nLesson for #14: Cheryl didn't wait for permission or for a league to exist. She set the standard everybody else had to chase."},
  {id:"reggie",strand:"legends",icon:"🎯",title:"Reggie Miller — Miller Time",body:"Reggie Miller spent his whole 18-year NBA career with ONE team, the Indiana Pacers, wore #31 — the same number as his big sister Cheryl — and became the most feared last-minute shooter of his era. When a game was on the line, fans called it MILLER TIME.\n\n⭐ HIS STORY\n• Born with hip problems and leg braces until age 4 (see the Miller Story lesson) — doctors doubted he would walk properly.\n• UCLA college star, drafted 11th by Indiana in 1987. Fans actually BOOED the pick at first. He spent 18 years proving them wrong.\n• He retired holding the NBA record for 3-pointers made (2,560), won Olympic gold in 1996, and entered the Hall of Fame in 2012 — just like Cheryl. Two siblings, two Hall of Famers.\n\n🏀 HIS BEST GAMES\n• Nov 28, 1992 — CAREER-HIGH 57 POINTS vs. the Charlotte Hornets (Pacers won 134–122). Still the Pacers' NBA team record; he also had 8 assists that night.\n• Jun 1, 1994 — 39 points vs. the New York Knicks in the playoffs, including 25 POINTS IN THE 4TH QUARTER alone. Pacers won 93–86 at Madison Square Garden.\n• May 7, 1995 — 8 POINTS IN 9 SECONDS. Down 6 with under 19 seconds left vs. the Knicks: 3-pointer, steal, another 3-pointer, then 2 free throws. Pacers won a game everybody thought was over.\n• May 1998 — a game-winning 3-pointer over Michael Jordan and the Chicago Bulls in the Eastern Conference Finals.\n• 2002 Playoffs — a 40-foot 3-pointer at the buzzer vs. the Nets to force overtime.\n\nLesson for #14: Reggie was not the strongest or the fastest. He won with the thing YOU control: thousands of practice shots, the same form, every single day."},
+ {id:"caitlin",strand:"legends",icon:"🌟",title:"Caitlin Clark — The Record Breaker",body:"Caitlin Clark (born January 22, 2002) grew up in West Des Moines, Iowa — and she might be the most exciting shooter basketball has ever seen. She wears #22 for the Indiana Fever, and before that she was the star of the Iowa Hawkeyes.\n\n⭐ HER STORY\n• High school (Dowling Catholic): scored 60 POINTS in one game as a junior and finished with 2,547 career points.\n• Iowa (college, 2020–2024): led her team to the national championship game in BOTH 2023 and 2024, and won the Naismith Player of the Year award twice — the biggest prize in college basketball.\n• THE BIG RECORD: Caitlin finished college with 3,951 POINTS — the most of ANY player in NCAA Division I history, women or men. The record before her had stood for over 50 years!\n• She also made 548 three-pointers in college (another record) and handed out 1,144 assists — because true superstars make their TEAMMATES better too.\n• WNBA: the Indiana Fever picked her FIRST in the whole 2024 draft. In her very first season she won Rookie of the Year, set the league's single-season assists record, and became the first rookie ever to record a triple-double.\n\n🏀 HER BEST GAMES\n• Feb 15, 2024 — THE RECORD GAME: Caitlin needed 8 points to break the women's scoring record. She scored her team's first 8 points, breaking the record with a super-deep 'logo three' — then finished with a career-high 49 points AND 13 assists vs. Michigan!\n• Mar 3, 2024 — she passed 'Pistol' Pete Maravich to become the top scorer in ALL of college basketball history, in a win over Ohio State.\n• Mar 31, 2023 — 41 points vs. mighty South Carolina in the Final Four, sending Iowa to its first championship game.\n• Jul 17, 2024 — a WNBA-record 19 ASSISTS in one game for the Fever. Nineteen!\n\n💛 THE CAITLIN EFFECT\nWhen Caitlin plays, arenas sell out and TV records break — millions of new fans, and tons of kids just like you, picked up a basketball because of her.\n\nLesson for #14: Caitlin was not the tallest or the strongest. She won with practice, courage, and shooting the same shot thousands of times — from farther and farther back. Range is built, never born."},
+ {id:"clarkpass",strand:"legends",icon:"🎯",title:"Caitlin's Superpower — Logo Threes & Super Passing",body:"Scoring records are fun — but watch Caitlin Clark closely and you will spot her OTHER superpower: she might be the best PASSER in the game. Defenders crowd her because of her deep shot... and that is exactly when she finds the open teammate. Here is what #14 can learn from #22:\n\n👀 EYES UP, ALWAYS\nCaitlin dribbles with her head UP, scanning the whole court. She sees a teammate getting open BEFORE it happens. Your drills for this: Pound Dribbles and Crossovers — eyes on Dad, not on the ball!\n\n🎯 THE DEEP SHOT OPENS EVERYTHING\nBecause defenders must guard Caitlin way out by the center-court logo, her teammates get tons of space near the hoop. Even practicing shots one step farther back (only with good B.E.E.F. form!) makes defenders respect you — and passing lanes open up.\n\n🤝 PASSING IS SCORING\nCaitlin once had 19 assists in ONE WNBA game — her passes created 19 baskets for her team! Your Practice Log counts assists too. Try this goal: in your next driveway game, make 3 passes that lead straight to a basket.\n\n🌟 TRY IT: THE LOGO THREE LADDER\nFind it in Train, in the Drill Library: start close with perfect form, make 2 in a row, take ONE small step back. Form breaks? Step back in. That is exactly how real range is built — step by step, never by heaving.\n\nLesson for #14: shoot like you believe, pass like you care. That combo is what makes Caitlin Clark unstoppable — and it can be yours too."},
  {id:"beginnings",strand:"legends",icon:"🍑",title:"Basketball Beginnings — Peach Baskets & a Brand-New Game",body:"Basketball is one of the only big sports that was INVENTED on purpose — by one teacher, in about two weeks, in the winter of 1891.\n\n🧑‍🏫 THE TEACHER WITH A PROBLEM\nDr. James Naismith was a gym teacher from Canada working in Springfield, Massachusetts. His class of young men was stuck indoors by the cold and snow, bored and rowdy. His boss gave him a challenge: invent a new indoor game in 14 days — one that was fun, fair, and would not wreck the gym.\n\n📜 13 RULES AND TWO PEACH BASKETS\nNaismith thought hard about games he knew, then wrote down just 13 rules and had them posted on the gym wall. For goals, he asked the janitor for boxes. There were no boxes — but there WERE two old peach baskets! They nailed the baskets up high on the gym balcony rail, about 10 feet off the floor. That is why hoops are still 10 feet high today!\n\n🏀 THE VERY FIRST GAME (December 21, 1891)\n• 18 players — 9 on a team, because that was the whole class.\n• They played with a soccer ball, not a basketball.\n• The final score was... 1 to 0! William R. Chase scored the only basket.\n• The baskets still had their bottoms, so after a score someone had to climb up and poke the ball out with a stick. Open-bottom nets came later!\n\nThe game spread FAST through YMCAs and colleges. Girls and women started playing almost right away too — teacher Senda Berenson adapted the game for her students at Smith College in 1892.\n\n⭐ HOW THE WNBA STARTED\nFor a long time, women stars like Cheryl Miller (see her lesson!) had no pro league of their own in the United States. That changed in 1997, when the WNBA played its very first season with 8 teams.\n• The first WNBA game ever: June 21, 1997 — the New York Liberty beat the Los Angeles Sparks, 67–57.\n• Penny Toler of the Sparks scored the first basket in WNBA history.\n• The Houston Comets won the first championship — then won the next three too, four in a row, led by Cynthia Cooper, Sheryl Swoopes, and Tina Thompson.\n\nLesson for #14: every game you watch started with a teacher, 13 rules, and two fruit baskets. Somebody has to go first — and the players who go first change the game for everyone who comes after. Just ask Cheryl, and just ask the Comets."}
 ];
 const FLASHCARDS=[
@@ -960,6 +996,13 @@ const QUIZZES=[
    {q:"Cheryl and Reggie are special because both of them…",a:["Played for the same NBA team","Are in the Basketball Hall of Fame and wore #31","Won a dunk contest"],c:1,why:"Two siblings, both Hall of Famers, both #31 — Cheryl at USC, Reggie with the Pacers."},
    {q:"Reggie wore leg braces until he was 4 because…",a:["He broke both legs playing","Doctors said he might never walk properly — but he kept going","He wanted to look like a robot"],c:1,why:"Born with hip problems, he wore braces, then walked, ran, and became an NBA legend."}
  ]},
+ {id:"clark",icon:"🌟",title:"Caitlin Clark Quiz",qs:[
+   {q:"How many total points did Caitlin Clark score in college — the all-time record?",a:["1,951 points","3,951 points","951 points"],c:1,why:"3,951 points at Iowa — the most in NCAA Division I history, for women OR men!"},
+   {q:"Which team drafted Caitlin Clark FIRST overall in 2024?",a:["Indiana Fever","Iowa Hawkeyes","New York Liberty"],c:0,why:"The Indiana Fever picked her #1 in the 2024 WNBA Draft — and she won Rookie of the Year!"},
+   {q:"What is a 'logo three'?",a:["A shot with a logo drawn on the ball","A super-deep 3-pointer from near the center-court logo","A shot taken while standing on one foot"],c:1,why:"Caitlin is famous for launching 3s from way out by the logo — range she built step by step."},
+   {q:"Caitlin set a WNBA record in one game with how many assists?",a:["9 assists","14 assists","19 assists"],c:2,why:"19 assists in one game (July 17, 2024) — her passes created 19 baskets!"},
+   {q:"What number does Caitlin Clark wear?",a:["#14","#22","#31"],c:1,why:"#22 — Iowa retired it in her honor. Your #14 is yours to make famous, Ne'ala!"}
+ ]},
  {id:"math",icon:"🔢",title:"Basketball Math Quiz",qs:[
    {q:"You made 7 shots out of 14 tries. What is your shooting %?",a:["25%","50%","70%"],c:1,why:"7 ÷ 14 = 0.5 = 50%."},
    {q:"You scored 6, 10, and 8 points in 3 games. Your average?",a:["8 points","7 points","24 points"],c:0,why:"(6+10+8) ÷ 3 = 24 ÷ 3 = 8."},
@@ -987,10 +1030,11 @@ const BADGES=[
  {id:"makes100",icon:"💯",name:"100 Makes Club",desc:"100 total shots made",test:s=>totals(s).makes>=100},
  {id:"sharp",icon:"🎯",name:"Sharpshooter",desc:"Shoot 50%+ in a session (10+ tries)",test:s=>s.sessions.some(x=>x.attempts>=10&&x.makes/x.attempts>=0.5)},
  {id:"scholar",icon:"🎓",name:"Hoops Scholar",desc:"Finish 3 lessons",test:s=>s.lessonsDone.length>=3},
- {id:"quizace",icon:"🧠",name:"Quiz Ace",desc:"Get a perfect score on any quiz",test:s=>(s.quizBest.iq>=5)||(s.quizBest.math>=4)||(s.quizBest.miller>=5)||(s.quizBest.positions>=4)||(s.quizBest.rules2>=4)},
+ {id:"quizace",icon:"🧠",name:"Quiz Ace",desc:"Get a perfect score on any quiz",test:s=>(s.quizBest.iq>=5)||(s.quizBest.math>=4)||(s.quizBest.miller>=5)||(s.quizBest.positions>=4)||(s.quizBest.rules2>=4)||(s.quizBest.clark>=5)},
  {id:"fourteen",icon:"1️⃣4️⃣",name:"Perfect 14",desc:"Make exactly 14+ shots in one session",test:s=>s.sessions.some(x=>x.makes>=14)},
  {id:"bookworm",icon:"📚",name:"Bookworm",desc:"Finish 6 lessons",test:s=>s.lessonsDone.length>=6},
  {id:"legendscholar",icon:"👑",name:"Legend Scholar",desc:"Finish all 3 Miller lessons",test:s=>["millers","cheryl","reggie"].every(id=>s.lessonsDone.includes(id))},
+ {id:"clarkfan",icon:"🌟",name:"Logo Three Legend",desc:"Finish both Caitlin Clark lessons",test:s=>["caitlin","clarkpass"].every(id=>s.lessonsDone.includes(id))},
  {id:"lefthand",icon:"🤚",name:"Left-Hand Hero",desc:"Log a weak-hand drill 3 times",test:s=>s.sessions.filter(x=>Array.isArray(x.drills)&&(x.drills.includes("weakhand")||x.drills.includes("weaklayup")||x.drills.includes("weakmikan"))).length>=3},
  {id:"makes250",icon:"🏆",name:"250 Makes Club",desc:"250 total shots made",test:s=>totals(s).makes>=250}
 ];
@@ -1004,7 +1048,7 @@ function normalizeData(d){
   if(!d||!Array.isArray(d.sessions))return null;
   d.lessonsDone=Array.isArray(d.lessonsDone)?d.lessonsDone:[];
   d.quizBest=(d.quizBest&&typeof d.quizBest==="object"&&!Array.isArray(d.quizBest))?d.quizBest:{};
-  ["iq","math","miller","positions","rules2"].forEach(k=>{d.quizBest[k]=(typeof d.quizBest[k]==="number"&&d.quizBest[k]>=0)?Math.floor(d.quizBest[k]):0;});
+  ["iq","math","miller","positions","rules2","clark"].forEach(k=>{d.quizBest[k]=(typeof d.quizBest[k]==="number"&&d.quizBest[k]>=0)?Math.floor(d.quizBest[k]):0;});
   d.weeklyPlanOverrides=(d.weeklyPlanOverrides&&typeof d.weeklyPlanOverrides==="object"&&!Array.isArray(d.weeklyPlanOverrides))?d.weeklyPlanOverrides:{};
   d.flashcardsKnown=Array.isArray(d.flashcardsKnown)?d.flashcardsKnown.filter(id=>FLASHCARDS.some(c=>c.id===id)):[];
   d.storyBest=(typeof d.storyBest==="number"&&d.storyBest>=0&&d.storyBest<=STORY.qs.length)?Math.floor(d.storyBest):0;
@@ -1025,7 +1069,7 @@ function normalizeData(d){
   d.seenUpdate=(typeof d.seenUpdate==="string")?d.seenUpdate:null;
   ["hotspotBest","blitzBest","memoryBest","diceStars"].forEach(k=>{d[k]=(typeof d[k]==="number"&&d[k]>=0)?Math.floor(d[k]):0;});
   d.diceDay=(d.diceDay&&typeof d.diceDay==="object"&&typeof d.diceDay.date==="string"&&typeof d.diceDay.text==="string")?{date:d.diceDay.date,text:d.diceDay.text,done:d.diceDay.done===true}:{date:"",text:"",done:false};
-  d.champBest=(typeof d.champBest==="number"&&d.champBest>=0)?Math.min(10,Math.floor(d.champBest)):0;
+  d.champBest=(typeof d.champBest==="number"&&d.champBest>=0)?Math.min(12,Math.floor(d.champBest)):0;
   d.champBestDate=(typeof d.champBestDate==="string"&&d.champBestDate)?d.champBestDate:null;
   d.soundOn=d.soundOn!==false;
   d.metronomeBpm=(typeof d.metronomeBpm==="number"&&isFinite(d.metronomeBpm))?Math.min(180,Math.max(40,Math.floor(d.metronomeBpm))):80;
@@ -1039,7 +1083,7 @@ function normalizeWeeklyGoals(g){
   const minutes=(typeof s.minutes==="number"&&isFinite(s.minutes))?Math.min(300,Math.max(5,Math.floor(s.minutes))):WEEKLY_GOALS_DEFAULT.minutes;
   return{sessions,minutes};
 }
-function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,placesVisited:[],seenUpdate:null,hotspotBest:0,blitzBest:0,memoryBest:0,diceStars:0,diceDay:{date:"",text:"",done:false},champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
+function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0,clark:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,placesVisited:[],seenUpdate:null,hotspotBest:0,blitzBest:0,memoryBest:0,diceStars:0,diceDay:{date:"",text:"",done:false},champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
 let state=load();
 const DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 let editingDow=null;
@@ -1099,13 +1143,13 @@ const DASH_TIPS=[
 let dashTipIdx=0;
 function whatsNewList(){
   return [
-   ["📊","<b>Dashboard</b> — pops up every visit with your streak, weekly goals, badges and news"],
-   ["🎯","<b>Hot Spot Challenge</b> — tap the gold spot before it moves (Train)"],
-   ["🧠","<b>Memory Moves</b> — remember the flashing moves (Train)"],
-   ["⚡","<b>Quiz Blitz</b> — 5 questions, 10 seconds each (Learn)"],
-   ["🎲","<b>Daily Challenge Dice</b> — roll once a day, earn stars (Train)"],
-   ["🏆","<b>Trophy Shelf</b> — your badges, shining (Progress)"],
-   ["🗺️","<b>Places Map &amp; Passport</b> — still on Home, under the jump chips"]
+   ["🗂️","<b>NEW MENUS + CARDS</b> — every page is shorter: tap a menu card to open just that part"],
+   ["🌟","<b>Caitlin Clark</b> — two new Legends lessons about #22 (Learn &gt; Lessons)"],
+   ["❓","<b>Caitlin Clark Quiz</b> — 5 questions (Learn &gt; Quizzes)"],
+   ["🎯","<b>Logo Three Ladder</b> — build your deep shot step by step (Train &gt; Drill Library)"],
+   ["🏆","<b>New badge: Logo Three Legend</b> — finish both Clark lessons"],
+   ["🎯","<b>Hot Spot Challenge</b> — still racing in Train &gt; Games"],
+   ["🗺️","<b>Places Map &amp; Passport</b> — on Home, in Places &amp; Game Day"]
   ].map(x=>`<p style="margin:5px 0">${x[0]} ${x[1]}</p>`).join("");
 }
 function renderDashboard(){
@@ -1148,14 +1192,14 @@ function showDashboard(){
 function closeDashboard(action){
   const m=$("dashModal");if(m)m.hidden=true;
   if(action==="train"){goto("train");}
-  else if(action==="game"){goto("train");setTimeout(()=>{const c=$("hotspotCard");if(c)c.scrollIntoView({behavior:scrollBehavior(),block:"start"});},90);}
-  else if(action==="places"){goto("home");setTimeout(()=>{const c=$("placesCard");if(c)c.scrollIntoView({behavior:scrollBehavior(),block:"start"});},90);}
+  else if(action==="game"){goto("train");openPanel("train","games");setTimeout(()=>{const c=$("hotspotCard");if(c)c.scrollIntoView({behavior:scrollBehavior(),block:"start"});},90);}
+  else if(action==="places"){goto("home");openPanel("home","places");setTimeout(()=>{const c=$("placesCard");if(c)c.scrollIntoView({behavior:scrollBehavior(),block:"start"});},90);}
 }
 function renderJumpChips(){
   const bar=$("jumpBar");if(!bar)return;
   const view=document.querySelector(".view.active");
   if(!view){bar.innerHTML="";return;}
-  const cards=[...view.querySelectorAll(".card")].filter(c=>c.querySelector("h3")&&!c.parentElement.closest(".card"));
+  const cards=[...view.querySelectorAll(".card")].filter(c=>c.querySelector("h3")&&!c.parentElement.closest(".card")&&!c.closest(".panel-off"));
   bar.innerHTML=cards.slice(0,9).map((c,i)=>`<button type="button" class="jump-chip" data-jump="${i}">${escapeHtml((c.querySelector("h3").textContent||"Section").trim())}</button>`).join("");
   bar.querySelectorAll("[data-jump]").forEach((btn,i)=>btn.addEventListener("click",()=>{cards[i].scrollIntoView({behavior:scrollBehavior(),block:"start"});}));
 }
@@ -1228,7 +1272,9 @@ const BLITZ_QS=[
  {q:"What is 30 − 14?",a:["14","16","18"],c:1},
  {q:"On a bank shot, where do you aim?",a:["The square on the backboard","The floor","The bench"],c:0},
  {q:"How many quarters are in a game?",a:["2","3","4"],c:2},
- {q:"What is 7 × 2?",a:["12","14","16"],c:1}
+ {q:"What is 7 × 2?",a:["12","14","16"],c:1},
+ {q:"Caitlin Clark's college points record?",a:["3,951","951","1,951"],c:0},
+ {q:"Caitlin Clark wears which number?",a:["#14","#22","#31"],c:1}
 ];
 const QB={qs:[],i:0,score:0,timer:null,left:10,active:false};
 function qbRender(){
@@ -1285,7 +1331,7 @@ function diceRoll(){
   },90);
 }
 /* ================= PLACES TO PLAY (2026-10-30 update) ================= */
-const UPDATE_VERSION="games-2026-11";
+const UPDATE_VERSION="menus-2026-11";
 const PLACES=[
  {id:"bocek",n:"Bocek Recreation Center",t:"🏠 Rec Center Gym",dist:1.7,x:172,y:184,addr:"3000 E Madison St, Baltimore",phone:"410-563-6379",note:"Indoor gym at Bocek Park — leagues, open gym and after-school fun in East Baltimore."},
  {id:"herringrun",n:"Herring Run Park Courts — Hall Springs",t:"🌳 Outdoor Courts",dist:1.9,x:152,y:120,addr:"Argonne Dr, Herring Run Park, Baltimore",phone:"",note:"Outdoor courts in giant Herring Run Park — shoot around, then explore the trails, stream and bridges!"},
@@ -1791,7 +1837,7 @@ function champCertHTML(score,dateStr){
     <p style="margin:4px 0">This certificate celebrates</p>
     <p class="cert-name">Ne'ala</p>
     <div><span class="cert-num">14</span></div>
-    <p style="margin:6px 0">Jersey #14 scored <b>${score} out of 10</b> in the Quiz Championship${when?` on ${escapeHtml(when)}`:""} — a true Hoops Scholar performance! 🧠🏀</p>
+    <p style="margin:6px 0">Jersey #14 scored <b>${score} out of 12</b> in the Quiz Championship${when?` on ${escapeHtml(when)}`:""} — a true Hoops Scholar performance! 🧠🏀</p>
     <button type="button" class="btn teal full" data-champ-print="${score}" data-champ-date="${escapeHtml(dateStr||"")}">🖨️ Print My Certificate</button>
   </div>`;
 }
@@ -1804,12 +1850,12 @@ function renderPrintCertificate(score,dateStr){
     <p class="cert-line">This certificate proudly celebrates</p>
     <p class="cert-name">Ne'ala</p>
     <p class="cert-num">#14</p>
-    <p class="cert-line">for scoring <b>${score} out of 10</b> in the Quiz Championship — answering questions from every quiz in the app${when?` on ${escapeHtml(when)}`:""}. Brain work is basketball work: knowing the game makes you a stronger player. Way to go, #14!</p>
+    <p class="cert-line">for scoring <b>${score} out of 12</b> in the Quiz Championship — answering questions from every quiz in the app${when?` on ${escapeHtml(when)}`:""}. Brain work is basketball work: knowing the game makes you a stronger player. Way to go, #14!</p>
     <p class="cert-line">Signed, Coach Dad 💛</p>
   </div>`;
 }
 function champScoreText(){
-  const s=champState.score,n=champState.questions.length||10;
+  const s=champState.score,n=champState.questions.length||12;
   if(s===n)return `You scored ${s}/${n}! PERFECT CHAMPION! 🏆🏆`;
   if(s>=8)return `You scored ${s}/${n}! CHAMPION! 🏆 You earned a certificate — print it below!`;
   if(s>=5)return `You scored ${s}/${n}! Strong run, #14 — 8 or more earns the certificate. One more try? 💪`;
@@ -1824,9 +1870,9 @@ function renderChampionship(filter){
   if(champState.active&&champState.questions.length){
     const qs=champState.questions;
     area.innerHTML=`<article class="card champ-card">
-    <span class="tag">🏆 Championship Run • Best score: ${best}/10</span>
+    <span class="tag">🏆 Championship Run • Best score: ${best}/12</span>
     <h3 style="margin-top:8px">🏆 Quiz Championship</h3>
-    <p class="muted small" style="margin:4px 0 10px">10 questions — 2 from EVERY quiz in the app. Take your time, #14. Score 8 or more to earn your printable certificate!</p>
+    <p class="muted small" style="margin:4px 0 10px">12 questions — 2 from EVERY quiz in the app. Take your time, #14. Score 8 or more to earn your printable certificate!</p>
     <div>${qs.map((q,qi)=>`<div class="quiz-q"><p><b>Q${qi+1}.</b> <span class="tag">${q.icon} ${escapeHtml(q.quizTitle)}</span></p><p style="margin:4px 0">${escapeHtml(q.q)}</p>
       ${q.a.map((a,ai)=>`<button type="button" data-champ-q="${qi}" data-champ-a="${ai}">${escapeHtml(a)}</button>`).join("")}
       <p class="small muted" id="champ-why-${qi}"></p></div>`).join("")}</div>
@@ -1841,9 +1887,9 @@ function renderChampionship(filter){
     return;
   }
   area.innerHTML=`<article class="card champ-card">
-    <span class="tag">🏆 Championship • Best score: ${best}/10</span>
+    <span class="tag">🏆 Championship • Best score: ${best}/12</span>
     <h3 style="margin-top:8px">🏆 Quiz Championship</h3>
-    <p>The BIG test, #14! One championship run mixes <b>10 questions — 2 from every quiz</b>: Basketball IQ, the Miller Legends, Math, Positions, and Rules. All the brain work you have been practicing, in one game.</p>
+    <p>The BIG test, #14! One championship run mixes <b>12 questions — 2 from every quiz</b>: Basketball IQ, the Miller Legends, Caitlin Clark, Math, Positions, and Rules. All the brain work you have been practicing, in one game.</p>
     <p class="small muted">Score <b style="color:var(--ink)">8 or more</b> and you earn a printable championship certificate with your name and #14 on it. Miss a few? No stress — learn from the answers and run it back anytime. Champions retake! 💪</p>
     <div id="champCert">${best>=8?champCertHTML(best,state.champBestDate):""}</div>
     <button class="btn full" data-champ-start="1" style="margin-top:12px">🏆 Start the Championship</button></article>`;
@@ -2797,6 +2843,24 @@ const dashGame=$("dashGameBtn");if(dashGame)dashGame.addEventListener("click",()
 const dashPlaces=$("dashPlacesBtn");if(dashPlaces)dashPlaces.addEventListener("click",()=>closeDashboard("places"));
 const dashModalEl=$("dashModal");if(dashModalEl)dashModalEl.addEventListener("click",e=>{if(e.target===dashModalEl)closeDashboard();});
 const buddy=$("mascotBuddy");if(buddy)buddy.addEventListener("click",()=>{dashTipIdx=(dashTipIdx+1)%DASH_TIPS.length;const tip=$("dashTip");if(tip){tip.textContent=DASH_TIPS[dashTipIdx];tip.classList.remove("tip-pop");void tip.offsetWidth;tip.classList.add("tip-pop");}try{metroClick(true);}catch(err){}});
+/* ================= MENUS + CARDS (2026-11-15 update) ================= */
+const MENU_DEFAULTS={home:"today",train:"games",log:"practice",learn:"lessons",progress:"stats"};
+const menuState={...MENU_DEFAULTS};
+function openPanel(view,panel){
+  if(!MENU_DEFAULTS[view])return;
+  menuState[view]=panel;
+  const vEl=$("view-"+view);if(!vEl)return;
+  vEl.querySelectorAll("[data-panel]").forEach(el=>el.classList.toggle("panel-off",el.dataset.panel!==panel));
+  vEl.querySelectorAll("[data-menu-btn]").forEach(b=>{const on=b.dataset.menuBtn===panel;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false");});
+  renderJumpChips();
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-menu-btn]");if(!b)return;
+  const v=b.closest(".view");if(!v)return;
+  openPanel(v.id.replace("view-",""),b.dataset.menuBtn);
+  const grid=b.closest(".menu-grid");if(grid)setTimeout(()=>grid.scrollIntoView({behavior:scrollBehavior(),block:"start"}),40);
+});
+Object.keys(MENU_DEFAULTS).forEach(v=>openPanel(v,MENU_DEFAULTS[v]));
 hsDraw();mmDraw();diceRender();renderJumpChips();
 applyTextSize();applyCalmMode();
 /* ================= MAKE IT HERS CONTROLS (cycle 25) ================= */
