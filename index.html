@@ -261,6 +261,23 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 .trophy.locked{opacity:.45;filter:grayscale(1)}
 .trophy.locked .tic{animation:none}
 @keyframes trophy-shine{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg) scale(1.09)}}
+.bz-track{position:relative;height:26px;background:#1e293b;border-radius:999px;border:1px solid var(--line);margin:10px 0 4px}
+.bz-zone{position:absolute;left:62%;width:18%;top:0;bottom:0;background:var(--gold);opacity:.85;border-radius:4px}
+.bz-needle{position:absolute;top:-4px;bottom:-4px;width:6px;background:#fff;border-radius:3px;left:0;box-shadow:0 0 6px #fff}
+.qh-court{position:relative;height:230px;background:#14532d;border-radius:14px;border:1px solid var(--line);overflow:hidden}
+.qh-court .qh-floor{position:absolute;left:0;right:0;bottom:0;height:26px;background:#92400e}
+.qh-ball{position:absolute;width:46px;height:46px;border-radius:50%;background:#ff7a1a;border:2px solid #fff3;font-size:26px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;z-index:2}
+.cc-word{font-size:34px;font-weight:800;text-align:center;letter-spacing:1px;margin:6px 0}
+.cc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.cc-patch{min-height:56px;border-radius:14px;border:2px solid var(--line);font-weight:800;font-size:16px;color:#0b1020;cursor:pointer}
+.form-viz{background:#0d1b2e;border:1px solid var(--line);border-radius:14px;padding:6px}
+.tree-row{display:flex;flex-wrap:wrap;gap:6px}
+.tree-node{border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:13px;color:var(--muted);background:#0d1b2e}
+.tree-node.lit{color:#0b1020;background:var(--gold);border-color:var(--gold);font-weight:700}
+.buddy-big{font-size:58px;text-align:center;line-height:1.15}
+.buddy-bar{height:14px;background:#1e293b;border-radius:999px;border:1px solid var(--line);overflow:hidden;margin:8px 0 4px}
+.buddy-fill{height:100%;background:var(--gold);border-radius:999px}
+.jersey-wrap{text-align:center}
 .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
 .menu-card{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px;color:var(--ink);cursor:pointer;min-height:64px}
 .menu-card .mi{font-size:25px;display:block;margin-bottom:2px}
@@ -377,6 +394,18 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     </div>
     <p id="personalizeMsg" class="small" role="status" style="margin:4px 0 0">Orange + 🏀 Basketball is your look right now — the classic #14 style!</p>
   </div>
+  <div class="card" id="jerseyCard" data-panel="picks">
+    <h3>👕 Jersey Designer</h3>
+    <p class="muted small">Design YOUR #14 jersey, Ne'ala! Pick a color, a trim, and a style — your design is saved on this device and shows up every time you visit.</p>
+    <div class="jersey-wrap" id="jerseyPreview" aria-label="Preview of your designed number 14 jersey"></div>
+    <p style="margin:10px 0 6px"><b>Jersey color</b></p>
+    <div class="chips" id="jerseyColors" role="group" aria-label="Choose jersey color" style="margin-bottom:6px"></div>
+    <p style="margin:12px 0 6px"><b>Trim color</b></p>
+    <div class="chips" id="jerseyTrims" role="group" aria-label="Choose trim color" style="margin-bottom:6px"></div>
+    <p style="margin:12px 0 6px"><b>Style</b></p>
+    <div class="chips" id="jerseyStyles" role="group" aria-label="Choose jersey style" style="margin-bottom:6px"></div>
+    <p id="jerseyMsg" class="small" role="status" style="margin:4px 0 0"></p>
+  </div>
   <div class="grid" id="quickStats" aria-label="Quick stats" data-panel="today"></div>
   <button type="button" class="btn full" id="dashOpenBtn" style="margin-top:10px" data-panel="today">📊 See My Dashboard</button>
   <div class="card" id="drillOfDayCard" data-panel="picks">
@@ -397,6 +426,17 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <h3>⭐ Featured: 14 for 14</h3>
     <p class="muted">Your number, your session. 14 minutes, finish with 14 makes. End on a make — always.</p>
     <button class="btn teal full" data-goto="train">See the 14 for 14 Session</button>
+  </div>
+  <div class="card" id="buddyCard" data-panel="today">
+    <h3>🐣 Buddy Growth</h3>
+    <p class="muted small" style="margin:4px 0 6px">Your buddy grows every time you practice! Log practices to level your buddy up — from a tiny Rookie all the way to LEGEND.</p>
+    <div id="buddyBody"></div>
+  </div>
+  <div class="card" id="cheerCard" data-panel="today">
+    <h3>📣 Cheer Me On!</h3>
+    <p class="muted small" style="margin:4px 0 10px">Need a boost before practice — or a celebration after? Tap the button and get a BIG cheer, just for you, #14!</p>
+    <button type="button" class="btn full" id="cheerBtn">📣 CHEER ME ON!</button>
+    <p id="cheerCountLine" class="small" role="status" style="margin:8px 0 0"></p>
   </div>
   <div class="card" id="tipoffCard" data-panel="places">
     <h3>🦃 Turkey Tip-Off Countdown</h3>
@@ -439,9 +479,10 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
   <h2>🏋️ Training</h2>
   <div class="art" data-art="train"></div>
   <div class="menu-grid" role="group" aria-label="Training menu — tap a card to open that part">
-    <button type="button" class="menu-card on" data-menu-btn="games" aria-pressed="true"><span class="mi" aria-hidden="true">🎮</span><b>Games &amp; Fun</b><small>Surprise drill, Swish Shot, Hot Spot, Memory Moves, Dice</small></button>
+    <button type="button" class="menu-card on" data-menu-btn="games" aria-pressed="true"><span class="mi" aria-hidden="true">🎮</span><b>Games &amp; Fun</b><small>Surprise drill, Swish Shot, Hot Spot, Memory Moves, Dice + 3 NEW games!</small></button>
     <button type="button" class="menu-card" data-menu-btn="session" aria-pressed="false"><span class="mi" aria-hidden="true">⭐</span><b>Session &amp; Tools</b><small>14 for 14, timer, dribble beat, challenge modes</small></button>
     <button type="button" class="menu-card" data-menu-btn="drills" aria-pressed="false"><span class="mi" aria-hidden="true">🏋️</span><b>Drill Library</b><small>Every drill, searchable by skill</small></button>
+    <button type="button" class="menu-card" data-menu-btn="form" aria-pressed="false"><span class="mi" aria-hidden="true">🎬</span><b>Form Studio</b><small>Animated visuals that SHOW you the form</small></button>
   </div>
   <div class="card" id="surpriseCard" data-panel="games">
     <h3>🎲 Surprise Drill</h3>
@@ -486,6 +527,101 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <button type="button" class="btn" id="diceRollBtn">🎲 Roll the Dice</button>
       <button type="button" class="btn teal" id="diceDoneBtn" disabled>✅ I Did It!</button>
     </div>
+  </div>
+  <div class="card" id="buzzerCard" data-panel="games">
+    <h3>⏰ Buzzer Beater</h3>
+    <p class="muted small" style="margin:4px 0 10px">The clock is ticking — 5 shots before the buzzer! Tap <b>SHOOT</b> when the needle is inside the <b style="color:var(--gold)">GOLD</b> zone. Too slow and the buzzer beats YOU!</p>
+    <p class="big" style="text-align:center;font-size:30px;margin:2px 0" aria-hidden="true">⏰ <span id="bzClock">5.0</span></p>
+    <div class="bz-track"><div class="bz-zone"></div><div class="bz-needle" id="bzNeedle"></div></div>
+    <p id="bzScore" class="small" role="status" style="margin:8px 0 0">Shots: 0/5 • Makes: 0 • 🏆 Best: 0</p>
+    <p id="bzMsg" class="small" role="status" style="margin:6px 0"></p>
+    <div class="timer-row">
+      <button type="button" class="btn" id="bzStartBtn">▶️ Start</button>
+      <button type="button" class="btn teal" id="bzShootBtn">🏀 SHOOT!</button>
+    </div>
+  </div>
+  <div class="card" id="quickHandsCard" data-panel="games">
+    <h3>🙌 Quick Hands</h3>
+    <p class="muted small" style="margin:4px 0 10px">Balls are dropping! Tap each ball to CATCH it before it hits the floor. You have 30 seconds — quick hands, #14!</p>
+    <div class="qh-court" id="qhCourt"><div class="qh-floor"></div></div>
+    <p id="qhScore" class="small" role="status" style="margin:10px 0 0">Caught: 0 • Dropped: 0 • Time: 30 • 🏆 Best: 0</p>
+    <p id="qhMsg" class="small" role="status" style="margin:6px 0"></p>
+    <button type="button" class="btn full" id="qhStartBtn">▶️ Start Quick Hands</button>
+  </div>
+  <div class="card" id="colorCourtCard" data-panel="games">
+    <h3>🎨 Color Court</h3>
+    <p class="muted small" style="margin:4px 0 10px">A color word flashes — tap the matching color patch, fast! Rounds 6–10 flip the trick: tap the color of the <b>INK</b> the word is painted in. 10 rounds!</p>
+    <p class="cc-word" id="ccWord">🎨</p>
+    <p id="ccHint" class="small muted" style="text-align:center;margin:0" role="status">Press START to play!</p>
+    <div class="cc-grid" id="ccPatches"></div>
+    <p id="ccScore" class="small" role="status" style="margin:10px 0 0">Round: 0/10 • Correct: 0 • 🏆 Best: 0</p>
+    <p id="ccMsg" class="small" role="status" style="margin:6px 0"></p>
+    <button type="button" class="btn full" id="ccStartBtn">▶️ Start Color Court</button>
+  </div>
+  <div class="card" id="formBeefCard" data-panel="form">
+    <h3>🎬 Form Studio — B.E.E.F. Shooting Form</h3>
+    <div class="form-viz"><svg viewBox="0 0 300 190" style="width:100%;height:auto;display:block" role="img" aria-label="Animated shooting form: watch the elbow tuck, the arm extend, and the ball arc into the hoop">
+      <rect x="0" y="158" width="300" height="32" fill="#92400e"/>
+      <rect x="264" y="34" width="6" height="38" fill="#f4f7ff"/><ellipse cx="250" cy="76" rx="15" ry="4.5" fill="none" stroke="#f472b6" stroke-width="3"/>
+      <circle cx="90" cy="66" r="11" fill="#fbbf24"/>
+      <line x1="90" y1="77" x2="90" y2="118" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      <line x1="90" y1="118" x2="76" y2="156" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      <line x1="90" y1="118" x2="104" y2="156" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      <line x1="90" y1="86" x2="70" y2="104" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      <g><animateTransform attributeName="transform" type="rotate" values="-24 90 84; 26 90 84; -24 90 84" dur="3s" repeatCount="indefinite"/>
+        <line x1="90" y1="84" x2="116" y2="66" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/></g>
+      <circle r="8" fill="#ff7a1a" stroke="#0b1020" stroke-width="1.5"><animateMotion path="M118,58 C 168,6 218,26 250,70" dur="3s" repeatCount="indefinite"/></circle>
+    </svg></div>
+    <p style="margin:8px 0 2px"><b>B</b>alance — feet shoulder-width, knees soft. <b>E</b>yes — on the rim, not the ball. <b>E</b>lbow — tucked under the ball like a shelf. <b>F</b>ollow through — wrist snaps, fingers wave goodbye to the ball. Watch the arm in the picture: up, extend, snap!</p>
+  </div>
+  <div class="card" id="formDribbleCard" data-panel="form">
+    <h3>🎬 Form Studio — Low Dribble, Eyes Up</h3>
+    <div class="form-viz"><svg viewBox="0 0 300 190" style="width:100%;height:auto;display:block" role="img" aria-label="Animated dribbling form: ball bouncing low by the side, head and eyes up">
+      <rect x="0" y="158" width="300" height="32" fill="#92400e"/>
+      <text x="150" y="26" font-size="21" text-anchor="middle">👀 EYES UP!</text>
+      <line x1="150" y1="34" x2="150" y2="52" stroke="#4ade80" stroke-width="3" stroke-dasharray="4 3"/>
+      <circle cx="150" cy="66" r="11" fill="#fbbf24"/>
+      <line x1="150" y1="77" x2="138" y2="112" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      <line x1="138" y1="112" x2="120" y2="156" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      <line x1="138" y1="112" x2="164" y2="156" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      <line x1="146" y1="84" x2="182" y2="104" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      <line x1="146" y1="84" x2="118" y2="98" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="188" r="9" fill="#ff7a1a" stroke="#0b1020" stroke-width="1.5"><animate attributeName="cy" values="106;152;106" dur="0.72s" repeatCount="indefinite"/></circle>
+    </svg></div>
+    <p style="margin:8px 0 2px">Stay LOW like you are sitting in a chair, ball bouncing by your side below your knee, fingertips pushing it down — and your eyes stay UP the whole time, just like the picture. If you can see Dad's hand signals, you are doing it right!</p>
+  </div>
+  <div class="card" id="formLayupCard" data-panel="form">
+    <h3>🎬 Form Studio — Layup Steps: 1-2-UP!</h3>
+    <div class="form-viz"><svg viewBox="0 0 300 190" style="width:100%;height:auto;display:block" role="img" aria-label="Animated layup footwork: step one, step two, then up off one foot toward the hoop">
+      <rect x="0" y="158" width="300" height="32" fill="#92400e"/>
+      <rect x="264" y="34" width="6" height="38" fill="#f4f7ff"/><ellipse cx="250" cy="76" rx="15" ry="4.5" fill="none" stroke="#f472b6" stroke-width="3"/>
+      <ellipse cx="66" cy="166" rx="13" ry="5" fill="#38bdf8"><animate attributeName="opacity" values="0.25;1;0.25" dur="1.8s" repeatCount="indefinite"/></ellipse>
+      <ellipse cx="106" cy="158" rx="13" ry="5" fill="#4ade80"><animate attributeName="opacity" values="0.25;1;0.25" begin="0.6s" dur="1.8s" repeatCount="indefinite"/></ellipse>
+      <ellipse cx="146" cy="166" rx="13" ry="5" fill="#fbbf24"><animate attributeName="opacity" values="0.25;1;0.25" begin="1.2s" dur="1.8s" repeatCount="indefinite"/></ellipse>
+      <text x="66" y="150" font-size="13" text-anchor="middle" fill="#f4f7ff" font-weight="bold">1</text>
+      <text x="106" y="142" font-size="13" text-anchor="middle" fill="#f4f7ff" font-weight="bold">2</text>
+      <text x="146" y="150" font-size="13" text-anchor="middle" fill="#f4f7ff" font-weight="bold">UP!</text>
+      <circle r="8" fill="#ff7a1a" stroke="#0b1020" stroke-width="1.5"><animateMotion path="M150,116 C 192,58 224,52 250,70" dur="1.8s" repeatCount="indefinite"/></circle>
+    </svg></div>
+    <p style="margin:8px 0 2px">Right-side layup: step <b>1</b> with your right foot, step <b>2</b> with your left, then drive your RIGHT knee <b>UP</b> and lay the ball softly off the backboard square. Say it while you go: "one — two — UP!" Left side flips the feet.</p>
+  </div>
+  <div class="card" id="formDefenseCard" data-panel="form">
+    <h3>🎬 Form Studio — Defensive Slide</h3>
+    <div class="form-viz"><svg viewBox="0 0 300 190" style="width:100%;height:auto;display:block" role="img" aria-label="Animated defensive slide: low stance, arms wide, sliding side to side without crossing feet">
+      <rect x="0" y="158" width="300" height="32" fill="#92400e"/>
+      <line x1="60" y1="152" x2="240" y2="152" stroke="#4ade80" stroke-width="3" stroke-dasharray="6 5"/>
+      <g><animateTransform attributeName="transform" type="translate" values="-38 0; 38 0; -38 0" dur="2.6s" repeatCount="indefinite"/>
+        <circle cx="150" cy="62" r="11" fill="#fbbf24"/>
+        <line x1="150" y1="73" x2="150" y2="106" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+        <line x1="150" y1="80" x2="112" y2="94" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+        <line x1="150" y1="80" x2="188" y2="94" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+        <line x1="150" y1="106" x2="128" y2="132" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+        <line x1="128" y1="132" x2="124" y2="156" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+        <line x1="150" y1="106" x2="172" y2="132" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+        <line x1="172" y1="132" x2="176" y2="156" stroke="#f4f7ff" stroke-width="5" stroke-linecap="round"/>
+      </g>
+    </svg></div>
+    <p style="margin:8px 0 2px">Butt down, chest up, arms WIDE like a wall. Push and slide — your feet glide side to side and never cross, just like the picture. Stay in front of your player and make them go around you!</p>
   </div>
   <div class="card hot" id="fourteen" data-panel="session">
     <h3>⭐ 14 for 14 — Driveway Session (14 minutes)</h3>
@@ -587,6 +723,11 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     </div>
   </div>
   <p class="muted" data-panel="drills">Pick a skill. Start with Level 1 drills — they build everything else. Level 3 drills are stretch challenges: try them when Level 1–2 drills start to feel easy!</p>
+  <div class="card" id="skillTreeCard" data-panel="drills">
+    <h3>🗺️ Skill Tree Adventure</h3>
+    <p class="muted small" style="margin:4px 0 6px">Every drill is a star on your adventure map. Log a practice with a drill and its star lights up GOLD! Can you light the whole tree, #14?</p>
+    <div id="skillTree"></div>
+  </div>
   <div class="card" id="drillSearchCard" data-panel="drills">
     <h3>🔍 Search Drills</h3>
     <label for="drillSearch">Search by drill name or keyword</label>
@@ -884,17 +1025,26 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     </div>
   </div>
 </div>
+<div class="update-modal" id="cheerModal" hidden role="dialog" aria-modal="true" aria-labelledby="cheerTitle">
+  <div class="update-card">
+    <button type="button" class="btn ghost" id="cheerCloseBtn" style="float:right;padding:6px 13px" aria-label="Close cheer">✖</button>
+    <div class="buddy-big" id="cheerMascot" aria-hidden="true">🏀</div>
+    <h2 id="cheerTitle" style="margin:6px 0">📣 LET'S GO, NE'ALA!</h2>
+    <p class="big" id="cheerText" style="font-size:20px;margin:8px 0"></p>
+    <p class="small muted" id="cheerSub" role="status"></p>
+    <button type="button" class="btn full" id="cheerAgainBtn" style="margin-top:10px">📣 ONE MORE CHEER!</button>
+  </div>
+</div>
 <div class="update-modal" id="updateModal" hidden role="dialog" aria-modal="true" aria-labelledby="updateTitle">
   <div class="update-card">
     <div class="update-ball" aria-hidden="true">🏀</div>
     <h2 id="updateTitle">🎉 NEW UPDATE, Ne'ala!</h2>
-    <p class="big" style="font-size:19px;margin:6px 0">Your app got <b>MENUS</b>, more <b>CARDS</b> — and <b>CAITLIN CLARK</b> is here! 🌟</p>
+    <p class="big" style="font-size:19px;margin:6px 0">Your app got <b>MORE GAMES</b>, a <b>FORM STUDIO</b> — and <b>4 NEW SURPRISES</b>! 🎉</p>
     <div class="update-list">
-      <p style="margin:5px 0">🗂️ <b>NEW MENUS</b> on every page — tap a menu card to open just that part. Pages are WAY shorter now!</p>
-      <p style="margin:5px 0">🃏 Everything is organized into <b>cards</b> — pick a card, play, done!</p>
-      <p style="margin:5px 0">🌟 <b>CAITLIN CLARK</b> joins the Legends! Two new lessons about the record-breaking #22 — 3,951 points, logo threes &amp; super passing</p>
-      <p style="margin:5px 0">❓ A new <b>Caitlin Clark Quiz</b> + the <b>Logo Three Ladder</b> drill — build YOUR deep shot step by step</p>
-      <p style="margin:5px 0">🏆 A new badge to earn: <b>Logo Three Legend</b> — finish both Clark lessons!</p>
+      <p style="margin:5px 0">🎮 <b>THREE NEW GAMES</b> — Buzzer Beater, Quick Hands &amp; Color Court, in Train &gt; Games!</p>
+      <p style="margin:5px 0">🎬 <b>FORM STUDIO</b> — animated pictures that SHOW you shooting form, dribbling, layups &amp; defense (Train)</p>
+      <p style="margin:5px 0">👕 <b>JERSEY DESIGNER</b> — design your own #14 jersey! Plus a 🗺️ <b>Skill Tree</b> to light up</p>
+      <p style="margin:5px 0">🐣 Your <b>Buddy grows</b> every time you practice — and the 📣 <b>Cheer Me On!</b> button gives you a big cheer any time</p>
     </div>
     <button type="button" class="btn full" id="updateGoBtn" style="margin-top:8px">📊 See My Dashboard!</button>
     <button type="button" class="btn ghost full" id="updateCloseBtn" style="margin-top:8px">Maybe Later</button>
@@ -1067,7 +1217,8 @@ function normalizeData(d){
   d.shootBest=(typeof d.shootBest==="number"&&d.shootBest>=0)?Math.floor(d.shootBest):0;
   d.placesVisited=Array.isArray(d.placesVisited)?[...new Set(d.placesVisited.filter(id=>typeof id==="string"))]:[];
   d.seenUpdate=(typeof d.seenUpdate==="string")?d.seenUpdate:null;
-  ["hotspotBest","blitzBest","memoryBest","diceStars"].forEach(k=>{d[k]=(typeof d[k]==="number"&&d[k]>=0)?Math.floor(d[k]):0;});
+  ["hotspotBest","blitzBest","memoryBest","diceStars","buzzerBest","handsBest","colorBest","cheerCount"].forEach(k=>{d[k]=(typeof d[k]==="number"&&d[k]>=0)?Math.floor(d[k]):0;});
+  d.jersey=(d.jersey&&typeof d.jersey==="object")?{color:["sky","orange","pink","purple","teal","gold","green","red"].includes(d.jersey.color)?d.jersey.color:"sky",trim:["white","gold","black","pink"].includes(d.jersey.trim)?d.jersey.trim:"white",style:["classic","stripes","stars"].includes(d.jersey.style)?d.jersey.style:"classic"}:{color:"sky",trim:"white",style:"classic"};
   d.diceDay=(d.diceDay&&typeof d.diceDay==="object"&&typeof d.diceDay.date==="string"&&typeof d.diceDay.text==="string")?{date:d.diceDay.date,text:d.diceDay.text,done:d.diceDay.done===true}:{date:"",text:"",done:false};
   d.champBest=(typeof d.champBest==="number"&&d.champBest>=0)?Math.min(12,Math.floor(d.champBest)):0;
   d.champBestDate=(typeof d.champBestDate==="string"&&d.champBestDate)?d.champBestDate:null;
@@ -1083,7 +1234,7 @@ function normalizeWeeklyGoals(g){
   const minutes=(typeof s.minutes==="number"&&isFinite(s.minutes))?Math.min(300,Math.max(5,Math.floor(s.minutes))):WEEKLY_GOALS_DEFAULT.minutes;
   return{sessions,minutes};
 }
-function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0,clark:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,placesVisited:[],seenUpdate:null,hotspotBest:0,blitzBest:0,memoryBest:0,diceStars:0,diceDay:{date:"",text:"",done:false},champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
+function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0,clark:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,placesVisited:[],seenUpdate:null,hotspotBest:0,blitzBest:0,memoryBest:0,diceStars:0,buzzerBest:0,handsBest:0,colorBest:0,cheerCount:0,jersey:{color:"sky",trim:"white",style:"classic"},diceDay:{date:"",text:"",done:false},champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
 let state=load();
 const DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 let editingDow=null;
@@ -1143,13 +1294,12 @@ const DASH_TIPS=[
 let dashTipIdx=0;
 function whatsNewList(){
   return [
-   ["🗂️","<b>NEW MENUS + CARDS</b> — every page is shorter: tap a menu card to open just that part"],
-   ["🌟","<b>Caitlin Clark</b> — two new Legends lessons about #22 (Learn &gt; Lessons)"],
-   ["❓","<b>Caitlin Clark Quiz</b> — 5 questions (Learn &gt; Quizzes)"],
-   ["🎯","<b>Logo Three Ladder</b> — build your deep shot step by step (Train &gt; Drill Library)"],
-   ["🏆","<b>New badge: Logo Three Legend</b> — finish both Clark lessons"],
-   ["🎯","<b>Hot Spot Challenge</b> — still racing in Train &gt; Games"],
-   ["🗺️","<b>Places Map &amp; Passport</b> — on Home, in Places &amp; Game Day"]
+   ["🎮","<b>THREE new games</b> — Buzzer Beater, Quick Hands &amp; Color Court (Train &gt; Games)"],
+   ["🎬","<b>Form Studio</b> — animated visuals that SHOW shooting, dribbling, layup &amp; defense form (Train)"],
+   ["👕","<b>Jersey Designer</b> — design your own #14 jersey (Home &gt; Picks &amp; Style)"],
+   ["🗺️","<b>Skill Tree Adventure</b> — light up all 25 skills as you practice them (Train &gt; Drill Library)"],
+   ["🐣","<b>Buddy Growth</b> — your buddy levels up as you practice (Home &gt; Today)"],
+   ["📣","<b>Cheer Me On!</b> — a big cheer any time you need one (Home &gt; Today)"]
   ].map(x=>`<p style="margin:5px 0">${x[0]} ${x[1]}</p>`).join("");
 }
 function renderDashboard(){
@@ -1331,7 +1481,7 @@ function diceRoll(){
   },90);
 }
 /* ================= PLACES TO PLAY (2026-10-30 update) ================= */
-const UPDATE_VERSION="menus-2026-11";
+const UPDATE_VERSION="studio-2026-11";
 const PLACES=[
  {id:"bocek",n:"Bocek Recreation Center",t:"🏠 Rec Center Gym",dist:1.7,x:172,y:184,addr:"3000 E Madison St, Baltimore",phone:"410-563-6379",note:"Indoor gym at Bocek Park — leagues, open gym and after-school fun in East Baltimore."},
  {id:"herringrun",n:"Herring Run Park Courts — Hall Springs",t:"🌳 Outdoor Courts",dist:1.9,x:152,y:120,addr:"Argonne Dr, Herring Run Park, Baltimore",phone:"",note:"Outdoor courts in giant Herring Run Park — shoot around, then explore the trails, stream and bridges!"},
@@ -1631,6 +1781,8 @@ function renderHome(){
   $("streakNum").textContent=streak;
   const last=[...state.sessions].sort((a,b)=>b.date.localeCompare(a.date))[0];
   if(last)$("recentSession").innerHTML=`<p><b>${last.date}</b> — ${last.minutes} min • ${last.makes}/${last.attempts} shots${(last.rebounds!==undefined||last.assists!==undefined)?` • 🧲 ${+last.rebounds||0} rebounds • 🤝 ${+last.assists||0} assists`:""}</p><p class="muted">${last.notes?escapeHtml(last.notes):"No notes — great work showing up!"}</p>`;
+  renderBuddy();
+  renderSkillTree();
   renderExtras();
 }
 function renderWeeklyPlan(){
@@ -2836,6 +2988,17 @@ const qbBtn=$("blitzStartBtn");if(qbBtn)qbBtn.addEventListener("click",qbStart);
 const qbA=$("blitzAnswers");if(qbA)qbA.addEventListener("click",e=>{const b=e.target.closest("[data-qb]");if(!b||!QB.active)return;if(+b.getAttribute("data-qb")===QB.qs[QB.i].c){QB.score++;try{metroClick(true);}catch(err){}}else{try{metroClick(false);}catch(err){}}qbNext();});
 const dRoll=$("diceRollBtn");if(dRoll)dRoll.addEventListener("click",diceRoll);
 const dDone=$("diceDoneBtn");if(dDone)dDone.addEventListener("click",()=>{if(state.diceDay&&state.diceDay.date===dayStr(new Date())&&!state.diceDay.done){state.diceDay.done=true;state.diceStars=(state.diceStars||0)+1;save();diceRender();launchConfetti(12);}});
+const bzS=$("bzStartBtn");if(bzS)bzS.addEventListener("click",bzStart);
+const bzSh=$("bzShootBtn");if(bzSh)bzSh.addEventListener("click",bzShoot);
+const qhS=$("qhStartBtn");if(qhS)qhS.addEventListener("click",qhStart);
+const qhC=$("qhCourt");if(qhC)qhC.addEventListener("click",e=>{const b=e.target.closest(".qh-ball");if(!b||!QH.active)return;const o=QH.balls.find(x=>x.el===b);if(o){QH.balls=QH.balls.filter(x=>x!==o);o.el.remove();QH.caught++;try{metroClick(true);}catch(err){}qhScoreDraw();}});
+const ccS=$("ccStartBtn");if(ccS)ccS.addEventListener("click",ccStart);
+const ccG=$("ccPatches");if(ccG)ccG.addEventListener("click",e=>{const b=e.target.closest("[data-cc]");if(b)ccTap(b.getAttribute("data-cc"));});
+const jz=$("jerseyCard");if(jz)jz.addEventListener("click",e=>{const c=e.target.closest("[data-jersey-color]"),t=e.target.closest("[data-jersey-trim]"),s=e.target.closest("[data-jersey-style]");if(!state.jersey||typeof state.jersey!=="object")state.jersey={color:"sky",trim:"white",style:"classic"};if(c)state.jersey.color=c.getAttribute("data-jersey-color");else if(t)state.jersey.trim=t.getAttribute("data-jersey-trim");else if(s)state.jersey.style=s.getAttribute("data-jersey-style");else return;save();renderJersey();try{metroClick(true);}catch(err){}});
+const chB=$("cheerBtn");if(chB)chB.addEventListener("click",openCheer);
+const chC=$("cheerCloseBtn");if(chC)chC.addEventListener("click",closeCheer);
+const chA=$("cheerAgainBtn");if(chA)chA.addEventListener("click",openCheer);
+const chM=$("cheerModal");if(chM)chM.addEventListener("click",e=>{if(e.target===chM)closeCheer();});
 const dashOpen=$("dashOpenBtn");if(dashOpen)dashOpen.addEventListener("click",showDashboard);
 const dashClose=$("dashCloseBtn");if(dashClose)dashClose.addEventListener("click",()=>closeDashboard());
 const dashStart=$("dashStartBtn");if(dashStart)dashStart.addEventListener("click",()=>closeDashboard("train"));
@@ -2843,6 +3006,203 @@ const dashGame=$("dashGameBtn");if(dashGame)dashGame.addEventListener("click",()
 const dashPlaces=$("dashPlacesBtn");if(dashPlaces)dashPlaces.addEventListener("click",()=>closeDashboard("places"));
 const dashModalEl=$("dashModal");if(dashModalEl)dashModalEl.addEventListener("click",e=>{if(e.target===dashModalEl)closeDashboard();});
 const buddy=$("mascotBuddy");if(buddy)buddy.addEventListener("click",()=>{dashTipIdx=(dashTipIdx+1)%DASH_TIPS.length;const tip=$("dashTip");if(tip){tip.textContent=DASH_TIPS[dashTipIdx];tip.classList.remove("tip-pop");void tip.offsetWidth;tip.classList.add("tip-pop");}try{metroClick(true);}catch(err){}});
+/* ================= GAMES + FORM STUDIO + FEATURES (2026-11-15 update) ================= */
+/* ---- Buzzer Beater ---- */
+const BZ={active:false,shot:0,makes:0,needle:0,dir:1,clock:5,timer:null};
+function bzMsg(t){const m=$("bzMsg");if(m)m.textContent=t;}
+function bzDraw(){
+  const n=$("bzNeedle");if(n)n.style.left=`calc(${BZ.needle}% - 3px)`;
+  const c=$("bzClock");if(c)c.textContent=BZ.active?BZ.clock.toFixed(1):"5.0";
+  const sc=$("bzScore");if(sc)sc.textContent=`Shots: ${BZ.shot}/5 • Makes: ${BZ.makes} • 🏆 Best: ${state.buzzerBest||0}`;
+}
+function bzAdvance(msg){
+  if(BZ.shot>=5){bzEnd(msg);return;}
+  BZ.shot++;BZ.clock=5;BZ.needle=0;BZ.dir=1;
+  bzMsg(`Shot ${BZ.shot} of 5 — ${msg}`);
+  bzDraw();
+}
+function bzEnd(lastMsg){
+  BZ.active=false;clearInterval(BZ.timer);
+  if(BZ.makes>(state.buzzerBest||0)){state.buzzerBest=BZ.makes;save();}
+  bzMsg(`${lastMsg} ⏰ BUZZER! Game over: ${BZ.makes}/5 makes. 🏆 Best: ${state.buzzerBest||0}. Tap Start to play again!`);
+  if(BZ.makes>=4)launchConfetti(18);
+  bzDraw();
+}
+function bzTick(){
+  if(!BZ.active)return;
+  BZ.needle+=BZ.dir*2.4;
+  if(BZ.needle>=100){BZ.needle=100;BZ.dir=-1;}
+  if(BZ.needle<=0){BZ.needle=0;BZ.dir=1;}
+  BZ.clock-=0.03;
+  if(BZ.clock<=0){BZ.clock=0;bzAdvance("too late, the buzzer beat you on that one!");}
+  bzDraw();
+}
+function bzStart(){
+  BZ.active=true;BZ.shot=1;BZ.makes=0;BZ.needle=0;BZ.dir=1;BZ.clock=5;
+  bzMsg("Shot 1 of 5 — tap SHOOT when the needle is in the GOLD!");
+  try{metroClick(true);}catch(e){}
+  clearInterval(BZ.timer);BZ.timer=setInterval(bzTick,30);
+  bzDraw();
+}
+function bzShoot(){
+  if(!BZ.active)return;
+  const inZone=BZ.needle>=62&&BZ.needle<=80;
+  if(inZone){BZ.makes++;try{metroClick(true);}catch(e){}}
+  else{try{metroClick(false);}catch(e){}}
+  bzAdvance(inZone?"🏀 SWISH! Right in the gold!":"🧱 off the mark — the gold zone is the sweet spot.");
+}
+/* ---- Quick Hands ---- */
+const QH={active:false,left:30,caught:0,missed:0,timer:null,spawn:null,balls:[]};
+function qhMsg(t){const m=$("qhMsg");if(m)m.textContent=t;}
+function qhScoreDraw(){const sc=$("qhScore");if(sc)sc.textContent=`Caught: ${QH.caught} • Dropped: ${QH.missed} • Time: ${Math.ceil(QH.left)} • 🏆 Best: ${state.handsBest||0}`;}
+function qhDraw(){const court=$("qhCourt");if(court&&!QH.active)court.innerHTML=`<div class="qh-floor"></div><p class="small" style="position:absolute;left:0;right:0;top:88px;text-align:center;color:#e0f2fe;margin:0">Balls drop here — tap to catch! 🏀</p>`;qhScoreDraw();}
+function qhSpawn(){
+  const court=$("qhCourt");if(!court||!QH.active)return;
+  const b=document.createElement("button");b.type="button";b.className="qh-ball";b.textContent="🏀";b.setAttribute("aria-label","Catch the falling ball");
+  const x=4+Math.random()*84;b.style.left=x+"%";b.style.top="-46px";
+  court.appendChild(b);
+  QH.balls.push({el:b,y:-46,speed:1.7+Math.random()*1.3});
+}
+function qhTick(){
+  if(!QH.active)return;
+  QH.left-=0.03;
+  const court=$("qhCourt");const H=court?court.clientHeight:230;
+  QH.balls=QH.balls.filter(o=>{
+    o.y+=o.speed;o.el.style.top=o.y+"px";
+    if(o.y>H-24){o.el.remove();QH.missed++;try{metroClick(false);}catch(e){}return false;}
+    return true;
+  });
+  if(QH.left<=0){QH.left=0;qhEnd();}
+  qhScoreDraw();
+}
+function qhEnd(){
+  QH.active=false;clearInterval(QH.timer);clearInterval(QH.spawn);
+  QH.balls.forEach(o=>o.el.remove());QH.balls=[];
+  if(QH.caught>(state.handsBest||0)){state.handsBest=QH.caught;save();}
+  qhMsg(`⏰ Time! You caught ${QH.caught} ball${QH.caught===1?"":"s"} and dropped ${QH.missed}. 🏆 Best: ${state.handsBest||0}. Tap Start to beat it!`);
+  if(QH.caught>=12)launchConfetti(16);
+  qhScoreDraw();
+}
+function qhStart(){
+  const court=$("qhCourt");if(court)court.innerHTML=`<div class="qh-floor"></div>`;
+  QH.caught=0;QH.missed=0;QH.left=30;QH.balls=[];QH.active=true;
+  qhMsg("Catch the balls before they hit the floor! 🙌");
+  try{metroClick(true);}catch(e){}
+  clearInterval(QH.timer);clearInterval(QH.spawn);
+  QH.timer=setInterval(qhTick,30);QH.spawn=setInterval(qhSpawn,620);
+  qhScoreDraw();
+}
+/* ---- Color Court ---- */
+const CC_COLORS=[{n:"RED",c:"#ef4444"},{n:"BLUE",c:"#38bdf8"},{n:"GREEN",c:"#4ade80"},{n:"GOLD",c:"#fbbf24"},{n:"PINK",c:"#f472b6"},{n:"PURPLE",c:"#a78bfa"}];
+const CC={active:false,round:0,score:0,answer:"",lock:false};
+function ccMsg(t){const m=$("ccMsg");if(m)m.textContent=t;}
+function ccScoreDraw(){const sc=$("ccScore");if(sc)sc.textContent=`Round: ${Math.min(CC.round,10)}/10 • Correct: ${CC.score} • 🏆 Best: ${state.colorBest||0}`;}
+function ccDraw(){ccScoreDraw();}
+function ccRound(){
+  CC.round++;CC.lock=false;
+  const inkMode=CC.round>5;
+  const word=CC_COLORS[Math.floor(Math.random()*CC_COLORS.length)];
+  let ink=word;
+  if(inkMode){do{ink=CC_COLORS[Math.floor(Math.random()*CC_COLORS.length)];}while(ink.n===word.n);}
+  CC.answer=ink.n;
+  const w=$("ccWord");if(w){w.textContent=word.n;w.style.color=inkMode?ink.c:"#f4f7ff";}
+  const hint=$("ccHint");if(hint)hint.textContent=inkMode?"🎨 Trick round! Tap the color of the INK the word is painted in!":"Tap the patch that matches the word!";
+  const opts=new Set([ink.n]);while(opts.size<4)opts.add(CC_COLORS[Math.floor(Math.random()*CC_COLORS.length)].n);
+  const shuffled=[...opts].sort(()=>Math.random()-0.5);
+  const grid=$("ccPatches");if(grid)grid.innerHTML=shuffled.map(n=>{const col=CC_COLORS.find(x=>x.n===n);return `<button type="button" class="cc-patch" data-cc="${n}" style="background:${col.c}">${n}</button>`;}).join("");
+  ccScoreDraw();
+}
+function ccTap(name){
+  if(!CC.active||CC.lock)return;
+  CC.lock=true;
+  if(name===CC.answer){CC.score++;try{metroClick(true);}catch(e){}ccMsg("✅ YES! Fast eyes, #14!");}
+  else{try{metroClick(false);}catch(e){}ccMsg(`Not quite — that was ${CC.answer}. Keep going!`);}
+  ccScoreDraw();
+  setTimeout(()=>{if(!CC.active)return;if(CC.round>=10)ccEnd();else ccRound();},520);
+}
+function ccEnd(){
+  CC.active=false;
+  if(CC.score>(state.colorBest||0)){state.colorBest=CC.score;save();}
+  const w=$("ccWord");if(w){w.textContent="🏆";w.style.color="#f4f7ff";}
+  const hint=$("ccHint");if(hint)hint.textContent="Game over — press START to play again!";
+  ccMsg(`🎉 You got ${CC.score}/10! 🏆 Best: ${state.colorBest||0}.`);
+  if(CC.score>=8)launchConfetti(16);
+  ccScoreDraw();
+}
+function ccStart(){
+  CC.active=true;CC.round=0;CC.score=0;CC.lock=false;
+  ccMsg("Watch the word — GO!");
+  try{metroClick(true);}catch(e){}
+  ccRound();
+}
+/* ---- Jersey Designer ---- */
+const JERSEY_COLORS=[["sky","#38bdf8","Sky"],["orange","#ff7a1a","Orange"],["pink","#f472b6","Pink"],["purple","#a78bfa","Purple"],["teal","#2dd4bf","Teal"],["gold","#fbbf24","Gold"],["green","#4ade80","Green"],["red","#ef4444","Red"]];
+const JERSEY_TRIMS=[["white","#ffffff","White"],["gold","#fbbf24","Gold"],["black","#111827","Black"],["pink","#f472b6","Pink"]];
+function renderJersey(){
+  const j=(state.jersey&&typeof state.jersey==="object")?state.jersey:{color:"sky",trim:"white",style:"classic"};
+  const col=(JERSEY_COLORS.find(x=>x[0]===j.color)||JERSEY_COLORS[0])[1];
+  const trm=(JERSEY_TRIMS.find(x=>x[0]===j.trim)||JERSEY_TRIMS[0])[1];
+  const path="M60,22 L84,9 Q100,22 116,9 L140,22 L159,54 L139,64 L139,170 Q100,181 61,170 L61,64 L41,54 Z";
+  let deco="";
+  if(j.style==="stripes")deco=`<rect x="61" y="126" width="78" height="11" fill="${trm}" opacity="0.9"/><rect x="61" y="146" width="78" height="11" fill="${trm}" opacity="0.9"/>`;
+  if(j.style==="stars")deco=[[76,140],[100,152],[124,140],[88,164],[112,164]].map(p=>`<text x="${p[0]}" y="${p[1]}" font-size="15" text-anchor="middle" fill="${trm}">★</text>`).join("");
+  const pv=$("jerseyPreview");
+  if(pv)pv.innerHTML=`<svg viewBox="0 0 200 190" style="width:170px;max-width:70%;height:auto" role="img" aria-label="Your designed number 14 jersey"><defs><clipPath id="jclip"><path d="${path}"/></clipPath></defs><path d="${path}" fill="${col}" stroke="${trm}" stroke-width="5" stroke-linejoin="round"/><g clip-path="url(#jclip)">${deco}</g><text x="100" y="66" font-size="14" font-weight="bold" text-anchor="middle" fill="${trm}" letter-spacing="2">NE'ALA</text><text x="100" y="122" font-size="56" font-weight="800" text-anchor="middle" fill="${trm}">14</text></svg>`;
+  const cc=$("jerseyColors");if(cc)cc.innerHTML=JERSEY_COLORS.map(x=>`<button type="button" class="chip ${j.color===x[0]?"on":""}" data-jersey-color="${x[0]}" aria-pressed="${j.color===x[0]}"><span class="accent-dot" style="background:${x[1]}"></span>${x[2]}</button>`).join("");
+  const tc=$("jerseyTrims");if(tc)tc.innerHTML=JERSEY_TRIMS.map(x=>`<button type="button" class="chip ${j.trim===x[0]?"on":""}" data-jersey-trim="${x[0]}" aria-pressed="${j.trim===x[0]}"><span class="accent-dot" style="background:${x[1]}"></span>${x[2]}</button>`).join("");
+  const sc=$("jerseyStyles");if(sc)sc.innerHTML=[["classic","Classic"],["stripes","Stripes"],["stars","Stars"]].map(x=>`<button type="button" class="chip ${j.style===x[0]?"on":""}" data-jersey-style="${x[0]}" aria-pressed="${j.style===x[0]}">${x[1]}</button>`).join("");
+  const msg=$("jerseyMsg");if(msg)msg.textContent=`Your jersey: ${(JERSEY_COLORS.find(x=>x[0]===j.color)||[])[2]||j.color} with ${(JERSEY_TRIMS.find(x=>x[0]===j.trim)||[])[2]||j.trim} trim — looking sharp, #14! 👕`;
+}
+/* ---- Skill Tree ---- */
+function renderSkillTree(){
+  const el=$("skillTree");if(!el)return;
+  const doneIds=new Set();(state.sessions||[]).forEach(s=>(s.drills||[]).forEach(d=>doneIds.add(d)));
+  let lit=0;
+  const rows=[1,2,3].map(lvl=>{
+    const ds=DRILLS.filter(d=>d.level===lvl);
+    const nodes=ds.map(d=>{const done=doneIds.has(d.id);if(done)lit++;return `<span class="tree-node ${done?"lit":""}">${done?"⭐":"•"} ${escapeHtml(d.name)}</span>`;}).join("");
+    return `<p class="small" style="margin:8px 0 4px"><b>${lvl===1?"🌱 Level 1":lvl===2?"⭐ Level 2":"🔥 Level 3"}</b></p><div class="tree-row">${nodes}</div>`;
+  }).join("");
+  el.innerHTML=rows+`<p class="small muted" style="margin:8px 0 0">🌟 ${lit} of ${DRILLS.length} skills lit — log a practice with a drill to light its star!</p>`;
+}
+/* ---- Buddy Growth ---- */
+const BUDDY_STAGES=[{n:"Rookie Buddy",e:"🌱",min:0},{n:"Rising Star Buddy",e:"⭐",min:3},{n:"On-Fire Buddy",e:"🔥",min:6},{n:"Diamond Buddy",e:"💎",min:10},{n:"Legend Buddy",e:"👑",min:15}];
+function renderBuddy(){
+  const el=$("buddyBody");if(!el)return;
+  const t=(state.sessions||[]).length;
+  let idx=0;BUDDY_STAGES.forEach((s,i)=>{if(t>=s.min)idx=i;});
+  const cur=BUDDY_STAGES[idx],next=BUDDY_STAGES[idx+1]||null;
+  const pct=next?Math.min(100,Math.round(t/next.min*100)):100;
+  el.innerHTML=`<div class="buddy-big" aria-hidden="true">${state.mascot||"🏀"}<span style="font-size:30px">${cur.e}</span></div>
+  <p class="big" style="text-align:center;font-size:19px;margin:2px 0">${cur.e} ${cur.n}</p>
+  <div class="buddy-bar"><div class="buddy-fill" style="width:${pct}%"></div></div>
+  <p class="small muted" style="text-align:center;margin:2px 0">${next?`${t} practice${t===1?"":"s"} — ${next.min-t} more to grow into ${next.e} ${next.n}!`:`${t} practices — MAX LEVEL! Your buddy is a LEGEND! 👑`}</p>`;
+}
+/* ---- Cheer Me On ---- */
+const HYPE_LINES=["NE'ALA! NE'ALA! #14 is HERE and she is READY! 📣","The crowd goes WILD for #14! You were BORN for this court! 🏀","Every pro started exactly where you are — one practice at a time. GO GET IT! 💪","Shooter's up! #14 with the heart of a champion! 🌟","Defense wins games and #14 brings the ENERGY! 🔥","Dribble it, shoot it, OWN it — this court is YOURS today! 👑","Somewhere out there is a hoop with your name on it. GO FIND IT! 🎯","#14! #14! The fans are on their feet for YOU! 🎉"];
+function cheerSound(){
+  if(!soundIsOn())return;
+  try{
+    const ctx=ensureAudioCtx();if(!ctx)return;
+    [523,659,784,1047].forEach((f,i)=>{
+      const t=ctx.currentTime+i*0.09,osc=ctx.createOscillator(),gain=ctx.createGain();
+      osc.type="square";osc.frequency.setValueAtTime(f,t);
+      gain.gain.setValueAtTime(0.0001,t);gain.gain.exponentialRampToValueAtTime(0.12,t+0.01);gain.gain.exponentialRampToValueAtTime(0.0001,t+0.16);
+      osc.connect(gain);gain.connect(ctx.destination);osc.start(t);osc.stop(t+0.17);
+    });
+  }catch(e){}
+}
+function openCheer(){
+  const m=$("cheerModal");if(!m)return;
+  state.cheerCount=(state.cheerCount||0)+1;save();
+  const mascot=$("cheerMascot");if(mascot)mascot.textContent=state.mascot||"🏀";
+  const txt=$("cheerText");if(txt)txt.textContent=HYPE_LINES[Math.floor(Math.random()*HYPE_LINES.length)];
+  const sub=$("cheerSub");if(sub)sub.textContent=`Cheers heard so far: ${state.cheerCount} 📣`;
+  const line=$("cheerCountLine");if(line)line.textContent=`Cheers heard so far: ${state.cheerCount} 📣`;
+  m.hidden=false;
+  launchConfetti(30);cheerSound();
+}
+function closeCheer(){const m=$("cheerModal");if(m)m.hidden=true;}
 /* ================= MENUS + CARDS (2026-11-15 update) ================= */
 const MENU_DEFAULTS={home:"today",train:"games",log:"practice",learn:"lessons",progress:"stats"};
 const menuState={...MENU_DEFAULTS};
@@ -2861,7 +3221,7 @@ document.addEventListener("click",e=>{
   const grid=b.closest(".menu-grid");if(grid)setTimeout(()=>grid.scrollIntoView({behavior:scrollBehavior(),block:"start"}),40);
 });
 Object.keys(MENU_DEFAULTS).forEach(v=>openPanel(v,MENU_DEFAULTS[v]));
-hsDraw();mmDraw();diceRender();renderJumpChips();
+hsDraw();mmDraw();diceRender();renderJumpChips();bzDraw();ccDraw();qhDraw();renderJersey();
 applyTextSize();applyCalmMode();
 /* ================= MAKE IT HERS CONTROLS (cycle 25) ================= */
 $("accentChips").addEventListener("click",e=>{const b=e.target.closest("[data-accent-choice]");if(!b)return;setAccent(b.dataset.accentChoice);});
