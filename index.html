@@ -330,8 +330,16 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <p id="installMsg" class="small" role="status" style="margin:8px 0 0"></p>
   </div>
   <div class="card" id="weeklyPlanCard" data-panel="week">
-    <h3>📅 Your Week — Tap a Day to Change It</h3>
-    <p class="muted small">Dad and Ne'ala: tap any day to pick a focus from the plan list, or write your own. Your picks are saved on this device. Days you don't change keep the regular plan.</p>
+    <h3>📅 Coach's Plan Editor — Tap a Day to Change It</h3>
+    <p class="muted small">Dad (Coach!): tap any day to set its focus, target minutes, up to 3 drills and a note — or tap a preset below to build the whole week at once. Everything is saved on this device. Days you don't change keep the regular plan.</p>
+    <p style="margin:10px 0 6px"><b>🌟 Week presets — one tap builds the week</b></p>
+    <div class="chips" id="planPresets" role="group" aria-label="Apply a week preset" style="margin-bottom:6px">
+      <button type="button" class="chip" data-preset="regular">🌟 Regular Week</button>
+      <button type="button" class="chip" data-preset="game">🏀 Game Week</button>
+      <button type="button" class="chip" data-preset="school">📚 School Week</button>
+      <button type="button" class="chip" data-preset="fun">🎉 Fun Week</button>
+    </div>
+    <p id="planPresetMsg" class="small" role="status" style="margin:4px 0 8px"></p>
     <div id="weeklyPlanList"></div>
     <div id="weeklyPlanEditor" class="week-editor" hidden>
       <h3 id="weeklyPlanEditorTitle" style="margin-top:0">✏️ Change This Day</h3>
@@ -340,6 +348,13 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <label for="weeklyPlanCustom">Or write your own focus</label>
       <input type="text" id="weeklyPlanCustom" maxlength="120" placeholder="Example: Shooting games with Dad 🎯">
       <p class="small muted">If you write your own, that words wins. Leave it blank to use the list pick.</p>
+      <label for="weeklyPlanMinutes">Target minutes (blank = no target)</label>
+      <input type="number" id="weeklyPlanMinutes" min="0" max="90" step="5" inputmode="numeric" placeholder="14">
+      <label>Pick up to 3 drills for this day</label>
+      <div class="chips" id="weeklyPlanDrills" role="group" aria-label="Pick drills for this day" style="margin-bottom:6px"></div>
+      <p class="small muted" id="weeklyPlanDrillMsg" role="status" style="margin:2px 0 6px"></p>
+      <label for="weeklyPlanNote">Coach note for this day</label>
+      <input type="text" id="weeklyPlanNote" maxlength="80" placeholder="Example: Bring the size 6 ball 🎒">
       <div class="timer-row">
         <button type="button" class="btn" id="weeklyPlanSave">Save This Day ✅</button>
         <button type="button" class="btn ghost" id="weeklyPlanCancel">Cancel</button>
@@ -1039,12 +1054,12 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
   <div class="update-card">
     <div class="update-ball" aria-hidden="true">🏀</div>
     <h2 id="updateTitle">🎉 NEW UPDATE, Ne'ala!</h2>
-    <p class="big" style="font-size:19px;margin:6px 0">Your app got <b>MORE GAMES</b>, a <b>FORM STUDIO</b> — and <b>4 NEW SURPRISES</b>! 🎉</p>
+    <p class="big" style="font-size:19px;margin:6px 0">Dad can now build your <b>WHOLE WEEK</b> — the <b>PLAN EDITOR</b> is here! 📅</p>
     <div class="update-list">
-      <p style="margin:5px 0">🎮 <b>THREE NEW GAMES</b> — Buzzer Beater, Quick Hands &amp; Color Court, in Train &gt; Games!</p>
-      <p style="margin:5px 0">🎬 <b>FORM STUDIO</b> — animated pictures that SHOW you shooting form, dribbling, layups &amp; defense (Train)</p>
-      <p style="margin:5px 0">👕 <b>JERSEY DESIGNER</b> — design your own #14 jersey! Plus a 🗺️ <b>Skill Tree</b> to light up</p>
-      <p style="margin:5px 0">🐣 Your <b>Buddy grows</b> every time you practice — and the 📣 <b>Cheer Me On!</b> button gives you a big cheer any time</p>
+      <p style="margin:5px 0">📅 <b>COACH'S PLAN EDITOR</b> — Dad can now edit EVERY day: its focus, target minutes, up to 3 drills and a coach note (Home &gt; My Week)</p>
+      <p style="margin:5px 0">🌟 <b>WEEK PRESETS</b> — Game Week, School Week &amp; Fun Week build a whole week in one tap!</p>
+      <p style="margin:5px 0">🏀 <b>TODAY'S PLAN</b> on Home now shows your minutes and drills for the day</p>
+      <p style="margin:5px 0">🎮 Plus everything from last time: Buzzer Beater, Quick Hands, Color Court, the Form Studio &amp; your Jersey Designer</p>
     </div>
     <button type="button" class="btn full" id="updateGoBtn" style="margin-top:8px">📊 See My Dashboard!</button>
     <button type="button" class="btn ghost full" id="updateCloseBtn" style="margin-top:8px">Maybe Later</button>
@@ -1200,6 +1215,7 @@ function normalizeData(d){
   d.quizBest=(d.quizBest&&typeof d.quizBest==="object"&&!Array.isArray(d.quizBest))?d.quizBest:{};
   ["iq","math","miller","positions","rules2","clark"].forEach(k=>{d.quizBest[k]=(typeof d.quizBest[k]==="number"&&d.quizBest[k]>=0)?Math.floor(d.quizBest[k]):0;});
   d.weeklyPlanOverrides=(d.weeklyPlanOverrides&&typeof d.weeklyPlanOverrides==="object"&&!Array.isArray(d.weeklyPlanOverrides))?d.weeklyPlanOverrides:{};
+  d.weeklyPlanDetails=(d.weeklyPlanDetails&&typeof d.weeklyPlanDetails==="object"&&!Array.isArray(d.weeklyPlanDetails))?Object.fromEntries(Object.entries(d.weeklyPlanDetails).filter(([k,v])=>["0","1","2","3","4","5","6"].includes(k)&&v&&typeof v==="object").map(([k,v])=>[k,{minutes:(typeof v.minutes==="number"&&isFinite(v.minutes))?Math.min(90,Math.max(0,Math.floor(v.minutes))):0,drills:Array.isArray(v.drills)?[...new Set(v.drills.filter(id=>typeof id==="string"&&DRILLS.some(dr=>dr.id===id)))].slice(0,3):[],note:(typeof v.note==="string")?v.note.slice(0,80):""}])):{};
   d.flashcardsKnown=Array.isArray(d.flashcardsKnown)?d.flashcardsKnown.filter(id=>FLASHCARDS.some(c=>c.id===id)):[];
   d.storyBest=(typeof d.storyBest==="number"&&d.storyBest>=0&&d.storyBest<=STORY.qs.length)?Math.floor(d.storyBest):0;
   d.textSize=(d.textSize==="big"||d.textSize==="normal")?d.textSize:"normal";
@@ -1234,12 +1250,40 @@ function normalizeWeeklyGoals(g){
   const minutes=(typeof s.minutes==="number"&&isFinite(s.minutes))?Math.min(300,Math.max(5,Math.floor(s.minutes))):WEEKLY_GOALS_DEFAULT.minutes;
   return{sessions,minutes};
 }
-function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0,clark:0},weeklyPlanOverrides:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,placesVisited:[],seenUpdate:null,hotspotBest:0,blitzBest:0,memoryBest:0,diceStars:0,buzzerBest:0,handsBest:0,colorBest:0,cheerCount:0,jersey:{color:"sky",trim:"white",style:"classic"},diceDay:{date:"",text:"",done:false},champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
+function load(){try{const d=normalizeData(JSON.parse(localStorage.getItem(KEY)));if(d)return d;}catch(e){}return{sessions:[],lessonsDone:[],quizBest:{iq:0,math:0,miller:0,positions:0,rules2:0,clark:0},weeklyPlanOverrides:{},weeklyPlanDetails:{},flashcardsKnown:[],storyBest:0,textSize:"normal",calmMode:false,gearCheck:{},packingCheck:{},lastExportAt:null,coachNotes:[],games:[],weeklyGoals:{...WEEKLY_GOALS_DEFAULT},favoriteDrills:[],accent:"orange",mascot:"🏀",kittyMode:false,shootBest:0,placesVisited:[],seenUpdate:null,hotspotBest:0,blitzBest:0,memoryBest:0,diceStars:0,buzzerBest:0,handsBest:0,colorBest:0,cheerCount:0,jersey:{color:"sky",trim:"white",style:"classic"},diceDay:{date:"",text:"",done:false},champBest:0,champBestDate:null,soundOn:true,metronomeBpm:80,shots:[],createdAt:new Date().toISOString()};}
 let state=load();
 const DAY_NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 let editingDow=null;
 function planForDay(dow){const o=state.weeklyPlanOverrides&&state.weeklyPlanOverrides[String(dow)];return(typeof o==="string"&&o.trim())?o:WEEK_PLAN[dow];}
 function hasPlanOverride(dow){const o=state.weeklyPlanOverrides&&state.weeklyPlanOverrides[String(dow)];return typeof o==="string"&&!!o.trim();}
+function planDetail(dow){const d=state.weeklyPlanDetails&&state.weeklyPlanDetails[String(dow)];return(d&&typeof d==="object")?d:null;}
+function hasPlanDetail(dow){const d=planDetail(dow);return !!d&&((+d.minutes||0)>0||(Array.isArray(d.drills)&&d.drills.length>0)||String(d.note||"").trim().length>0);}
+function planDetailText(dow){const d=planDetail(dow);if(!hasPlanDetail(dow))return "";const parts=[];if((+d.minutes||0)>0)parts.push("⏱️ "+d.minutes+" min");if(Array.isArray(d.drills)&&d.drills.length)parts.push("🏀 "+d.drills.map(id=>{const dr=DRILLS.find(x=>x.id===id);return dr?dr.name:id;}).join(", "));if(String(d.note||"").trim())parts.push("📝 "+String(d.note).trim());return parts.join(" • ");}
+let planEditDraft=null;
+function renderPlanDrillChips(){const c=$("weeklyPlanDrills");if(!c||!planEditDraft)return;c.innerHTML=DRILLS.map(d=>`<button type="button" class="chip ${planEditDraft.drills.includes(d.id)?"on":""}" data-plan-drill="${d.id}" aria-pressed="${planEditDraft.drills.includes(d.id)}">${escapeHtml(d.name)}</button>`).join("");}
+const PLAN_PRESETS={
+ game:{label:"🏀 Game Week",focus:["Rest day — stretch and picture your best game 🧠","14 for 14 + Layups Both Sides 🪜","Handles + Defensive Slide day 🛡️","Shooting games: Hot Spot + Around the Driveway 🎯","Learn day: one lesson + a quiz 📚","Light shootaround + pack your bag 🎒","GAME DAY! Play hard, have fun 🏀"],minutes:[0,20,20,15,15,10,30]},
+ school:{label:"📚 School Week",focus:["Rest day — family day 💛","Quick handles: Pound Dribbles 🤲","Learn day: Basketball IQ lesson + quiz 📚","14 for 14 driveway session ⭐","Choice day: repeat your favorite drill 🏅","Shooting day: Form Shots + Bank Shots 🎯","Driveway games with Dad 🏀"],minutes:[0,10,15,20,10,15,20]},
+ fun:{label:"🎉 Fun Week",focus:["Surprise Drill day — let the app pick! 🎲","Swish Shot + Hot Spot games 🎮","1v1 with Dad (he goes easy… maybe) 😄","Around the Driveway + Beat the Clock ⏱️","Logo Three Ladder + shooting games 🌟","Free play: your favorite drills 🏀","Choice day: earn a badge you're close to 🏅"],minutes:[15,20,20,20,15,25,20]}
+};
+function applyPlanPreset(key){
+  state.weeklyPlanOverrides=state.weeklyPlanOverrides||{};state.weeklyPlanDetails=state.weeklyPlanDetails||{};
+  if(key==="regular"){
+    state.weeklyPlanOverrides={};state.weeklyPlanDetails={};planEditDraft=null;editingDow=null;
+    save();render();
+    const m=$("planPresetMsg");if(m)m.textContent="🌟 Regular Week is back — the classic plan for every day.";
+    return;
+  }
+  const p=PLAN_PRESETS[key];if(!p)return;
+  p.focus.forEach((f,dow)=>{
+    if(f===WEEK_PLAN[dow])delete state.weeklyPlanOverrides[String(dow)];else state.weeklyPlanOverrides[String(dow)]=f;
+    const cur=planDetail(dow)||{drills:[],note:""};
+    state.weeklyPlanDetails[String(dow)]={minutes:p.minutes[dow],drills:cur.drills||[],note:cur.note||""};
+  });
+  planEditDraft=null;editingDow=null;
+  save();render();
+  const m=$("planPresetMsg");if(m)m.textContent=p.label+" applied to all 7 days! Tap any day to fine-tune it.";
+}
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
 /* ================= COMFY READING (cycle 12) + COMFORT ROUND 2 (cycle 31) ================= */
 function systemPrefersReducedMotion(){try{return !!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);}catch(e){return false;}}
@@ -1294,12 +1338,12 @@ const DASH_TIPS=[
 let dashTipIdx=0;
 function whatsNewList(){
   return [
-   ["🎮","<b>THREE new games</b> — Buzzer Beater, Quick Hands &amp; Color Court (Train &gt; Games)"],
-   ["🎬","<b>Form Studio</b> — animated visuals that SHOW shooting, dribbling, layup &amp; defense form (Train)"],
-   ["👕","<b>Jersey Designer</b> — design your own #14 jersey (Home &gt; Picks &amp; Style)"],
-   ["🗺️","<b>Skill Tree Adventure</b> — light up all 25 skills as you practice them (Train &gt; Drill Library)"],
-   ["🐣","<b>Buddy Growth</b> — your buddy levels up as you practice (Home &gt; Today)"],
-   ["📣","<b>Cheer Me On!</b> — a big cheer any time you need one (Home &gt; Today)"]
+   ["📅","<b>Coach's Plan Editor</b> — Dad can build your whole week: focus, minutes, drills &amp; notes for every day (Home &gt; My Week)"],
+   ["🌟","<b>Week Presets</b> — Regular, Game Week, School Week &amp; Fun Week, one tap each!"],
+   ["🏀","<b>Today's Plan</b> — Home now shows today's minutes &amp; drills"],
+   ["🎮","<b>Buzzer Beater, Quick Hands &amp; Color Court</b> — still racing in Train &gt; Games"],
+   ["🎬","<b>Form Studio</b> — animated form visuals (Train)"],
+   ["👕","<b>Jersey Designer</b> — your #14 jersey, your design (Home &gt; Picks &amp; Style)"]
   ].map(x=>`<p style="margin:5px 0">${x[0]} ${x[1]}</p>`).join("");
 }
 function renderDashboard(){
@@ -1481,7 +1525,7 @@ function diceRoll(){
   },90);
 }
 /* ================= PLACES TO PLAY (2026-10-30 update) ================= */
-const UPDATE_VERSION="studio-2026-11";
+const UPDATE_VERSION="planner-2026-11";
 const PLACES=[
  {id:"bocek",n:"Bocek Recreation Center",t:"🏠 Rec Center Gym",dist:1.7,x:172,y:184,addr:"3000 E Madison St, Baltimore",phone:"410-563-6379",note:"Indoor gym at Bocek Park — leagues, open gym and after-school fun in East Baltimore."},
  {id:"herringrun",n:"Herring Run Park Courts — Hall Springs",t:"🌳 Outdoor Courts",dist:1.9,x:152,y:120,addr:"Argonne Dr, Herring Run Park, Baltimore",phone:"",note:"Outdoor courts in giant Herring Run Park — shoot around, then explore the trails, stream and bridges!"},
@@ -1772,7 +1816,7 @@ function renderHome(){
   const dow=new Date().getDay();
   $("greeting").textContent="Hey Ne'ala! 👋 #14";
   $("todayLine").textContent="Today is "+new Date().toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"})+". Here's your plan:";
-  $("todayPlan").innerHTML=`<p class="big" style="font-size:20px">${escapeHtml(planForDay(dow))}</p>`;
+  $("todayPlan").innerHTML=`<p class="big" style="font-size:20px">${escapeHtml(planForDay(dow))}</p>${planDetailText(dow)?`<p class="small" style="margin:4px 0 0">${escapeHtml(planDetailText(dow))}</p>`:""}`;
   $("quickStats").innerHTML=statsHTML(t,streak);
   const dotdIdx=Math.floor(new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()).getTime()/86400000)%DRILLS.length;
   const dotd=DRILLS[((dotdIdx%DRILLS.length)+DRILLS.length)%DRILLS.length];
@@ -1789,8 +1833,8 @@ function renderWeeklyPlan(){
   const list=$("weeklyPlanList");if(!list)return;
   const todayDow=new Date().getDay();
   list.innerHTML=DAY_NAMES.map((name,dow)=>`<button type="button" class="week-day ${dow===todayDow?"today":""}" data-weekday="${dow}" aria-label="Change plan for ${name}">
-    <span class="day-name">${name}${dow===todayDow?" • Today ⭐":""}${hasPlanOverride(dow)?" • ✏️ Your pick":""}</span>
-    <span class="day-plan">${escapeHtml(planForDay(dow))}</span>
+    <span class="day-name">${name}${dow===todayDow?" • Today ⭐":""}${(hasPlanOverride(dow)||hasPlanDetail(dow))?" • ✏️ Your pick":""}</span>
+    <span class="day-plan">${escapeHtml(planForDay(dow))}${planDetailText(dow)?`<br>${escapeHtml(planDetailText(dow))}`:""}</span>
   </button>`).join("");
   const editor=$("weeklyPlanEditor");if(!editor)return;
   if(editingDow===null){editor.hidden=true;return;}
@@ -1801,6 +1845,10 @@ function renderWeeklyPlan(){
   const effective=planForDay(editingDow);
   if(WEEK_PLAN.includes(effective))sel.value=effective;
   $("weeklyPlanCustom").value=hasPlanOverride(editingDow)&&!WEEK_PLAN.includes(effective)?effective:"";
+  if(!planEditDraft||planEditDraft.dow!==editingDow){const d0=planDetail(editingDow);planEditDraft={dow:editingDow,drills:d0?[...(d0.drills||[])]:[]};}
+  const mIn=$("weeklyPlanMinutes");if(mIn&&document.activeElement!==mIn)mIn.value=(planDetail(editingDow)&&planDetail(editingDow).minutes)||"";
+  const nIn=$("weeklyPlanNote");if(nIn&&document.activeElement!==nIn)nIn.value=(planDetail(editingDow)&&planDetail(editingDow).note)||"";
+  renderPlanDrillChips();
 }
 /* ================= WEEKLY GOALS (cycle 18) ================= */
 let editingWeeklyGoals=false;
@@ -2434,15 +2482,40 @@ $("weeklyPlanSave").addEventListener("click",()=>{
   state.weeklyPlanOverrides=state.weeklyPlanOverrides||{};
   if(chosen===WEEK_PLAN[editingDow])delete state.weeklyPlanOverrides[String(editingDow)];
   else state.weeklyPlanOverrides[String(editingDow)]=chosen;
+  state.weeklyPlanDetails=state.weeklyPlanDetails||{};
+  const mins=Math.min(90,Math.max(0,Math.floor(+$("weeklyPlanMinutes").value||0)));
+  const note=$("weeklyPlanNote").value.trim().slice(0,80);
+  const drs=planEditDraft&&planEditDraft.dow===editingDow?[...planEditDraft.drills].slice(0,3):[];
+  if(mins>0||drs.length||note)state.weeklyPlanDetails[String(editingDow)]={minutes:mins,drills:drs,note};
+  else delete state.weeklyPlanDetails[String(editingDow)];
+  planEditDraft=null;
   save();editingDow=null;render();
 });
 $("weeklyPlanReset").addEventListener("click",()=>{
   if(editingDow===null)return;
   state.weeklyPlanOverrides=state.weeklyPlanOverrides||{};
   delete state.weeklyPlanOverrides[String(editingDow)];
+  state.weeklyPlanDetails=state.weeklyPlanDetails||{};
+  delete state.weeklyPlanDetails[String(editingDow)];
+  planEditDraft=null;
   save();editingDow=null;render();
 });
-$("weeklyPlanCancel").addEventListener("click",()=>{editingDow=null;renderWeeklyPlan();});
+$("weeklyPlanCancel").addEventListener("click",()=>{editingDow=null;planEditDraft=null;renderWeeklyPlan();});
+$("weeklyPlanDrills").addEventListener("click",e=>{
+  const b=e.target.closest("[data-plan-drill]");if(!b||!planEditDraft)return;
+  const id=b.getAttribute("data-plan-drill");
+  if(planEditDraft.drills.includes(id))planEditDraft.drills=planEditDraft.drills.filter(x=>x!==id);
+  else{
+    if(planEditDraft.drills.length>=3){const m=$("weeklyPlanDrillMsg");if(m)m.textContent="That's 3 drills — plenty for one day! Tap one off to swap it.";return;}
+    planEditDraft.drills.push(id);
+  }
+  const m=$("weeklyPlanDrillMsg");if(m)m.textContent=planEditDraft.drills.length?planEditDraft.drills.length+" drill"+(planEditDraft.drills.length===1?"":"s")+" picked for this day.":"";
+  renderPlanDrillChips();
+});
+$("planPresets").addEventListener("click",e=>{
+  const b=e.target.closest("[data-preset]");if(!b)return;
+  applyPlanPreset(b.getAttribute("data-preset"));
+});
 /* ================= WEEKLY GOALS ACTIONS (cycle 18) ================= */
 $("weeklyGoalsView").addEventListener("click",e=>{
   const b=e.target.closest("#weeklyGoalsEditBtn");if(!b)return;
