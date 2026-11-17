@@ -288,6 +288,21 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 .accent-dot{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid #0006;vertical-align:-3px;margin-right:7px}
 .mascot-emoji{font-size:22px;vertical-align:-3px;margin-right:6px}
 @media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}}
+#formPrintArea{display:none}
+@media print{
+  body.printing-forms #printSummary,body.printing-forms #printCertificate,body.printing-forms #updateModal,body.printing-forms #dashModal,body.printing-forms #cheerModal,body.printing-forms .scroll-btns{display:none!important}
+  body.printing-forms #formPrintArea{display:block!important;color:#111}
+  .print-card{border:3px solid #111;border-radius:16px;padding:16px;margin:0 0 18px;page-break-inside:avoid;background:#fff}
+  .print-card h3{margin:0 0 10px;font-size:22px;color:#111}
+  .print-card .pviz{background:#141a2e;border-radius:12px;padding:10px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .print-card .pviz svg{width:100%;height:auto;display:block}
+  .print-card .pcue{font-size:16px;line-height:1.55;margin:12px 0 0;color:#111}
+  .print-card .pfoot{font-size:13px;color:#444;margin:10px 0 0}
+  #formPrintArea[data-only="beef"] .print-card:not([data-key="beef"]),
+  #formPrintArea[data-only="dribble"] .print-card:not([data-key="dribble"]),
+  #formPrintArea[data-only="layup"] .print-card:not([data-key="layup"]),
+  #formPrintArea[data-only="defense"] .print-card:not([data-key="defense"]){display:none!important}
+}
 </style>
 </head>
 <body>
@@ -573,6 +588,12 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
     <p id="ccMsg" class="small" role="status" style="margin:6px 0"></p>
     <button type="button" class="btn full" id="ccStartBtn">▶️ Start Color Court</button>
   </div>
+  <div class="card" id="formPrintCard" data-panel="form">
+    <h3>🖨️ Form Cards for the Fridge &amp; Practice Bag</h3>
+    <p class="muted small">Print these form pictures on paper! Stick one on the fridge or keep them in your practice bag so your form cues are always with you — no phone needed. 🧲🎒</p>
+    <button type="button" class="btn full" id="printAllFormsBtn">🖨️ Print All 4 Form Cards</button>
+    <p class="small muted" style="margin:8px 0 0">Or use the Print button on any single card below to print just that one.</p>
+  </div>
   <div class="card" id="formBeefCard" data-panel="form">
     <h3>🎬 Form Studio — B.E.E.F. Shooting Form</h3>
     <div class="form-viz"><svg viewBox="0 0 300 190" style="width:100%;height:auto;display:block" role="img" aria-label="Animated shooting form: watch the elbow tuck, the arm extend, and the ball arc into the hoop">
@@ -588,6 +609,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <circle r="8" fill="#ff7a1a" stroke="#0b1020" stroke-width="1.5"><animateMotion path="M118,58 C 168,6 218,26 250,70" dur="3s" repeatCount="indefinite"/></circle>
     </svg></div>
     <p style="margin:8px 0 2px"><b>B</b>alance — feet shoulder-width, knees soft. <b>E</b>yes — on the rim, not the ball. <b>E</b>lbow — tucked under the ball like a shelf. <b>F</b>ollow through — wrist snaps, fingers wave goodbye to the ball. Watch the arm in the picture: up, extend, snap!</p>
+    <button type="button" class="btn ghost full" data-print-form="beef" style="margin-top:10px">🖨️ Print This Card</button>
   </div>
   <div class="card" id="formDribbleCard" data-panel="form">
     <h3>🎬 Form Studio — Low Dribble, Eyes Up</h3>
@@ -604,6 +626,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <circle cx="188" r="9" fill="#ff7a1a" stroke="#0b1020" stroke-width="1.5"><animate attributeName="cy" values="106;152;106" dur="0.72s" repeatCount="indefinite"/></circle>
     </svg></div>
     <p style="margin:8px 0 2px">Stay LOW like you are sitting in a chair, ball bouncing by your side below your knee, fingertips pushing it down — and your eyes stay UP the whole time, just like the picture. If you can see Dad's hand signals, you are doing it right!</p>
+    <button type="button" class="btn ghost full" data-print-form="dribble" style="margin-top:10px">🖨️ Print This Card</button>
   </div>
   <div class="card" id="formLayupCard" data-panel="form">
     <h3>🎬 Form Studio — Layup Steps: 1-2-UP!</h3>
@@ -619,6 +642,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       <circle r="8" fill="#ff7a1a" stroke="#0b1020" stroke-width="1.5"><animateMotion path="M150,116 C 192,58 224,52 250,70" dur="1.8s" repeatCount="indefinite"/></circle>
     </svg></div>
     <p style="margin:8px 0 2px">Right-side layup: step <b>1</b> with your right foot, step <b>2</b> with your left, then drive your RIGHT knee <b>UP</b> and lay the ball softly off the backboard square. Say it while you go: "one — two — UP!" Left side flips the feet.</p>
+    <button type="button" class="btn ghost full" data-print-form="layup" style="margin-top:10px">🖨️ Print This Card</button>
   </div>
   <div class="card" id="formDefenseCard" data-panel="form">
     <h3>🎬 Form Studio — Defensive Slide</h3>
@@ -637,6 +661,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
       </g>
     </svg></div>
     <p style="margin:8px 0 2px">Butt down, chest up, arms WIDE like a wall. Push and slide — your feet glide side to side and never cross, just like the picture. Stay in front of your player and make them go around you!</p>
+    <button type="button" class="btn ghost full" data-print-form="defense" style="margin-top:10px">🖨️ Print This Card</button>
   </div>
   <div class="card hot" id="fourteen" data-panel="session">
     <h3>⭐ 14 for 14 — Driveway Session (14 minutes)</h3>
@@ -1024,6 +1049,7 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
 
 <section id="printSummary" class="print-summary" aria-label="Printable weekly summary"></section>
 <section id="printCertificate" class="print-summary" aria-label="Printable Quiz Championship certificate"></section>
+<div id="formPrintArea" aria-hidden="true"></div>
 
 <footer>Ne'ala Hoops #14 • Made with Dad • Everything is saved only on this device — no accounts, no posting, just practice. 💛</footer>
 
@@ -1067,12 +1093,12 @@ body.kitty h2::after{content:" 🎀";font-size:.75em}
   <div class="update-card">
     <div class="update-ball" aria-hidden="true">🏀</div>
     <h2 id="updateTitle">🎉 NEW UPDATE, Ne'ala!</h2>
-    <p class="big" style="font-size:19px;margin:6px 0">NEW: the <b>SHOT LOG</b> — watch your shooting % <b>CLIMB</b>! 🎯</p>
+    <p class="big" style="font-size:19px;margin:6px 0">NEW: <b>PRINTABLE</b> Form Cards — your Form Studio, <b>ON PAPER</b>! 🖨️</p>
     <div class="update-list">
-      <p style="margin:5px 0">🎯 <b>SHOT LOG</b> — pick a drill, tap MAKE or MISS after every shot, and watch your percentage for each drill (Log)</p>
-      <p style="margin:5px 0">📈 <b>CLIMBING NUMBERS</b> — a best-touch shout-out shows your hottest drill right now</p>
-      <p style="margin:5px 0">↩ <b>UNDO + RESET</b> — tapped wrong? Undo fixes it, and each drill can start fresh</p>
-      <p style="margin:5px 0">📅 Plus last time's Coach's Plan Editor &amp; Week Presets — and all your games and the Form Studio</p>
+      <p style="margin:5px 0">🖨️ <b>PRINTABLE FORM CARDS</b> — print the Form Studio pictures for the FRIDGE &amp; your PRACTICE BAG (Train &gt; Form Studio)</p>
+      <p style="margin:5px 0">🎬 <b>ALL 4 FORMS</b> — B.E.E.F. shooting, Low Dribble, Layup Steps &amp; Defensive Slide, each with its cues</p>
+      <p style="margin:5px 0">🧲 <b>ONE OR ALL</b> — print a single card or the whole set in one tap</p>
+      <p style="margin:5px 0">🎯 Plus the Shot Log, the Coach's Plan Editor &amp; all your games</p>
     </div>
     <button type="button" class="btn full" id="updateGoBtn" style="margin-top:8px">📊 See My Dashboard!</button>
     <button type="button" class="btn ghost full" id="updateCloseBtn" style="margin-top:8px">Maybe Later</button>
@@ -1352,8 +1378,8 @@ const DASH_TIPS=[
 let dashTipIdx=0;
 function whatsNewList(){
   return [
+   ["🖨️","<b>Printable Form Cards</b> — the Form Studio on paper for the fridge &amp; practice bag (Train &gt; Form Studio)"],
    ["🎯","<b>Shot Log</b> — MAKE/MISS taps per drill with running percentages (Log)"],
-   ["📈","<b>Best Touch</b> — a shout-out for your hottest drill right now"],
    ["📅","<b>Coach's Plan Editor</b> — Dad builds your week: focus, minutes, drills &amp; notes (Home &gt; My Week)"],
    ["🎮","<b>Buzzer Beater, Quick Hands &amp; Color Court</b> — still racing in Train &gt; Games"],
    ["🎬","<b>Form Studio</b> — animated form visuals (Train)"],
@@ -1539,7 +1565,7 @@ function diceRoll(){
   },90);
 }
 /* ================= PLACES TO PLAY (2026-10-30 update) ================= */
-const UPDATE_VERSION="shotlog-2026-11";
+const UPDATE_VERSION="printables-2026-11";
 const PLACES=[
  {id:"bocek",n:"Bocek Recreation Center",t:"🏠 Rec Center Gym",dist:1.7,x:172,y:184,addr:"3000 E Madison St, Baltimore",phone:"410-563-6379",note:"Indoor gym at Bocek Park — leagues, open gym and after-school fun in East Baltimore."},
  {id:"herringrun",n:"Herring Run Park Courts — Hall Springs",t:"🌳 Outdoor Courts",dist:1.9,x:152,y:120,addr:"Argonne Dr, Herring Run Park, Baltimore",phone:"",note:"Outdoor courts in giant Herring Run Park — shoot around, then explore the trails, stream and bridges!"},
@@ -3361,6 +3387,37 @@ document.addEventListener("click",e=>{
 });
 Object.keys(MENU_DEFAULTS).forEach(v=>openPanel(v,MENU_DEFAULTS[v]));
 hsDraw();mmDraw();diceRender();renderJumpChips();bzDraw();ccDraw();qhDraw();renderJersey();
+/* ================= FORM STUDIO PRINTABLES (pick #59) ================= */
+const FORM_PRINT=[["beef","formBeefCard"],["dribble","formDribbleCard"],["layup","formLayupCard"],["defense","formDefenseCard"]];
+function buildFormPrintArea(){
+  const area=$("formPrintArea");if(!area||area.dataset.built)return;
+  area.innerHTML=FORM_PRINT.map(([key,id])=>{
+    const card=document.getElementById(id);if(!card)return "";
+    const h=card.querySelector("h3");
+    const title=h?h.textContent.replace("🎬 Form Studio — ",""):"Form Card";
+    const svg=card.querySelector("svg")?card.querySelector("svg").outerHTML:"";
+    const cueP=card.querySelector(".form-viz + p")||card.querySelector("p");
+    const cue=cueP?cueP.innerHTML:"";
+    return `<div class="print-card" data-key="${key}"><h3>🏀 ${escapeHtml(title)}</h3><div class="pviz">${svg}</div><p class="pcue">${cue}</p><p class="pfoot">Ne'ala Hoops #14 — practice makes progress! 💪</p></div>`;
+  }).join("");
+  area.dataset.built="1";
+}
+function printForms(key){
+  buildFormPrintArea();
+  const area=$("formPrintArea");if(!area)return;
+  if(key)area.setAttribute("data-only",key);else area.removeAttribute("data-only");
+  document.body.classList.add("printing-forms");
+  const cleanup=()=>document.body.classList.remove("printing-forms");
+  window.addEventListener("afterprint",cleanup,{once:true});
+  window.print();
+  setTimeout(cleanup,1000);
+}
+buildFormPrintArea();
+$("printAllFormsBtn").addEventListener("click",()=>printForms(null));
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-print-form]");if(!b)return;
+  printForms(b.getAttribute("data-print-form"));
+});
 applyTextSize();applyCalmMode();
 /* ================= MAKE IT HERS CONTROLS (cycle 25) ================= */
 $("accentChips").addEventListener("click",e=>{const b=e.target.closest("[data-accent-choice]");if(!b)return;setAccent(b.dataset.accentChoice);});
